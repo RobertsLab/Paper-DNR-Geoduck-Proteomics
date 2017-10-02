@@ -3,7 +3,7 @@
 Here's a quick and easy way to make a Skyline project file to analyze your SRM data in Skyline, leveraging work already done in the DIA analysis step.  
 IMPORTANT NOTE: Use **Skyline Daily**, as opposed to Skyline.  The Daily version automatically updates when the developers push changes.  If you try to open a project in Sklyine that was created in the Daily version it likely won't work.
 
-### Open Skyline daily project files that house your PRTC peptides and your targeted proteins. 
+### Step 1: Open Skyline daily project files that house your PRTC peptides and your targeted proteins. 
 
 #### Open the PRTC Skyline Daily file used in the DIA analysis: 
 ![01](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/SRM-Skyline-Project-01.PNG?raw=true)
@@ -14,7 +14,7 @@ IMPORTANT NOTE: Use **Skyline Daily**, as opposed to Skyline.  The Daily version
 #### You'll now have two Skyline projects open at the same time. 
 ![03](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/SRM-Skyline-Project-03.PNG?raw=true)
 
-### Create a new Skyline project file with peptides from both proteins of interest and PRTC 
+### Step 2: Create a new Skyline project file with peptides from both proteins of interest and PRTC 
 
 #### In the PRTC project in the Targets frame click on the PRTC peptides, right click, and select copy
 ![04](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/SRM-Skyline-Project-04.PNG?raw=true)
@@ -28,7 +28,7 @@ IMPORTANT NOTE: Use **Skyline Daily**, as opposed to Skyline.  The Daily version
 #### Remove DIA results from Sklyine project file by selecting **Edit -> Manage Results -> Remove All**. You should still see the peptides in "Targets", but no chromatograms should remain: 
 ![07](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/SRM-Skyline-Project-07.PNG?raw=true)
 
-### Import .raw files into Skyline.  
+### Step 3: Import .raw files into Skyline.  
 
 #### _NOTE: there are lots of .raw files with data from blank and QC/PRTC standard vials.  I do not recommend adding this data to the same Skyline project file as your sample data, as it can be confusing when trying to pick peaks and QC your peptides._
 
