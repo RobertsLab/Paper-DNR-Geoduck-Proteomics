@@ -51,7 +51,7 @@ IMPORTANT NOTE: Use **Skyline Daily**, as opposed to Skyline.  The Daily version
 
 #### Once all files are imported, re-arrange your view as follows:
  * _View -> Retention Time -> Replicate Comparison_
- * _View -> Peak Areas -> Replicate Comparison _
+ * _View -> Peak Areas -> Replicate Comparison_
 
 #### Your Skyline window should look something like this, and you're now ready to QC the data: 
 ![13](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/SRM-Skyline-Project-13.PNG?raw=true)
