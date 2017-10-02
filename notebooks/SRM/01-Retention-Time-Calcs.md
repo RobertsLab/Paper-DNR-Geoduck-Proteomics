@@ -16,11 +16,11 @@ Some of the PRTC peptides had no signal in several of my replicates. These pepti
 Notice that the PRTC peptide signals vary, which is due to me using different PRTC mixes. I documented which mix I used, and the concentrations of each, so I will need to account for that when I normalize my assay daya using PRTC data. More on that later.
 
 #### Step 3
-Exported retention times from Skyline via File -> Export -> Report -> Peptide RT Results. Saved in my Geoduck-DNR Repo as [2017-08-11-SRM-Retention-Times.csv](https://github.com/laurahspencer/Geoduck-DNR/blob/master/Data/2017-08-11_SRM-Retention-Times.csv)
+Exported retention times from Skyline via File -> Export -> Report -> Peptide RT Results. Saved as [2017-08-11-SRM-Retention-Times.csv](https://github.com/RobertsLab/Paper-DNR-Proteomics/blob/master/data/SRM/2017-08-11_SRM-Retention-Times.csv)
 ![RT 04](https://github.com/RobertsLab/Paper-DNR-Proteomics/blob/master/images/SRM-RT-Calcs-04.png?raw=true)
 
 #### Step 4
-In Excel: Use all SRM replicates' PRTC retention times to calculate average, then regress against DIA. Spreadsheet with calcs and plots are saved in my [Geoduck-DNR/2017-August_SRM-Analysis Repo](https://github.com/laurahspencer/Geoduck-DNR/blob/master/Analyses/2017-August_SRM-Analysis/2017-08-11-Predicted-SRM-Retention-Times-ALL-DATA.xlsx)
+In Excel: Use all SRM replicates' PRTC retention times to calculate average, then regress against DIA. Spreadsheet with calcs and plots are saved as [2017-07-18-Predicted-SRM-Retention-Times-LHS.xlsx](https://github.com/RobertsLab/Paper-DNR-Proteomics/blob/master/data/SRM/2017-07-18-Predicted-SRM-Retention-Times-LHS.xlsx)
 
 First, I opened SRM RT data, copied and pasted PRTC data & pasted into new spreadsheet. Removed all #N/A values (via Find/Replace function), then averaged all replicate RT for each peptide. Results (and notice averageif() equation): 
 ![RT 05](https://github.com/RobertsLab/Paper-DNR-Proteomics/blob/master/images/SRM-RT-Calcs-05.png?raw=true)
