@@ -4,7 +4,7 @@
   1) Pick correct peaks for all pe[ptides, replicates (using Predicted RT)
   2) Adjust peak boundaries as necessary
   3) Remove transitions that do not align with the predicted RT
-  4) Remove any peaks that do not have at least 2 transitions
+  4) Remove any peptides that do not have at least 2 transitions
 
 Some helpful keyboard shortcuts:
   * Scroll between replicates: Ctrl+Up or Ctrl+Down 
