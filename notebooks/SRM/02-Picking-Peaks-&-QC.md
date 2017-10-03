@@ -40,26 +40,25 @@ Complete this step for all peptides.
 Skyline can incorrectly assign peak boundaries, such that it is either not measuring the entire peak area, or it captures a secondary peak that it should not.  For example...
 
 This is wrong, since the boundary is too wide, capturing noise on the left: 
-![7]()
+![7](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-07.PNG?raw=true)
 
 However over the incorrect boundary, then click and drag it to the correct position, resulting in something like this: 
-![8]()
+![8](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-08.PNG?raw=true)
 
 Unfortunately there isn't an "apply to all" option for peak boundaries.  I err on not adjusting boundaries if they are close to perfect, since I'd rather have Skyline consistently pick boundaries that are slightly off than manually adjust all inconsistently. 
-
 
 ### Step 3: Remove transitions with no clear peak at the predicted retention time
 
 Some replicates (aka data files) do not have a peak at the predicted RT; for example there should be a peak between RT 14-15 fir this peptide in Superoxide Dismutase, but none is present. First image is the zoomed out view, second is the zoomed-to-best-peak view. 
-![image](https://user-images.githubusercontent.com/17264765/29228094-4b28bda2-7e8d-11e7-8dc9-5a97c60a933e.png)
-![image](https://user-images.githubusercontent.com/17264765/29228099-5475d9c6-7e8d-11e7-8416-be4c4152b686.png)
+![image](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-11.PNG?raw=true)
+![image](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-12.PNG?raw=true)
 
 When no peaks are found I remove the peak from the data by right-clicking and selecting "remove peak":
-![13]()
+![13](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-13.PNG?raw=true)
 
 In some reps the transition peaks look poor, but they are present. In this situation I kept the peaks, but recorded which peptides which had poor quality peaks across multiple replicates, so I can consider removing them from my data during analysis: 
-![image](https://user-images.githubusercontent.com/17264765/29227951-c8e7a056-7e8c-11e7-8546-0a469b5cdf0b.png)
-![image](https://user-images.githubusercontent.com/17264765/29227945-befdd22c-7e8c-11e7-9960-bcec1c7aa1b4.png)
+![image](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-09.PNG?raw=true)
+![image](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-10.PNG?raw=true)
 
 #### A note on 2 peaks: 
 Not sure what to do in the situation where a peak is split into 2 peaks (as below); Skyline opted for the boundaries to encompass both peaks. I did the same, as the total RT for both peaks appears to be similar to that of other reps:
