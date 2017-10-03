@@ -48,18 +48,27 @@ However over the incorrect boundary, then click and drag it to the correct posit
 Unfortunately there isn't an "apply to all" option for peak boundaries.  I err on not adjusting boundaries if they are close to perfect, since I'd rather have Skyline consistently pick boundaries that are slightly off than manually adjust all inconsistently. 
 
 
-### Step 3: Remove transitions that are messy or do not align with the predicted RT
+### Step 3: Remove transitions with no clear peak at the predicted retention time
 
-Some transition peaks look poor, but they are present. Here is an example of replicate data for the Superoxide Dismutase protein, showing the overall view and the zoomed view:
-![image](https://user-images.githubusercontent.com/17264765/29227951-c8e7a056-7e8c-11e7-8546-0a469b5cdf0b.png)
-![image](https://user-images.githubusercontent.com/17264765/29227945-befdd22c-7e8c-11e7-9960-bcec1c7aa1b4.png)
-
-This is in comparison to the following replicate, where there is no peak present betwen RT 14-15:
+Some replicates (aka data files) do not have a peak at the predicted RT; for example there should be a peak between RT 14-15 fir this peptide in Superoxide Dismutase, but none is present. First image is the zoomed out view, second is the zoomed-to-best-peak view. 
 ![image](https://user-images.githubusercontent.com/17264765/29228094-4b28bda2-7e8d-11e7-8dc9-5a97c60a933e.png)
 ![image](https://user-images.githubusercontent.com/17264765/29228099-5475d9c6-7e8d-11e7-8416-be4c4152b686.png)
 
-Not sure what to do in the situation where a peak is split into 2 peaks (as below); Skyline opted for the boundaries to encompass both peaks. I will do the same, as the total RT for both peaks appears to be similar to that of other reps:
+When no peaks are found I remove the peak from the data by right-clicking and selecting "remove peak":
+![13]()
+
+In some reps the transition peaks look poor, but they are present. In this situation I kept the peaks, but recorded which peptides which had poor quality peaks across multiple replicates, so I can consider removing them from my data during analysis: 
+![image](https://user-images.githubusercontent.com/17264765/29227951-c8e7a056-7e8c-11e7-8546-0a469b5cdf0b.png)
+![image](https://user-images.githubusercontent.com/17264765/29227945-befdd22c-7e8c-11e7-9960-bcec1c7aa1b4.png)
+
+#### A note on 2 peaks: 
+Not sure what to do in the situation where a peak is split into 2 peaks (as below); Skyline opted for the boundaries to encompass both peaks. I did the same, as the total RT for both peaks appears to be similar to that of other reps:
 ![image](https://user-images.githubusercontent.com/17264765/29229248-1c40b03a-7e92-11e7-8b0e-379fedea422e.png)
+
+### 4) Remove any peaks that do not have at least 2 transitions
+
+
+
 
 #### Notes:
   * Poor quality reps: 178, 254, 208, 212, 213, 297_170728020436, 
