@@ -2,7 +2,7 @@
 
 Using the results from the Predicting Retetion Time step you need to fix any errors that Skyline made in picking the correct peaks.  For example...
 
-Skyline has picked the peak for this peptide @ a retention time of 53.7, as indicated by the small black carrot at that retention time, and the fact that Skyline zooms to this "peak" when you auto-zoom to the best peak (keyboard shortcut to do that is F11). 
+#### Skyline has picked the peak for this peptide @ a retention time of 53.7, as indicated by the small black carrot at that retention time, and the fact that Skyline zooms to this "peak" when you auto-zoom to the best peak (keyboard shortcut to do that is F11). 
 ![1](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-01.PNG?raw=true)
 
 #### Zooming out (Shift+F11), we see that there is a much larger, clearer peak at RT 28.9.  Also, using our Predicted Retention Time calculations, we should see a peak at 29.22.  
