@@ -1,5 +1,9 @@
 ### Retention Time R2 Calcs
 
+Software: 
+  * Skyline Daily
+  * Excel   
+
 One of the first steps in processing SRM data is to confirm that the selected peaks actually represent the peptides, aka that our assay works.  To do this, we use linear regression between PRTC retention times in DIA and SRM to calculate predicted transition RTs in collected SRM data. Then, we calculate the R^2 for PRTC and experimental peptides compared to predicted. 
 
 #### Step 1
