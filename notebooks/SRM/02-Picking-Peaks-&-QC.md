@@ -1,6 +1,10 @@
 ## Picking peaks & QC'ing abundance results in Skyline
 
-## Before exporting data from Skyline for data analysis, complete the following:  
+Software: 
+  * Skyline Daily
+  * Excel to view your Predicted RT results
+
+### Before exporting data from Skyline for data analysis, complete the following:  
   1) Pick correct peaks for all pe[ptides, replicates (using Predicted RT)
   2) Adjust peak boundaries as necessary
   3) Remove transitions that do not align with the predicted RT
