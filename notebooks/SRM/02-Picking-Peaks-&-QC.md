@@ -88,11 +88,10 @@ To be confident that data captured for a peptide actually represents that peptid
 **_Export -> Report_**, then I edited the Transition Results report with the following metrics: Protein Name, Transitions, Peptide Sequence, Fragment Ion, Peptide Retention Time, Area; I selected "Pivot Replicate Name".  Here's a preview of the report:
 ![16](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-16.PNG?raw=true)
 
-I then exported the same report, NOT pivoted by replicate name. 
-Then, I modified the report to remove retention time, and exported in both the pivoted and not-pivoted formats. 
+I then exported the same report, NOT pivoted by replicate name, and also modified the report to remove retention time, and exported in both the pivoted and not-pivoted formats. 
 
-### All files were uploaded to my [Geoduck-DNR/Data](https://github.com/laurahspencer/Geoduck-DNR/tree/master/Data) repo:
-[SRM Transition Results, pivoted](https://github.com/laurahspencer/Geoduck-DNR/blob/master/Data/2017-08-11_Transition%20Results_LHS%20modified.csv)   
-[SRM Transitoin Results, not pivoted](https://github.com/laurahspencer/Geoduck-DNR/blob/master/Data/2017-08-11_Transition%20Results_LHS%20modified%2Crep-name-not-pivoted.csv)  
-[SRM Transition Results, no RT, pivoted](https://github.com/laurahspencer/Geoduck-DNR/blob/master/Data/2017-08-11_Transition%20Results_LHS%20modified-noRT-pivoted.csv)  
-[SRM Transition Results, no RT, not pivoted](https://github.com/laurahspencer/Geoduck-DNR/blob/master/Data/2017-08-11_Transition%20Results_LHS%20modified-noRT.csv)  
+### All files were uploaded to the [/Data](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/tree/master/data/SRM) repo:
+[SRM Transition Results, pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified.csv)   
+[SRM Transitoin Results, not pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified%2Crep-name-not-pivoted.csv)  
+[SRM Transition Results, no RT, pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified-noRT-pivoted.csv)  
+[SRM Transition Results, no RT, not pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified-noRT.csv) 
