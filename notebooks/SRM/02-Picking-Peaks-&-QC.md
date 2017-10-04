@@ -69,7 +69,9 @@ To be confident that data captured for a peptide actually represents that peptid
 
 ### Now you should be ready to export you data as a report. 
 
-#### Notes from my data:
+-----------------------------------------
+
+### Notes from my data:
   * Poor quality reps: 178, 254, 208, 212, 213, 297_170728020436, 
   * A peptide with RT ~18 must be co-eluting, as it pops up in a few reps/peptides. For example, the following is a zoomed-out view of Ras-related protein peptide, which should have it's peak around 22.7. A couple peptides elute @ ~18min, and could be the culprit: Sodium/potassium-transporting ATPase subunit alpha-4, MVTGDNVNTAR; Catalase, LYSYSDTHR; The following are images from rep #254, but it pops up in lots of reps: 
 ![14](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-14.PNG?raw=true)
@@ -84,11 +86,11 @@ To be confident that data captured for a peptide actually represents that peptid
     - Ras-related protein Rab-11B VVLVGDSGVGK, y4
   * Documented peptides and transitions w/ poor quality over several samples and saved as [2017-08-11-SRM-Transition-Cleanup.xlsx](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11-SRM-Transition-Cleanup.xlsx)
   
-#### Exported data from Skyline: 
-**_Export -> Report_**, then I edited the Transition Results report with the following metrics: Protein Name, Transitions, Peptide Sequence, Fragment Ion, Peptide Retention Time, Area; I selected "Pivot Replicate Name".  Here's a preview of the report:
+### Exported data from Skyline: 
+**_Export -> Report_**, then I edited the default Transition Results report to only include the following metrics: Protein Name, Transitions, Peptide Sequence, Fragment Ion, Peptide Retention Time, Area; I selected "Pivot Replicate Name".  Here's a preview of the report:
 ![16](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-16.PNG?raw=true)
 
-I then exported the same report, NOT pivoted by replicate name, and also modified the report to remove retention time, and exported in both the pivoted and not-pivoted formats. 
+I then exported the same report: 1) not pivoted by replicate name, 2) without RT and pivoted, 3) without RT and not pivoted.
 
 ### All files were uploaded to the [/Data](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/tree/master/data/SRM) repo:
 [SRM Transition Results, pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified.csv)   
