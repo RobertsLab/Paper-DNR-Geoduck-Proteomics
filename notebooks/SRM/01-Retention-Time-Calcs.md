@@ -13,7 +13,7 @@ The method file used in mass spec run resulted in us not collecting all PRTC pep
 Some of the PRTC peptides had no signal in several of my replicates. These peptides eluted at ~14 or 18 minutes.  I removed the peaks from all reps which had no signal at the predicted RT.  In this screen shot the peptides with lots of signal missing are unfolded on the left side, and one of the cruddy reps' chromatogram is pulled up. There should be a peak @ around 17mins.
 ![RT 03](https://github.com/RobertsLab/Paper-DNR-Proteomics/blob/master/images/SRM-RT-Calcs-03.png?raw=true)
 
-Notice that the PRTC peptide signals vary, which is due to me using different PRTC mixes. I documented which mix I used, and the concentrations of each, so I will need to account for that when I normalize my assay daya using PRTC data. More on that later.
+Notice that the PRTC peptide signals vary, which is due to me using different PRTC mixes. I documented which mix I used, and the concentrations of each. If I want to normalize my assay data using PRTC abundance, I'll need to account for the different concentraitons. More on that later.
 
 #### Step 3
 Exported retention times from Skyline via File -> Export -> Report -> Peptide RT Results. Saved as [2017-08-11-SRM-Retention-Times.csv](https://github.com/RobertsLab/Paper-DNR-Proteomics/blob/master/data/SRM/2017-08-11_SRM-Retention-Times.csv)
@@ -36,5 +36,4 @@ Compared predicted vs. actual RT in SRM:
 
 ![Predicted RT vs. Actual by protein](https://github.com/RobertsLab/Paper-DNR-Proteomics/blob/master/images/SRM-RT-Calcs-09-Predicted-vs-Actual-RT-byProtein.png?raw=true)
 
-All proteins but Cytochrome P450 have R^2 > 0.96.  I'll have to investigate what's up with Cytochrome P450 RT to see what might be the culprit. 
-
+All proteins but Cytochrome P450 have R^2 > 0.96. 
