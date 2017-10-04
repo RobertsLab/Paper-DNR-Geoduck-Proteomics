@@ -13,7 +13,7 @@
   - Remove peaks from replicates/peptides that don't have peaks @ predicted RT
   - Note poor quality replicates/peptides
 #### 03-SRM Data Analysis.ipynb	
-  - Executed all in R-Studio
+  - Execute all in R-Studio
   - Annotate SRM peak abundance data with site, treatment, sample #
   - NMDS plots
   - Average technical reps
