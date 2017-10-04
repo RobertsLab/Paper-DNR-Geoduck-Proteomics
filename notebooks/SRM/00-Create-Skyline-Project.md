@@ -1,4 +1,4 @@
-## Creating a Skyline Document & Uploading .raw files
+## Creating a Skyline project file & uploading .raw files
 
 Here's a quick and easy way to make a Skyline project file to analyze your SRM data in Skyline, leveraging work already done in the DIA analysis step.  
 IMPORTANT NOTE: Use **Skyline Daily**, as opposed to Skyline.  The Daily version automatically updates when the developers push changes.  If you try to open a project in Sklyine that was created in the Daily version it likely won't work.
