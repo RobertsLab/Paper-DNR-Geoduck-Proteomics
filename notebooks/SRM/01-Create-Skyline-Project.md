@@ -10,9 +10,9 @@ Software:
 Files:
   * Fasta file with SRM target proteins: [2017-geoduck-SRM-targets.fasta]() ??? 
   * .blib from DIA, aka background proteome: [2017-05-23_geoduck_desearleinated.blib]() ???
-  * 
+  * Fully created Skyline project file for this SRM data is [2017-geoduck-SRM]() ???
 
-### Step 1: Open new Skyline Daily file, save and name. Skyline project file for this SRM data is [2017-geoduck-SRM]()
+### Step 1: Open new Skyline Daily file, save and name. 
 
 ### Step 2: Adjust Peptide Settings
 Select **_Settings -> Peptide Settings_** and adjust each tab settings as follows:  
