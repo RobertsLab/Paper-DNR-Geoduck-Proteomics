@@ -101,8 +101,6 @@ Open your SRM targeted protein fasta in a text reader, highlight all contents an
 Your Targets pane should now list all proteins, which you can unfold to reveal peptides and transitions:
 ![11](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-11.PNG?raw=true)
 
-===
-
 ## Step 4: Adjust Transition Settings
 
 **PREDICTION:**
