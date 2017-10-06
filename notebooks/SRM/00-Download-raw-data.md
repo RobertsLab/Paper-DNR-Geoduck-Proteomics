@@ -5,7 +5,7 @@
  
 ### Notes on SRM data
   * Data produced by the Vantage MS/MS are formatted as .raw files, one file per sample injection  
-  * A sample injection represents one sample  
+  * An "injection" is a volume of liquid pulled from one prepared sample  
   * In this experiment I ran 2 technical replicates per sample, aka each sample was prepared in one autosampler vial with standard, then was injected twice separated by 3-6 days  
   * In a few cases, I ran a third technical replicate  
   * I remade three samples, and ran 2 technical replicates of them as well: 53-remake, 104-remake, 114-remake  
