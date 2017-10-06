@@ -34,6 +34,8 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
 ![02](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-02.PNG?raw=true)
 ![03](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-03.PNG?raw=true)
      
+---
+
 **PREDICTION:** 
   * Retention time predictor: None  
   * Use measured retention times with present: NOT checked  
@@ -41,6 +43,8 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
   * Use spectral library drift times when present: NOT checked  
 
 ![05](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-05.PNG?raw=true)
+
+--- 
 
 **FILTER:** 
   * Min length: 2  
@@ -51,6 +55,8 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
   * Auto-select all matching peptides: checked  
 
 ![06](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-06.PNG?raw=true)
+
+---
 
 **LIBRARY:** this tab will import your spectral library, aka .blib file from DIA analysis.   
   * Libraries: You'll likely need to add the .blib unless it's already on your computer.  
@@ -63,6 +69,8 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
 ![4](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-04.PNG?raw=true)
 ![4a](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-04a.PNG?raw=true)
 
+---
+
 **MODIFICATIONS:** 
   * Structural modifications: "Carbamidomethyl (C)" checked  
   * Max variable mods: 3  
@@ -73,6 +81,8 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
 
 ![07](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-07.PNG?raw=true)
 
+---
+
 **QUANTIFICATION:** 
   * Regression fit: Linear through zero  
   * Normalization Method: None   
@@ -82,6 +92,8 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
 
 ![08](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-08.PNG?raw=true)
 
+===
+
 ### Step 3: Populate analyte tree, aka add your SRM target proteins to "Targets" pane
 Open your SRM targeted protein fasta in a text reader, highlight all contents and copy
 
@@ -90,6 +102,8 @@ Open your SRM targeted protein fasta in a text reader, highlight all contents an
 
 Your Targets pane should now list all proteins, which you can unfold to reveal peptides and transitions:
 ![11](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-11.PNG?raw=true)
+
+===
 
 ### Step 3: Adjust Transition Settings
 
@@ -104,6 +118,8 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
 
 ![12](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-12.PNG?raw=true)
 
+---
+
 **FILTER:**
   * Precursor charges: 2, 3  
   * Ion charges: 1, 2  
@@ -117,11 +133,15 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
 
 ![13](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-13.PNG?raw=true)
 
+---
+
 **LIBRARY:**
   * Ion match tolerance: 0.5 m/z  
   * If a library spectrum is available, pick its most intense ions: NOT checked  
 
 ![14](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-14.PNG?raw=true)
+
+---
 
 **INSTRUMENT:**
   * Min m/z: 100  
@@ -134,6 +154,8 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
   * Max time: (blank)  
 
 ![15](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-15.PNG?raw=true)
+
+---
 
 **FULL-SCAN:**
   * Isotope peaks included: Count  
@@ -151,6 +173,8 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
 
 ![16](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-16.PNG?raw=true)
 
+===
+
 ### Step 3: Import .raw files into Skyline.  
 
 In [Notebook 00]() you downloaded all .raw files associated with geoduck samples, and saved locally. To import into Sklyine go to **_File -> Import -> Results_**
@@ -164,6 +188,8 @@ In [Notebook 00]() you downloaded all .raw files associated with geoduck samples
 
 #### As the SRM data is importing you'll see chromatograms popping up. 
 ![20](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-20.PNG?raw=true)
+
+===
 
 ### Step 4: Re-arrange Skyline window
 
