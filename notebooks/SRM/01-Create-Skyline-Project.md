@@ -17,7 +17,7 @@ Files:
 ### Step 2: Adjust Peptide Settings
 Select **_Settings -> Peptide Settings_** and adjust each tab settings as follows:  
 
-DIGESTION: this tab will import your background proteome using the fasta file with your SRM targeted protein sequences  
+**DIGESTION:** this tab will import your background proteome using the fasta file with your SRM targeted protein sequences  
    * Emzyme: "Trypsin [KR|P]"  
    * Max missed cleavages: 0   
    * Background proteome: you'll likely need to create a new background proteome (unless it's already saved on your computer):  
@@ -32,7 +32,7 @@ DIGESTION: this tab will import your background proteome using the fasta file wi
 ![02](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-02.PNG?raw=true)
 ![03](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-03.PNG?raw=true)
      
-PREDICTION: 
+**PREDICTION:** 
   * Retention time predictor: None  
   * Use measured retention times with present: NOT checked  
   * Drift time predictor: None  
@@ -40,7 +40,7 @@ PREDICTION:
 
 ![05](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-05.PNG?raw=true)
 
-FILTER: 
+**FILTER:** 
   * Min length: 2  
   * Max length: 25  
   * Exclude N-terminal AAs: 0  
@@ -50,7 +50,7 @@ FILTER:
 
 ![06](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-06.PNG?raw=true)
 
-LIBRARY: this tab will import your spectral library, aka .blib file from DIA analysis.   
+**LIBRARY:** this tab will import your spectral library, aka .blib file from DIA analysis.   
   * Libraries: You'll likely need to add the .blib unless it's already on your computer.  
     * Select **_Edit list... -> Add.. -> Browse_**   
     * Select the .blib file from your DIA analysis (e.g. "2017-05-23_geoduck_desearleinated.blib") & **_Open_**  
@@ -61,7 +61,7 @@ LIBRARY: this tab will import your spectral library, aka .blib file from DIA ana
 ![4](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-04.PNG?raw=true)
 ![4a](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-04a.PNG?raw=true)
 
-MODIFICATIONS: 
+**MODIFICATIONS:** 
   * Structural modifications: "Carbamidomethyl (C)" checked  
   * Max variable mods: 3  
   * Max neutral losses: 1  
@@ -71,7 +71,7 @@ MODIFICATIONS:
 
 ![07](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-07.PNG?raw=true)
 
-QUANTIFICATION: 
+**QUANTIFICATION:** 
   * Regression fit: Linear through zero  
   * Normalization Method: None   
   * Regression Weighting: None  
@@ -91,7 +91,7 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
 
 ### Step 3: Adjust Transition Settings
 
-PREDICTION:
+**PREDICTION:**
   * Precursor mass: Monoisotopic  
   * Product ion mass: Monoisotopic  
   * Collision energy: Thermo TSQ Vantage  
@@ -102,7 +102,7 @@ PREDICTION:
 
 ![12](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-12.PNG?raw=true)
 
-FILTER:
+**FILTER:**
   * Precursor charges: 2, 3  
   * Ion charges: 1, 2  
   * Ion types: y  
@@ -115,13 +115,13 @@ FILTER:
 
 ![13](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-13.PNG?raw=true)
 
-LIBRARY:
+**LIBRARY:**
   * Ion match tolerance: 0.5 m/z  
   * If a library spectrum is available, pick its most intense ions: NOT checked  
 
 ![14](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-14.PNG?raw=true)
 
-INSTRUMENT:
+**INSTRUMENT:**
   * Min m/z: 100  
   * Max m/z: 2000  
   * Dynamic min product m/z: NOT checked  
@@ -133,7 +133,7 @@ INSTRUMENT:
 
 ![15](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-15.PNG?raw=true)
 
-FULL-SCAN:
+**FULL-SCAN:**
   * Isotope peaks included: Count  
   * Precursor mass analyzer: Orbitrap  
   * Peaks: 3  
