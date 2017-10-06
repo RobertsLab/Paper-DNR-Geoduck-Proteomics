@@ -5,6 +5,8 @@ This notebook outlines how to create a new Skyline project file & upload .raw fi
 Software:
   * [Skyline Daily](https://skyline.ms/project/home/software/Skyline/daily/register-form/begin.view?); registration required.
   IMPORTANT NOTE: Use **Skyline Daily**, as opposed to Skyline.  The Daily version automatically updates when the developers push changes.  If you try to open a project in Sklyine that was created in the Daily version it likely won't work.
+![00](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-00.PNG?raw=true)
+
   * Text reader, e.g. [TextWrangler](https://itunes.apple.com/us/app/textwrangler/id404010395?mt=12), [NotePad++](https://notepad-plus-plus.org/)
   * Microsoft Excel (or other .xml software)
 Files:
