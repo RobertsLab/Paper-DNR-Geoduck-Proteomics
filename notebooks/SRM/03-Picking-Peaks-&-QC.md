@@ -1,21 +1,58 @@
 ## Picking peaks & QC'ing abundance results in Skyline
 
-Software: 
+### Software: 
   * Skyline Daily
   * Excel to view your Predicted RT results
-
+  
+### Files: 
+  * [SRM Transitions](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/SRM-Transitions.csv)
+  * [Predicted RT calculations]()
+  * [PRTC peptides skyline project file]()
+  
 ### Before exporting data from Skyline for data analysis, complete the following:  
-  1) Pick correct peaks for all pe[ptides, replicates (using Predicted RT)
-  2) Adjust peak boundaries as necessary
-  3) Remove transitions that do not align with the predicted RT
-  4) Remove any peptides that do not have at least 2 transitions
+  0) Remove peptides not targeted
+  1) Add PRTC peptides to targets 
+  2) Pick correct peaks for all pe[ptides, replicates (using Predicted RT)
+  3) Adjust peak boundaries as necessary
+  4) Remove transitions that do not align with the predicted RT
+  5) Remove any peptides that do not have at least 2 transitions
 
 Some helpful keyboard shortcuts:
   * Scroll between replicates: Ctrl+Up or Ctrl+Down 
   * Auto-zoom to best peak: F11
   * Un-autozoom out from best beak: Shift+F11
 
-### Step 1) Picking peaks
+## Step 0) Remove peptides not targeted 
+For the MS/MS run on Vantage we supplied a methods file [METHODS FILE NAME]() that indicated a set of peptides/transitions to measure for each protein we wanted to target. Not all the peptides that make up a protein were measured (that would require too much time, and is unnecessary); our standard was to measure 3 peptides per protein, and 3 transitions per peptide, thus 9 transitions per protein.  
+
+When we created our Skyline project file in [Notebook 01]() all proteins' peptides populated on the analyte tree/"Targets" pane.  Before analyzing our data, let's remove the unnecessary peptides:
+
+Open the [SRM Transitions](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/SRM-Transitions.csv) and the SkylineDaily project.  In the Targets pane of the Skyline project, click on the + sign next to a protein to unfold all peptides.  You'll notice that a few peptides have a colored dot next to them (red, yellow, or green).  Those are likely the peptides you targeted.
+
+To remove peptides, right click on its sequence and select "delete." Note that you can highlight more than one at a time, and delete in bulk, and the "delete" key on your keyboard also works. 
+
+![00]
+![00a]
+![00b]
+
+Once you've removed extraneous peptides, unfold each remaining peptide to reveal the transitions, and delete extraneous transitions. Again, the colored circle next to a transition will indiate one of your targets (but you can confirm this using the ["SRM Transitions" .csv file). NOTE if you accidentally delete a transition erroneously, simply Ctrl+Z to undo. 
+
+![00c]()
+
+The resulting analyte tree should look something like this: 
+![00d]()
+
+## Step 1) Add PRTC peptides to targets 
+We'll use the PRTC peptides to assess technical rep quality.  We have the PRTC peptides already populated in another Skyline project file.  Start a new Skyline Daily window, and open the [PRTC peptides Skyline project file](); if Skyline starts to automatically import results from your DIA run, you can click "cancel import" for these purposes.  Right click on the PRTC peptide name in the Targets window, select copy, and then paste into your Skyline document into the Targets pane.
+
+![00e]()
+![00f]()
+
+There will also be extraneous PRTC peptides, which you can delete. Your final analyte tree should look something like this: 
+
+![00g]()
+
+## Step 2) Picking peaks
 
 Skyline automatically picks chromatogram peaks for each peptide in each replicate, but it doesn't always do a good job. Using the results from the Predicting Retetion Time step, you need to fix any errors that Skyline made in picking the correct peaks.  For example...
 
@@ -31,15 +68,19 @@ Skyline automatically picks chromatogram peaks for each peptide in each replicat
 #### Now, hit F11 again and you'll see that Skyline has zoomed into the newly selected peak, and it is a much cleaner chromatogram. 
 ![4](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-04.PNG?raw=true)
 
-#### #### You don't have to do this manually for all your replicates. Instead, right-click anywhere in the chromatogram pane, and select "apply peak to all"
+#### You don't have to do this manually for all your replicates. Instead, right-click anywhere in the chromatogram pane, and select "apply peak to all"
 ![5](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-05.PNG?raw=true)
+
+#### However, Skyline still won't autopick all peaks correctly. For example, for this Superoxide Dismutase peptide I auto-picked the peak at ~14.5 (as per predicted RT), but you'll see that Skyline still did not pick the correct peak for the replicate shown.  Also, notice in the RT pane that RT is not consistently at 14, so you'll need to manually review each peak not at ~14.5 and either pick the correct peak OR remove it (if no peak at 14.5 exists). 
+
+![5a]()
 
 #### You'll notice that the retention times for your replicates will have changed (see top right pane in this screen shot):
 ![6](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-06.PNG?raw=true)
 
 Complete this step for all peptides.
 
-### Step 2: Adjust peak boundaries as necessary
+## Step 3: Adjust peak boundaries as necessary
 
 Skyline can incorrectly assign peak boundaries, such that it is either not measuring the entire peak area, or it captures a secondary peak that it should not.  For example...
 
@@ -51,7 +92,7 @@ However over the incorrect boundary, then click and drag it to the correct posit
 
 Unfortunately there isn't an "apply to all" option for peak boundaries.  I err on not adjusting boundaries if they are close to perfect, since I'd rather have Skyline consistently pick boundaries that are slightly off than manually adjust all inconsistently. 
 
-### Step 3: Remove transitions with no clear peak at the predicted retention time
+## Step 4: Remove transitions with no clear peak at the predicted retention time
 
 Some replicates (aka data files) do not have a peak at the predicted RT; for example there should be a peak between RT 14-15 fir this peptide in Superoxide Dismutase, but none is present. First image is the zoomed out view, second is the zoomed-to-best-peak view. 
 ![11](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-11.PNG?raw=true)
