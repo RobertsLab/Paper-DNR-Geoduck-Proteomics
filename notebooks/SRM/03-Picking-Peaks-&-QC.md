@@ -2,7 +2,6 @@
 
 ### Software: 
   * Skyline Daily
-  * Excel to view your Predicted RT results
   
 ### Files: 
   * [SRM Transitions](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/SRM-Transitions.csv)
