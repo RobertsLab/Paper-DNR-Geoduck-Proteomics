@@ -10,9 +10,9 @@ This notebook outlines how to create a new Skyline project file & upload .raw fi
 ![00](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-00.PNG?raw=true)
 
 ## Files:
-  * Fasta file with SRM target proteins: [2017-geoduck-SRM-targets.fasta]() ???  
-  * .blib from DIA, aka background proteome: [2017-05-23_geoduck_desearleinated.blib]() ???  
-  * Fully created Skyline project file for this SRM data is [2017-geoduck-SRM]() ???  
+  * Fasta file with SRM target proteins: [2017-geoduck-SRM-targets.fasta](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-geoduck-SRM-targets.fasta)
+  * .blib from DIA, aka background proteome: [2017-05-23_geoduck_desearleinated.blib](http://owl.fish.washington.edu/generosa/Generosa_DNR/Skyline_June2017/)
+  * Fully created Skyline project file for this SRM data is [2017-geoduck-SRM]() TBD!!!
 
 ## Step 1: Open new Skyline Daily file, save and name. 
 
@@ -27,7 +27,7 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
      * Type a short-hand name for your proteome (e.g. "2017 Geoduck SRM Targets")  
      * Select **_Create_**;  
      * Type a file name for your proteome (e.g. 2017-geoduck-SRM-targets), select **_Save_**  
-     * Add .fasta file via **_Add_**, select the .fasta file with your SRM target proteins (e.g. "2017-geoduck-SRM-targets.fasta"), **_Open_**  
+     * Add .fasta file via **_Add_**, select the .fasta file with your SRM target proteins (e.g. "[2017-geoduck-SRM-targets.fasta](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-geoduck-SRM-targets.fasta)"), **_Open_**  
    * Enforce peptide uniqueness by: "None"  
 
 ![01](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-01.PNG?raw=true)
@@ -61,7 +61,7 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
 **LIBRARY:** this tab will import your spectral library, aka .blib file from DIA analysis.   
   * Libraries: You'll likely need to add the .blib unless it's already on your computer.  
     * Select **_Edit list... -> Add.. -> Browse_**   
-    * Select the .blib file from your DIA analysis (e.g. "2017-05-23_geoduck_desearleinated.blib") & **_Open_**  
+    * Select the .blib file from your DIA analysis (e.g. "[2017-05-23_geoduck_desearleinated.blib](http://owl.fish.washington.edu/generosa/Generosa_DNR/Skyline_June2017/)") & **_Open_**  
     * Name your spectral library (e.g. "Geoduck-gonad-DNR-library"), select **_Okay_** and make sure your newly added library is checked.  
   * Pick peptides matching: Library  
   * Rank peptides by: (nothing selected)  
