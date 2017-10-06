@@ -1,12 +1,6 @@
-# Script to download .raw files corresponding to geoduck tissue sample SRM data from Vantage MS/MS
-
-## IMPORTANT: the first step in this script creates a directory in the "downloads" folder, where all .raw files will be downloaded 
-dir.create("../Downloads/2017-Geoduck-SRM-raw/")
-setwd("../Downloads/2017-Geoduck-SRM-raw/")
-
 # Install package not available in base R
-# install.packages("stringr", dep=TRUE) #only install stringr package if you don't already have it
-# install.packages("curl", dep=TRUE)
+install.packages("stringr", dep=TRUE) #only install stringr package if you don't already have it
+install.packages("curl", dep=TRUE)
 
 # Scrape website that houses all .raw files of file names
 url <- "http://owl.fish.washington.edu/generosa/Generosa_DNR/2017-July-SRM-Data/" #site on Owl that contains all .raw files
