@@ -22,9 +22,9 @@ Some helpful keyboard shortcuts:
   * Un-autozoom out from best beak: Shift+F11
 
 ## Step 0) Remove peptides not targeted 
-For the MS/MS run on Vantage we supplied a methods file [METHODS FILE NAME]() that indicated a set of peptides/transitions to measure for each protein we wanted to target. Not all the peptides that make up a protein were measured (that would require too much time, and is unnecessary); our standard was to measure 3 peptides per protein, and 3 transitions per peptide, thus 9 transitions per protein.  
+For the MS/MS run on Vantage we supplied a methods file [Vantage_nanoAcq_geoduckLS_60min_DrM27cm.meth](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/Vantage_nanoAcq_geoduckLS_60min_DrM27cm.meth) that indicated a set of peptides/transitions to measure for each protein we wanted to target. Not all the peptides that make up a protein were measured (that would require too much time, and is unnecessary); our standard was to measure 3 peptides per protein, and 3 transitions per peptide, thus 9 transitions per protein.  
 
-When we created our Skyline project file in [Notebook 01]() all proteins' peptides populated on the analyte tree/"Targets" pane.  Before analyzing our data, let's remove the unnecessary peptides:
+When we created our Skyline project file in [Notebook 01](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/notebooks/SRM/01-Create-Skyline-Project.md) all proteins' peptides populated on the analyte tree/"Targets" pane.  Before analyzing our data, let's remove the unnecessary peptides:
 
 Open the [SRM Transitions](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/SRM-Transitions.csv) and the SkylineDaily project.  In the Targets pane of the Skyline project, click on the + sign next to a protein to unfold all peptides.  You'll notice that a few peptides have a colored dot next to them (red, yellow, or green).  Those are likely the peptides you targeted.
 
@@ -70,7 +70,7 @@ Skyline automatically picks chromatogram peaks for each peptide in each replicat
 #### You don't have to do this manually for all your replicates. Instead, right-click anywhere in the chromatogram pane, and select "apply peak to all"
 ![5](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-05.PNG?raw=true)
 
-#### However, Skyline still won't autopick all peaks correctly. For example, for this Superoxide Dismutase peptide I auto-picked the peak at ~14.5 (as per predicted RT), but you'll see that Skyline still did not pick the correct peak for the replicate shown.  Also, notice in the RT pane that RT is not consistently at 14, so you'll need to manually review each peak not at ~14.5 and either pick the correct peak OR remove it (if no peak at 14.5 exists). 
+#### However, Skyline still won't autopick all peaks correctly. For example, for this Superoxide Dismutase peptide I auto-picked the peak at ~14.5 (as per predicted RT), but you'll see that Skyline still did not pick the correct peak for the replicate shown.  Also, notice in the RT pane that RT is not consistently at 14 for all replicates, so you'll need to manually review each peak not at ~14.5 and either pick the correct peak OR remove it (if no peak at 14.5 exists). Additionally, if no peak has been detected for the peak you need to pick, you'll need to draw boundaries; do so by holding the cursor over the x axis where your peak begins until the cursos changes to a double-arrow, click and drag to where the peak ends. Boundary lines should have been drawn, and the peak automatically picked. 
 
 ![5a]()
 
@@ -91,16 +91,16 @@ However over the incorrect boundary, then click and drag it to the correct posit
 
 Unfortunately there isn't an "apply to all" option for peak boundaries.  I err on not adjusting boundaries if they are close to perfect, since I'd rather have Skyline consistently pick boundaries that are slightly off than manually adjust all inconsistently. 
 
-## Step 4: Remove transitions with no clear peak at the predicted retention time
+## Step 4: Remove peaks for replicates with no clear peak at the predicted retention time
 
-Some replicates (aka data files) do not have a peak at the predicted RT; for example there should be a peak between RT 14-15 fir this peptide in Superoxide Dismutase, but none is present. First image is the zoomed out view, second is the zoomed-to-best-peak view. 
+Some replicates (aka data files) do not have a peak at the predicted RT; for example there should be a peak between RT 14-15 for this peptide in Superoxide Dismutase, but none is present. First image is the zoomed out view, second is the zoomed-to-best-peak view. 
 ![11](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-11.PNG?raw=true)
 ![12](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-12.PNG?raw=true)
 
 When no peaks are found I remove the peak from the data by right-clicking and selecting "remove peak":
 ![13](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-13.PNG?raw=true)
 
-In some reps the transition peaks look poor, but they are present. In this situation I kept the peaks, but recorded which peptides which had poor quality peaks across multiple replicates, so I can consider removing them from my data during analysis: 
+In some reps peaks look poor, but they are present. In this situation I kept the peaks, but recorded which peptides which had poor quality peaks across multiple replicates, so I can consider removing them from my data during analysis: 
 ![09](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-09.PNG?raw=true)
 ![10](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-10.PNG?raw=true)
 
@@ -116,19 +116,38 @@ To be confident that data captured for a peptide actually represents that peptid
 -----------------------------------------
 
 ### Notes from my data:
-  * Poor quality reps: 178, 254, 208, 212, 213, 297_170728020436, 
-  * A peptide with RT ~18 must be co-eluting, as it pops up in a few reps/peptides. For example, the following is a zoomed-out view of Ras-related protein peptide, which should have it's peak around 22.7. A couple peptides elute @ ~18min, and could be the culprit: Sodium/potassium-transporting ATPase subunit alpha-4, MVTGDNVNTAR; Catalase, LYSYSDTHR; The following are images from rep #254, but it pops up in lots of reps: 
+#### Poor quality peptides, where several reps had no peak at predicted RT:
+  * Superoxide Dismutase: K.THGAPTDEER.H [68, 77]
+  * Catalase: R.LYSYSDTHR.H [351, 359]
+  * Na/K-transporting ATPase subunit alpha-4: R.MVTGDNVNTAR.S [727, 737]
+  * Protein Disulfide-isomerase (PDI): R.NNKPSDYQGGR.Q [125, 135]
+Example of a poor-quality peptide, which is missing from several replicates, is THGAPTDEER in Superoxide Dismutase: 
+  ![05b]()
+    
+#### Replicates with consistently missing peaks @ poor quality peptides: 208, 212, 213
+Here is a screen shot of 208 at the Catalase LYSYSDTHR peptide, where no signal occurs until ~22 min then signal sharply appears: 
+![05c]()
+
+This is compared to a more regular signal for replicate # 292 for the same peptide:
+![05d]()
+
+#### A peptide with RT ~18 must be co-eluting, as it pops up in a few reps/peptides. For example, the following is a zoomed-out view of Ras-related protein peptide, which should have it's peak around 22.7. A couple peptides elute @ ~18min, and could be the culprit: Sodium/potassium-transporting ATPase subunit alpha-4, MVTGDNVNTAR; Catalase, LYSYSDTHR; The following are images from rep #254, but it pops up in lots of reps: 
 ![14](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-14.PNG?raw=true)
 ![15](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-15.PNG?raw=true)
 
 ### Total actions performed on my SRM data in Skyline:
+  * Picked peaks based on predicted RT; in some cases I needed to draw a peak/beak boundaries if Skyline had not detected one.
   * Removed peaks from replicates where no peak was present @ designated retention time (as per DIA/SRM regression). Replications w/ no peaks for peptides will be represented as #N/A when data is exported. 
-  * ID'd peptides with very poor data across multiple replicates; I may not use these peptides in my analysis; TBD. See [peptides in red](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-18.PNG?raw=true)
-  * Adjusted retention time boundaries for all reps all peptides. I erred on NOT adjusting boundaries if they looked OK to maintain consistency. 
+  * ID'd 4 peptides with very poor data across multiple replicates; I may not use these peptides in my analysis; TBD.
+    * Superoxide Dismutase: K.THGAPTDEER.H [68, 77]
+    * Catalase: R.LYSYSDTHR.H [351, 359]
+    * Na/K-transporting ATPase subunit alpha-4: R.MVTGDNVNTAR.S [727, 737]
+    * Protein Disulfide-isomerase (PDI): R.NNKPSDYQGGR.Q [125, 135]
+    * PRTC: DIPVPKPK, HVLTSIGEK, GISNEGQNASIK, SSAAPPPPPR
+  * Reviewed peak boundaries to see if they needed adjusting. I did NOT adjusting boundaries that Skyline automatically selected, since manually moving boundaries is not reproducible. 
   * ID'd and deleted 2 transitions that do not align with other transitions at designated RT. Transitions are:
     - Superoxide dismutase, TIVVHADVDDLGK, y4 
     - Ras-related protein Rab-11B VVLVGDSGVGK, y4
-  * Documented peptides and transitions w/ poor quality over several samples and saved as [2017-08-11-SRM-Transition-Cleanup.xlsx](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11-SRM-Transition-Cleanup.xlsx)
   
 ### Exported data from Skyline: 
 **_Export -> Report_**, then I edited the default Transition Results report to only include the following metrics: Protein Name, Transitions, Peptide Sequence, Fragment Ion, Peptide Retention Time, Area; I selected "Pivot Replicate Name".  Here's a preview of the report:
