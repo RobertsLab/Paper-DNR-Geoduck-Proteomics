@@ -1,22 +1,22 @@
-## Create a Skyline project file & upload .raw files
+# Create a Skyline project file & upload .raw files
 
 This notebook outlines how to create a new Skyline project file & upload .raw files to analyze SRM data in Skyline. 
 
-### Software:
+## Software:
   * Text reader, e.g. [TextWrangler](https://itunes.apple.com/us/app/textwrangler/id404010395?mt=12), [NotePad++](https://notepad-plus-plus.org/)  
   * Microsoft Excel (or other .xml software)  
   * [Skyline Daily](https://skyline.ms/project/home/software/Skyline/daily/register-form/begin.view?); registration required.
   IMPORTANT NOTE: Use **Skyline Daily**, as opposed to Skyline.  The Daily version automatically updates when the developers push changes.  If you try to open a project in Sklyine that was created in the Daily version it likely won't work.  
 ![00](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-00.PNG?raw=true)
 
-### Files:
+## Files:
   * Fasta file with SRM target proteins: [2017-geoduck-SRM-targets.fasta]() ???  
   * .blib from DIA, aka background proteome: [2017-05-23_geoduck_desearleinated.blib]() ???  
   * Fully created Skyline project file for this SRM data is [2017-geoduck-SRM]() ???  
 
-### Step 1: Open new Skyline Daily file, save and name. 
+## Step 1: Open new Skyline Daily file, save and name. 
 
-### Step 2: Adjust Peptide Settings
+## Step 2: Adjust Peptide Settings
 Select **_Settings -> Peptide Settings_** and adjust each tab settings as follows:  
 
 **DIGESTION:** this tab will import your background proteome using the fasta file with your SRM targeted protein sequences  
@@ -92,9 +92,7 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
 
 ![08](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-08.PNG?raw=true)
 
-===
-
-### Step 3: Populate analyte tree, aka add your SRM target proteins to "Targets" pane
+## Step 3: Populate analyte tree, aka add your SRM target proteins to "Targets" pane
 Open your SRM targeted protein fasta in a text reader, highlight all contents and copy
 
 ![09](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-09.PNG?raw=true)
@@ -105,7 +103,7 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
 
 ===
 
-### Step 3: Adjust Transition Settings
+## Step 4: Adjust Transition Settings
 
 **PREDICTION:**
   * Precursor mass: Monoisotopic  
@@ -173,9 +171,7 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
 
 ![16](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-16.PNG?raw=true)
 
-===
-
-### Step 3: Import .raw files into Skyline.  
+## Step 5: Import .raw files into Skyline.  
 
 In [Notebook 00]() you downloaded all .raw files associated with geoduck samples, and saved locally. To import into Sklyine go to **_File -> Import -> Results_**
 ![17](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-17.PNG?raw=true)
@@ -191,7 +187,7 @@ In [Notebook 00]() you downloaded all .raw files associated with geoduck samples
 
 ===
 
-### Step 4: Re-arrange Skyline window
+### Step 6: Re-arrange Skyline window
 
 #### Once all files are imported, re-arrange your view as follows:
  * _View -> Retention Time -> Replicate Comparison_
