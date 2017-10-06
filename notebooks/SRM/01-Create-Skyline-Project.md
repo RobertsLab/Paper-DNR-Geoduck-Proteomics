@@ -173,7 +173,7 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
 
 ## Step 5: Import .raw files into Skyline.  
 
-In [Notebook 00]() you downloaded all .raw files associated with geoduck samples, and saved locally. To import into Sklyine go to **_File -> Import -> Results_**
+In [Notebook 00]() you downloaded all .raw files associated with geoduck samples, and saved locally. To import into Skyline go to **_File -> Import -> Results_**
 ![17](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-17.PNG?raw=true)
 
 #### A box will pop up; I used the default settings:
@@ -185,9 +185,7 @@ In [Notebook 00]() you downloaded all .raw files associated with geoduck samples
 #### As the SRM data is importing you'll see chromatograms popping up. 
 ![20](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-20.PNG?raw=true)
 
-===
-
-### Step 6: Re-arrange Skyline window
+## Step 6: Re-arrange Skyline window
 
 #### Once all files are imported, re-arrange your view as follows:
  * _View -> Retention Time -> Replicate Comparison_
