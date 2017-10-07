@@ -108,15 +108,18 @@ In some reps peaks look poor, but they are present. In this situation I kept the
 Not sure what to do in the situation where a peak is split into 2 peaks (as below); Skyline opted for the boundaries to encompass both peaks. I did the same, as the total RT for both peaks appears to be similar to that of other reps:
 ![17](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-17.PNG?raw=true)
 
-### 4) Remove any peptides that do not have at least 2 transitions
+## Step 5) Remove transitions that do not align with peak
+If you find instances where one transition has messing peaks as compared to the other transitions, delete from your data set.  For example, I found that in the Ras-related protein Rab-11B, peptide VVLVGDSGVGK, fragment ion y4, no peak was present for this transition.  Similarly,  for Superoxide dismutase, TIVVHADVDDLGK, y4 the peak was very messy and erratic, not consistent as compared to the other two transitions for that peptdie. I delected by right-clicking on the transition in the Targets pane, and selected "delete" (or use your delete key).
+
+## Step 6) Remove any peptides that do not have at least 2 transitions
 To be confident that data captured for a peptide actually represents that peptide, it's important that at least 2 transitions have peaks at the predicted RT.  Remove peptides with <2 transitions.  This did not occur in my data. 
 
-### Export data from Skyline: 
+## Step 7) Export data from Skyline: 
 **_Export -> Report_**, then I edited the default Transition Results report to only include the following metrics: Protein Name, Transitions, Peptide Sequence, Fragment Ion, Peptide Retention Time, Area; I selected "Pivot Replicate Name".  Here's a preview of the report:
 ![19](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-19.PNG?raw=true)
 ![16](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-16.PNG?raw=true)
 
-### "Share" skyline project file:
+## Step 8) "Share" your skyline project into zip folder:
 Save your Skyline project, then go to **_File -> Share_**, select "Complete" option and current Skyline-daily format, and click Share. Name the zip folder.  
 My resulting Skyline project file is saved on Owl: [2017-geoduck-SRM.sky.zip](http://owl.fish.washington.edu/generosa/Generosa_DNR/2017-July-SRM-various-files/2017-geoduck-SRM.sky.zip)
 
