@@ -30,26 +30,26 @@ Open the [SRM Transitions](https://github.com/RobertsLab/Paper-DNR-Geoduck-Prote
 
 To remove peptides, right click on its sequence and select "delete." Note that you can highlight more than one at a time, and delete in bulk, and the "delete" key on your keyboard also works. 
 
-![00]
-![00a]
-![00b]
+![00](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-00.PNG?raw=true)
+![00a](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-00a.PNG?raw=true)
+![00b](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-00b.PNG?raw=true)
 
 Once you've removed extraneous peptides, unfold each remaining peptide to reveal the transitions, and delete extraneous transitions. Again, the colored circle next to a transition will indiate one of your targets (but you can confirm this using the ["SRM Transitions" .csv file). NOTE if you accidentally delete a transition erroneously, simply Ctrl+Z to undo. 
 
-![00c]()
+![00c](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-00c.PNG?raw=true)
 
 The resulting analyte tree should look something like this: 
-![00d]()
+![00d](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-00d.PNG?raw=true)
 
 ## Step 1) Add PRTC peptides to targets 
 We'll use the PRTC peptides to assess technical rep quality.  We have the PRTC peptides already populated in another Skyline project file.  Start a new Skyline Daily window, and open the [PRTC peptides Skyline project file](); if Skyline starts to automatically import results from your DIA run, you can click "cancel import" for these purposes.  Right click on the PRTC peptide name in the Targets window, select copy, and then paste into your Skyline document into the Targets pane.
 
-![00e]()
-![00f]()
+![00e](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-00e.PNG?raw=true)
+![00f](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-00f.PNG?raw=true)
 
 There will also be extraneous PRTC peptides, which you can delete. Your final analyte tree should look something like this: 
 
-![00g]()
+![00g](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-00g.PNG?raw=true)
 
 ## Step 2) Picking peaks
 
@@ -72,7 +72,7 @@ Skyline automatically picks chromatogram peaks for each peptide in each replicat
 
 #### However, Skyline still won't autopick all peaks correctly. For example, for this Superoxide Dismutase peptide I auto-picked the peak at ~14.5 (as per predicted RT), but you'll see that Skyline still did not pick the correct peak for the replicate shown.  Also, notice in the RT pane that RT is not consistently at 14 for all replicates, so you'll need to manually review each peak not at ~14.5 and either pick the correct peak OR remove it (if no peak at 14.5 exists). Additionally, if no peak has been detected for the peak you need to pick, you'll need to draw boundaries; do so by holding the cursor over the x axis where your peak begins until the cursos changes to a double-arrow, click and drag to where the peak ends. Boundary lines should have been drawn, and the peak automatically picked. 
 
-![5a]()
+![5a](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-05a.PNG?raw=true)
 
 #### You'll notice that the retention times for your replicates will have changed (see top right pane in this screen shot):
 ![6](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-06.PNG?raw=true)
@@ -111,31 +111,39 @@ Not sure what to do in the situation where a peak is split into 2 peaks (as belo
 ### 4) Remove any peptides that do not have at least 2 transitions
 To be confident that data captured for a peptide actually represents that peptide, it's important that at least 2 transitions have peaks at the predicted RT.  Remove peptides with <2 transitions.  This did not occur in my data. 
 
-### Now you should be ready to export you data as a report. 
+### Export data from Skyline: 
+**_Export -> Report_**, then I edited the default Transition Results report to only include the following metrics: Protein Name, Transitions, Peptide Sequence, Fragment Ion, Peptide Retention Time, Area; I selected "Pivot Replicate Name".  Here's a preview of the report:
+![19](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-19.PNG?raw=true)
+![16](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-16.PNG?raw=true)
 
------------------------------------------
+### "Share" skyline project file:
+Save your Skyline project, then go to **_File -> Share_**, select "Complete" option and current Skyline-daily format, and click Share. Name the zip folder.  
+My resulting Skyline project file is saved on Owl: [2017-geoduck-SRM.sky.zip](http://owl.fish.washington.edu/generosa/Generosa_DNR/2017-July-SRM-various-files/2017-geoduck-SRM.sky.zip)
 
-### Notes from my data:
+![20](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-20.PNG?raw=true)
+
+## Notes from my data:
 #### Poor quality peptides, where several reps had no peak at predicted RT:
   * Superoxide Dismutase: K.THGAPTDEER.H [68, 77]
   * Catalase: R.LYSYSDTHR.H [351, 359]
   * Na/K-transporting ATPase subunit alpha-4: R.MVTGDNVNTAR.S [727, 737]
   * Protein Disulfide-isomerase (PDI): R.NNKPSDYQGGR.Q [125, 135]
+  * PRTC: DIPVPKPK, HVLTSIGEK, GISNEGQNASIK, SSAAPPPPPR
 Example of a poor-quality peptide, which is missing from several replicates, is THGAPTDEER in Superoxide Dismutase: 
-  ![05b]()
+  ![05b](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-05b.PNG?raw=true)
     
 #### Replicates with consistently missing peaks @ poor quality peptides: 208, 212, 213
 Here is a screen shot of 208 at the Catalase LYSYSDTHR peptide, where no signal occurs until ~22 min then signal sharply appears: 
-![05c]()
+![05c](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-05c.PNG?raw=true)
 
 This is compared to a more regular signal for replicate # 292 for the same peptide:
-![05d]()
+![05d](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-05d.PNG?raw=true)
 
 #### A peptide with RT ~18 must be co-eluting, as it pops up in a few reps/peptides. For example, the following is a zoomed-out view of Ras-related protein peptide, which should have it's peak around 22.7. A couple peptides elute @ ~18min, and could be the culprit: Sodium/potassium-transporting ATPase subunit alpha-4, MVTGDNVNTAR; Catalase, LYSYSDTHR; The following are images from rep #254, but it pops up in lots of reps: 
 ![14](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-14.PNG?raw=true)
 ![15](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-15.PNG?raw=true)
 
-### Total actions performed on my SRM data in Skyline:
+## Total actions performed on my SRM data in Skyline:
   * Picked peaks based on predicted RT; in some cases I needed to draw a peak/beak boundaries if Skyline had not detected one.
   * Removed peaks from replicates where no peak was present @ designated retention time (as per DIA/SRM regression). Replications w/ no peaks for peptides will be represented as #N/A when data is exported. 
   * ID'd 4 peptides with very poor data across multiple replicates; I may not use these peptides in my analysis; TBD.
@@ -148,15 +156,4 @@ This is compared to a more regular signal for replicate # 292 for the same pepti
   * ID'd and deleted 2 transitions that do not align with other transitions at designated RT. Transitions are:
     - Superoxide dismutase, TIVVHADVDDLGK, y4 
     - Ras-related protein Rab-11B VVLVGDSGVGK, y4
-  
-### Exported data from Skyline: 
-**_Export -> Report_**, then I edited the default Transition Results report to only include the following metrics: Protein Name, Transitions, Peptide Sequence, Fragment Ion, Peptide Retention Time, Area; I selected "Pivot Replicate Name".  Here's a preview of the report:
-![16](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Picking-Peaks-16.PNG?raw=true)
-
-I then exported the same report: 1) not pivoted by replicate name, 2) without RT and pivoted, 3) without RT and not pivoted.
-
-### All files were uploaded to the [/Data](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/tree/master/data/SRM) repo:
-[SRM Transition Results, pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified.csv)   
-[SRM Transitoin Results, not pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified%2Crep-name-not-pivoted.csv)  
-[SRM Transition Results, no RT, pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified-noRT-pivoted.csv)  
-[SRM Transition Results, no RT, not pivoted](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified-noRT.csv) 
+  * Exported report: [2017-Geoduck-SRM-Skyline-Report.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-Geoduck-SRM-Skyline-Report.csv)
