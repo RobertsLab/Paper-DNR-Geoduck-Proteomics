@@ -1,7 +1,7 @@
 ## Picking peaks & QC'ing abundance results in Skyline
 
 ### Software: 
-  * Skyline Daily
+  * [Skyline Daily](https://skyline.ms/project/home/software/Skyline/daily/register-form/begin.view?)
   
 ### Files: 
   * [SRM Transitions](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/SRM-Transitions.csv)
