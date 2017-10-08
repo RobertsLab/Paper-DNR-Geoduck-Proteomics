@@ -7,7 +7,9 @@ This notebook outlines how to create a new Skyline project file & upload .raw fi
   * Microsoft Excel (or other .xml software)  
   * [Skyline Daily](https://skyline.ms/project/home/software/Skyline/daily/register-form/begin.view?); registration required.
   IMPORTANT NOTE: Use **Skyline Daily**, as opposed to Skyline.  The Daily version automatically updates when the developers push changes.  If you try to open a project in Sklyine that was created in the Daily version it likely won't work.  
-![00](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-00.PNG?raw=true)
+![00](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-00.PNG?raw=true) 
+      
+![sky](../../images/New-SRM-Skyline-Project-00.PNG)
 
 ## Files:
   * Fasta file with SRM target proteins: [2017-geoduck-SRM-targets.fasta](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-geoduck-SRM-targets.fasta)
