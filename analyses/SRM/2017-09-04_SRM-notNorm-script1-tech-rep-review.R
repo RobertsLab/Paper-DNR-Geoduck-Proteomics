@@ -4,11 +4,9 @@
 
 ############# IMPORT DATASETS ########################################################################################
 
-SRMreport <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-Geoduck-SRM-Skyline-Report.csv"), header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
-SRMsequence <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/SRM-Sequence-final.csv"), header=TRUE, stringsAsFactors = FALSE)
-sample.key <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/2017-08-14-Geoduck-samples.csv"), header=TRUE, stringsAsFactors = FALSE)
-dilution.curve <- read.csv(url("https://github.com/laurahspencer/Geoduck-DNR/raw/master/Data/2017-09-05_Dilution-Curve-Results.csv"), header=TRUE, stringsAsFactors = FALSE)
-OutplantData <- read.csv(url("https://raw.githubusercontent.com/laurahspencer/Geoduck-DNR/master/Data/Outplant-Temp-Data.csv"), header=TRUE, stringsAsFactors =FALSE)
+SRMreport <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/2017-Geoduck-SRM-Skyline-Report.csv"), header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
+SRMsequence <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/SRM-Sequence-final.csv"), header=TRUE, stringsAsFactors = FALSE)
+sample.key <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/2017-08-14-Geoduck-samples.csv"), header=TRUE, stringsAsFactors = FALSE)
 SRMsamples <- noquote(as.character(c("G013", "G120", "G047", "G017", "G079", "G127", "G060", "G009", "G002", "G128", "G016", "G071-A", "G114", "G045", "G132", "G031", "G012", "G116", "G043", "G015", "G040", "G110", "G008", "G109", "G122", "G041", "G066", "G105", "G032", "G129", "G054", "G081", "G003", "G074", "G014", "G049", "G053", "G104", "G055", "G042", "G064", "G073", "G057", "G007", "G070", "G001", "G071-B", "G062")))
 
 ############ REPLACE REP NAMES WITH SAMPLE NAMES ###################################################################
