@@ -4,7 +4,7 @@
 
 ############# IMPORT DATASETS ########################################################################################
 
-SRMreport <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/2017-08-11_Transition%20Results_LHS%20modified-noRT-pivoted.csv"), header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
+SRMreport <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-Geoduck-SRM-Skyline-Report.csv"), header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
 SRMsequence <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/SRM-Sequence-final.csv"), header=TRUE, stringsAsFactors = FALSE)
 sample.key <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/2017-08-14-Geoduck-samples.csv"), header=TRUE, stringsAsFactors = FALSE)
 dilution.curve <- read.csv(url("https://github.com/laurahspencer/Geoduck-DNR/raw/master/Data/2017-09-05_Dilution-Curve-Results.csv"), header=TRUE, stringsAsFactors = FALSE)
