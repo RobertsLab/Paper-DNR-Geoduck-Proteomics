@@ -177,6 +177,9 @@ In [Notebook 00]() you downloaded all .raw files associated with geoduck samples
 #### A box will pop up; I used the default settings:
 ![18](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-18.PNG?raw=true)
 
+#### Another box will pop up where you navigate to the folder containing your .raw files. Highlight all .raw files and click _**Open**_:
+![18a](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-18a.PNG?raw=true)
+
 #### Another box will pop up giving you the option to remove extraneous info for each replicate, which I recommend: 
 ![19](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-19.PNG?raw=true)
 
