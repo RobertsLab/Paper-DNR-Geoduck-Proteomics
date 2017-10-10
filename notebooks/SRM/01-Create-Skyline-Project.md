@@ -190,6 +190,7 @@ In [Notebook 00]() you downloaded all .raw files associated with geoduck samples
  * Select _View -> Retention Time -> Replicate Comparison_ to see how the retention times compare between samples
  * Select _View -> Peak Areas -> Replicate Comparison_ to see how the abundance compares between samples
  * Drag the RT & Peak Areas panes and "snap" into place somewhere in the Skyline screen - I like them on the right
+ * Click on a peptide, then select _View -> Auto-zoom -> Best Peak_ to zoom into the peak that Skyline has selected for the replicate/peptide you're currently looking at (or use F11 as a keyboard shortcut). You'll use this auto-zoom quite a bit when you pick peaks in notebook 3. 
 
 Check out my quick screen capture to see me doing these steps in action:
 [![Rearranging Skyline Window](https://img.youtube.com/vi/mBdTaqwpQ98/0.jpg)](https://www.youtube.com/watch?v=mBdTaqwpQ98)
