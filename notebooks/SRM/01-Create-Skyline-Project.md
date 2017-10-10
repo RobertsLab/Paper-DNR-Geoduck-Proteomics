@@ -185,9 +185,14 @@ In [Notebook 00]() you downloaded all .raw files associated with geoduck samples
 
 ## Step 6: Re-arrange Skyline window
 
-#### Once all files are imported, re-arrange your view as follows:
- * _View -> Retention Time -> Replicate Comparison_
- * _View -> Peak Areas -> Replicate Comparison_
+#### Once all files are imported, you can re-arrange your view. 
+* Click on the + or - sign next to your proteins to unfold/refold all peptides in that protein; similarly you can click on the + next to a peptide to unfold all transitions within that peptide.
+ * Select _View -> Retention Time -> Replicate Comparison_ to see how the retention times compare between samples
+ * Select _View -> Peak Areas -> Replicate Comparison_ to see how the abundance compares between samples
+ * Drag the RT & Peak Areas panes and "snap" into place somewhere in the Skyline screen - I like them on the right
+
+Check out my quick screen capture to see me doing these steps in action:
+[![Rearranging Skyline Window](https://img.youtube.com/vi/mBdTaqwpQ98/0.jpg)](https://www.youtube.com/watch?v=mBdTaqwpQ98)
 
 #### Your Skyline window should look something like this, and you're now ready to QC the data: 
 ![21](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-21.PNG?raw=true)
