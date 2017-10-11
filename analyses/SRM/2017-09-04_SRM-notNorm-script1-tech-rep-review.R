@@ -5,7 +5,7 @@
 ############# IMPORT DATASETS ########################################################################################
 
 SRMreport <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/2017-Geoduck-SRM-Skyline-Report.csv"), header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
-SRMsequence <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/SRM-Sequence-final.csv"), header=TRUE, stringsAsFactors = FALSE)
+SRMsequence <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/SRM-Sequence-final-annotated.csv"), header=TRUE, stringsAsFactors = FALSE)
 sample.key <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/2017-08-14-Geoduck-samples.csv"), header=TRUE, stringsAsFactors = FALSE)
 SRMsamples <- noquote(as.character(c("G013", "G120", "G047", "G017", "G079", "G127", "G060", "G009", "G002", "G128", "G016", "G071-A", "G114", "G045", "G132", "G031", "G012", "G116", "G043", "G015", "G040", "G110", "G008", "G109", "G122", "G041", "G066", "G105", "G032", "G129", "G054", "G081", "G003", "G074", "G014", "G049", "G053", "G104", "G055", "G042", "G064", "G073", "G057", "G007", "G070", "G001", "G071-B", "G062")))
 
@@ -14,17 +14,21 @@ SRMsamples <- noquote(as.character(c("G013", "G120", "G047", "G017", "G079", "G1
 
 rep.names <- SRMreport[1,] # create vector of replicate names
 rep.names.short <- noquote(gsub(' Area', '', rep.names)) # remove Area from rep name, and don't include quotes 
-rep.names.short <- noquote(gsub('2017_July_10_bivalves_', '', rep.names.short)) #remove the extra long rep name that is a residual from the .raw file name
+# rep.names.short <- noquote(gsub('2017_July_10_bivalves_', '', rep.names.short)) #remove the extra long rep name that is a residual from the .raw file name; this could be unecessary based on the way you've exported the Skyline report 
 repsTOsamples <- as.data.frame(SRMsequence[,c(2,3,5)])
+
 library(dplyr)
 repsTOsamples.filtered <- filter(repsTOsamples, repsTOsamples[,1] %in% rep.names.short)
 samples <- as.character(repsTOsamples.filtered$Sample...rep.name)
 other.headers <- as.character(rep.names.short[1:4])
+View(other.headers)
 samples.vector <- noquote(c(other.headers, samples, stringsAsFactors = FALSE))
 samples.vector <- samples.vector[-121]
 SRM.data <- SRMreport
 SRM.data[1,] <- samples.vector
 colnames(SRM.data) <- SRM.data[1,] #make first row column names
+
+rep.names.short
 
 ############ ANNOTATE SAMPLE NAMES WITH SITE & TREATMENT ##################################################################################
 
