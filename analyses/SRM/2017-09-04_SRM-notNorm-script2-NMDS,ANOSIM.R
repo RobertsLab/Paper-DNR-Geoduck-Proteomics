@@ -23,7 +23,7 @@ SRM.nmds.mean.samples <- scores(SRM.mean.nmds, display = "sites")
 library(RColorBrewer)
 marker = c("indianred1", "forestgreen", "turquoise3", "mediumpurple1")
 
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot.png")
 ordiplot(SRM.mean.nmds, type="n", main="SRM NMDS, unzoomed")
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=8)
 points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15)
@@ -34,25 +34,25 @@ points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker[1], pch=15)
 points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=8)
 points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15)
 legend(-2.5,-0.3, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Bare", "Eelgrass"), col=c(marker[4], marker[3], marker[2], marker[1], "black", "black"))
-dev.off()
+# dev.off()
 
 #### Create plot with forced aspect ratio to zoom in ### 
 
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-zoomed.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-zoomed.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-3,1), ylim=c(-0.5,0.5), asp=NA, main="SRM NMDS, zoomed")
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=8)
 points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15)
 points(SRM.nmds.mean.samples[c(PG.B.samples),], col=marker[3], pch=8)
-points(SRM.nmds.mean.samples[c(PG.E.samples),], col=marker[4], pch=15)
+points(SRM.nmds.mean.samples[c(PG.E.samples),], col=marker[3], pch=15)
 points(SRM.nmds.mean.samples[c(WB.B.samples),], col=marker[1], pch=8)
 points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker[1], pch=15)
 points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=8)
 points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15)
 legend(-2.5,0.4, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Bare", "Eelgrass"), col=c(marker[4], marker[3], marker[2], marker[1], "black", "black"))
-dev.off()
+# dev.off()
 
 ### Create plot with sample #'s to ID outliers AND with forced aspect ratio to zoom in
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-sample-labels.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-sample-labels.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-3,1), ylim=c(-0.5,0.5), asp=NA, main="SRM NMDS, zoomed")
 text(SRM.nmds.mean.samples[c(CI.B.samples),], label=rownames(SRM.nmds.mean.samples[c(CI.B.samples),]), col=marker[2], pch=8)
 text(SRM.nmds.mean.samples[c(CI.E.samples),], label=rownames(SRM.nmds.mean.samples[c(CI.E.samples),]),  col=marker[2], pch=15)
@@ -63,10 +63,10 @@ text(SRM.nmds.mean.samples[c(WB.E.samples),], label=rownames(SRM.nmds.mean.sampl
 text(SRM.nmds.mean.samples[c(FB.B.samples),], label=rownames(SRM.nmds.mean.samples[c(FB.B.samples),]),  col=marker[4], pch=8)
 text(SRM.nmds.mean.samples[c(FB.E.samples),], label=rownames(SRM.nmds.mean.samples[c(CI.E.samples),]),  col=marker[4], pch=15)
 legend(-2.5,0.4, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Bare", "Eelgrass"), col=c(marker[4], marker[3], marker[2], marker[1], "black", "black"))
-dev.off()
+# dev.off()
 
 #### Create plot with forced aspect ratio to zoom in, not including CI outliers ### 
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-zoomed-no-outliers-eelbare.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-zoomed-no-outliers-eelbare.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-1.2,1), ylim=c(-0.2,0.2), asp=NA, main="Geoduck Gill NMDS, Similarity Plot", width=600,height=600)
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=8, cex=2)
 points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15, cex=2)
@@ -77,10 +77,10 @@ points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker[1], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=8, cex=2)
 points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15, cex=2)
 legend(-1.2,-0.07, pch=c(rep(16,4), 8, 15), cex=1.1, pt.cex=1.3, legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Bare", "Eelgrass"), col=c(marker[4], marker[3], marker[2], marker[1], "black", "black"))
-dev.off()
+# dev.off()
 
 #### Create plot with forced aspect ratio to zoom in, no eel/bare separation ### 
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-zoomed.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-zoomed.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="Dimension 1", ylab="Dimension 2", xlim=c(-2.8,1), ylim=c(-0.4,0.2), asp=NA, main="Geoduck Gill NMDS, Similarity Plot", width=600,height=600, cex.axis=1.4, cex.lab=1.6)
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15, cex=2)
@@ -91,10 +91,10 @@ points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker[1], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15, cex=2)
 legend(-2.7,0.2, pch=c(rep(16,4)), cex=1.1, pt.cex=1.3, legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay"), col=c(marker[4], marker[3], marker[2], marker[1]))
-dev.off()
+# dev.off()
 
 #### Create plot with forced aspect ratio to zoom in, no eel/bare separation, no outliers ### 
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-zoomed-no-outliers.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-zoomed-no-outliers.png")
 par(mar=c(5.1,4.8,4.1,2.1))
 plot.default(x=NULL, y=NULL, type="n", xlab="Dimension 1", ylab="Dimension 2",  xlim=c(-1.2,1), ylim=c(-0.2,0.2), asp=NA, main="Geoduck Gill NMDS, Similarity Plot", width=600,height=600, cex.axis=1.4, cex.lab=1.6, cex.main=1.8)
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=15, cex=2)
@@ -106,7 +106,7 @@ points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker[1], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15, cex=2)
 legend(-1.2,-0.07, pch=c(rep(15,4)), cex=1.6, pt.cex=2, legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay"), col=c(marker[4], marker[3], marker[2], marker[1]))
-dev.off()
+# dev.off()
 
 #### 2. CREATE NMDS PLOT, MEAN OF TECH REPS - LOG TRANSFORMED ########
 
@@ -125,7 +125,7 @@ plot(SRM.mean.log.nmds)
 
 SRM.nmds.mean.log.samples <- scores(SRM.mean.log.nmds, display = "sites")
 
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-log-plot.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-log-plot.png")
 ordiplot(SRM.mean.log.nmds, type="n", main="SRM NMDS, log+1 transformed, unzoomed")
 points(SRM.nmds.mean.log.samples[c(CI.B.samples),], col=marker[2], pch=8)
 points(SRM.nmds.mean.log.samples[c(CI.E.samples),], col=marker[2], pch=15)
@@ -136,11 +136,11 @@ points(SRM.nmds.mean.log.samples[c(WB.E.samples),], col=marker[1], pch=15)
 points(SRM.nmds.mean.log.samples[c(FB.B.samples),], col=marker[4], pch=8)
 points(SRM.nmds.mean.log.samples[c(FB.E.samples),], col=marker[4], pch=15)
 legend(-.3,-0.1, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Bare", "Eelgrass"), col=c(marker[4], marker[3], marker[2], marker[1], "black", "black"))
-dev.off()
+# dev.off()
 
 #### Create plot with forced aspect ratio to zoom in ### 
 
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-log-zoomed.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-SRM-NMDS-plot-log-zoomed.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-.15,.15), ylim=c(-0.05,.06), asp=NA, main="SRM NMDS, log+1 transformed, zoomed")
 points(SRM.nmds.mean.log.samples[c(CI.B.samples),], col=marker[2], pch=8)
 points(SRM.nmds.mean.log.samples[c(CI.E.samples),], col=marker[2], pch=15)
@@ -151,7 +151,7 @@ points(SRM.nmds.mean.log.samples[c(WB.E.samples),], col=marker[1], pch=15)
 points(SRM.nmds.mean.log.samples[c(FB.B.samples),], col=marker[4], pch=8)
 points(SRM.nmds.mean.log.samples[c(FB.E.samples),], col=marker[4], pch=15)
 legend(-.13,0.06, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Bare", "Eelgrass"), col=c(marker[4], marker[3], marker[2], marker[1], "black", "black"))
-dev.off()
+# dev.off()
 
 # Eigenvectors 
 eigen.ml <- envfit(SRM.mean.log.nmds$points, SRM.data.mean.t.log, perm=1000)
@@ -170,7 +170,6 @@ WB.b <- data.frame(SAMPLE=WB.B.samples, SITE=rep("WB", times=length(WB.B.samples
 WB.e <- data.frame(SAMPLE=WB.E.samples, SITE=rep("WB", times=length(WB.E.samples)), TREATMENT=rep("Eelgrass", times=length(WB.E.samples)), BOTH=rep("WB-Eel", times=length(WB.E.samples)))
 FB.b <- data.frame(SAMPLE=FB.B.samples, SITE=rep("FB", times=length(FB.B.samples)), TREATMENT=rep("Bare", times=length(FB.B.samples)), BOTH=rep("FB-Bare", times=length(FB.B.samples)))
 FB.e <- data.frame(SAMPLE=FB.E.samples, SITE=rep("FB", times=length(FB.E.samples)), TREATMENT=rep("Eelgrass", times=length(FB.E.samples)), BOTH=rep("FB-Eel", times=length(FB.E.samples)))
-FB.e
 
 samples4anosim <- rbind.data.frame(CI.b, CI.e, PG.b, PG.e, WB.b, WB.e, FB.e, FB.b, stringsAsFactors = TRUE)
 samples4anosim$SAMPLE <- as.character(samples4anosim$SAMPLE)
@@ -207,22 +206,22 @@ data4anosim.noNA <- cbind.data.frame(SRM.data.mean.t.noNA[order(rownames(SRM.dat
 sdms.noNA.vegdist <- vegdist(data4anosim.noNA[,-(ncol(data4anosim)-3):-(ncol(data4anosim))], 'bray', na.rm=TRUE)
 site.noNA.anos<-anosim(sdms.vegdist, grouping=data4anosim.noNA$SITE, permutations = 2000)
 summary(site.noNA.anos)
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-plot-ANOSIM%03d.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-plot-ANOSIM%03d.png")
 plot(site.noNA.anos)
-dev.off()
+# dev.off()
 
 # ANOSIM between treatments, no NA
 treatment.noNA.anos<-anosim(sdms.noNA.vegdist, grouping=data4anosim.noNA$TREATMENT, permutations = 2000)
 summary(treatment.noNA.anos)
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-plot-ANOSIM%03d.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-plot-ANOSIM%03d.png")
 plot(treatment.noNA.anos)
-dev.off()
+# dev.off()
 
 # ANOSIM between both site/treatments, no NA
 siteANDtreatment.noNA.anos <- anosim(sdms.noNA.vegdist, grouping=data4anosim.noNA$BOTH, permutations = 2000)
 siteANDtreatment.noNA.anos
 summary(siteANDtreatment.noNA.anos)
-png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-plot-ANOSIM%03d.png")
+# png("Analyses/2017-September_SRM-results/2017-09-04_NotNORM-plot-ANOSIM%03d.png")
 plot(siteANDtreatment.noNA.anos)
 
 #############

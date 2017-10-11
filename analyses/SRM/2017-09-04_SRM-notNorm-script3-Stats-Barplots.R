@@ -11,7 +11,7 @@ SRM.proteins <- data.frame(SRM.data.screened.noPRTC[,1:4]) #protein name to each
 SRM.proteins[,1] <- sub(" cds.*", "", SRM.proteins[,1])
 data.melted.plus <- merge(x=data.melted, y=SRM.proteins, by.x = "Transition", by.y = "row.names", all.x=TRUE, all.y=FALSE)
 colnames(data.melted.plus)[1] <- "Pep.Trans"
-write.csv(data.melted.plus, file="Analyses/2017-September_SRM-results/2017-09-04_SRM-data-notNORM-melted-annotated.csv")
+# write.csv(data.melted.plus, file="Analyses/2017-September_SRM-results/2017-09-04_SRM-data-notNORM-melted-annotated.csv")
 
 ####### Can move to Script #4 if you only want to see ANOSIM/plots based on proteins ########
 
