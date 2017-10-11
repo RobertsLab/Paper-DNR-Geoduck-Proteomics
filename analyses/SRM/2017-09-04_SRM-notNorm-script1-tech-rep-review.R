@@ -16,19 +16,15 @@ rep.names <- SRMreport[1,] # create vector of replicate names
 rep.names.short <- noquote(gsub(' Area', '', rep.names)) # remove Area from rep name, and don't include quotes 
 # rep.names.short <- noquote(gsub('2017_July_10_bivalves_', '', rep.names.short)) #remove the extra long rep name that is a residual from the .raw file name; this could be unecessary based on the way you've exported the Skyline report 
 repsTOsamples <- as.data.frame(SRMsequence[,c(2,3,5)])
-
 library(dplyr)
 repsTOsamples.filtered <- filter(repsTOsamples, repsTOsamples[,1] %in% rep.names.short)
 samples <- as.character(repsTOsamples.filtered$Sample...rep.name)
 other.headers <- as.character(rep.names.short[1:4])
-View(other.headers)
 samples.vector <- noquote(c(other.headers, samples, stringsAsFactors = FALSE))
 samples.vector <- samples.vector[-121]
 SRM.data <- SRMreport
 SRM.data[1,] <- samples.vector
 colnames(SRM.data) <- SRM.data[1,] #make first row column names
-
-rep.names.short
 
 ############ ANNOTATE SAMPLE NAMES WITH SITE & TREATMENT ##################################################################################
 
@@ -95,6 +91,7 @@ row.names(SRM.data.numeric) <- Transition.ID # assign newly created transition I
 ########### REMOVE POOR QUALITY PEPTIDES IDENTIFIED VIA SKYLINE & DILUTION CURVE RESULTS #############################
 # Poor quality, determined via Skyline due to lack of consistent signal as compared to other peptides in the protein: 
   # Superoxide Dismutase: THGAPTDEER
+  # Catalase: LYSYSDTHR
   # PDI: NNKPSDYQGGR
   # Na/K: MVTGDNVNTAR
 # Poor quality, determined via Dilution curve
@@ -103,8 +100,7 @@ row.names(SRM.data.numeric) <- Transition.ID # assign newly created transition I
   # Ras-related Rab: QITMNDLPVGR & VVLVGDSGVGK
   # Na/K: AQLWDTAGQER & MVTGDNVNTAR
 
-
-SRM.data.screened <- SRM.data.numeric[!grepl(c("THGAPTDEER|NNKPSDYQGGR|MVTGDNVNTAR|TTPSYVAFNDTER|LVQAFQFTDK|QITMNDLPVGR|VVLVGDSGVGK|AQLWDTAGQER"), SRM.data.numeric$`Peptide Sequence`),]
+SRM.data.screened <- SRM.data.numeric[!grepl(c("THGAPTDEER|LYSYSDTHR|NNKPSDYQGGR|MVTGDNVNTAR|TTPSYVAFNDTER|LVQAFQFTDK|QITMNDLPVGR|VVLVGDSGVGK|AQLWDTAGQER"), SRM.data.numeric$`Peptide Sequence`),]
 SRM.data.screened.noPRTC <- SRM.data.screened[!grepl("PRTC peptides", SRM.data.screened$`Protein Name`),]
 # write.csv(SRM.data.screened.noPRTC, file="Analyses/2017-September_SRM-results/2017-09-04_SRM-data-NotNORM-screenednoPRTC.csv")
 
@@ -112,7 +108,7 @@ SRM.data.screened.noPRTC <- SRM.data.screened[!grepl("PRTC peptides", SRM.data.s
 
 #Load the source file for the biostats package, biostats.R script must be saved in working directory
 
-source("References/biostats.R") #Either load the source R script or copy paste. Must run this code before NMDS.
+source("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/references/BioStats.R") #Either load the source R script or copy paste. Must run this code before NMDS.
 library(vegan)
 
 #Transpose the file so that rows and columns are switched 
@@ -121,7 +117,6 @@ SRM.data.t <- t(SRM.data.screened.noPRTC[, -1:-4]) # t() function transposes, re
 #Replace NA cells with 0; metaMDS() does not handle NA's 
 SRM.data.t.noNA <- SRM.data.t
 SRM.data.t.noNA[is.na(SRM.data.t.noNA)] <- 0
-head(SRM.data.t.noNA)
 
 #Make MDS dissimilarity matrix
 #
