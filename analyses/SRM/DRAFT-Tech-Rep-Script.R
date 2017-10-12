@@ -33,7 +33,7 @@
 SRM.data.screened.noPRTC.t <- t(SRM.data.screened.noPRTC[,c(!grepl("Protein Name|Transition|Peptide Sequence|Fragment Ion", colnames(SRM.data.screened.noPRTC)))])
 write.csv(SRM.data.screened.noPRTC.t, "~/Downloads/SRM.data.screened.noPRTC.t.csv")
 # EDITED IN EXCEL QUICKLY! This needs to be updated
-SRM.data.screened.noPRTC.t.edited <- read.csv("SRM.data.screened.noPRTC.t.csv", na.strings = "NA", header=TRUE, row.names = 1)
+SRM.data.screened.noPRTC.t.edited <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/SRM.data.screened.noPRTC.t.csv"), na.strings = "NA", header=TRUE, row.names = 1)
 
 # Subset abundance data by technical replicates and transform
 SRM.Reps.1 <- SRM.data.screened.noPRTC.t.edited[c(grepl("-1$", rownames(SRM.data.screened.noPRTC.t.edited))),] #1 reps
