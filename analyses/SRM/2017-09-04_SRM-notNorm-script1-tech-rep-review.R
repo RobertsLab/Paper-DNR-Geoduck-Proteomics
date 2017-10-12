@@ -29,7 +29,7 @@ head(SRM.data) #spot check to make sure the column names are correct (row 1 stil
 # Create separate reports for dilution curve data and sample data 
 SRM.dilution.data <- SRM.data[-1,c(grepl("Protein Name|Transition|Peptide Sequence|Fragment Ion|^D.-G$", colnames(SRM.data)))]  #dilution curve data
 SRM.sample.data <- (SRM.data[,c(!grepl("^D.-G$", colnames(SRM.data)))]) #sample data
-
+View(SRM.sample.data)
 ############ ANNOTATE SAMPLE NAMES WITH SITE & TREATMENT ##################################################################################
 
 repsTOsamples.filtered.annotated <- filter(sample.key[,c(8,9)], sample.key$PRVial %in% repsTOsamples.filtered$Comment) #pull site & treatment from sample key
@@ -104,8 +104,10 @@ row.names(SRM.data.numeric) <- Transition.ID # assign newly created transition I
   # Peroxiredoxin: LVQAFQFTDK
   # Ras-related Rab: QITMNDLPVGR & VVLVGDSGVGK
   # Na/K: AQLWDTAGQER & MVTGDNVNTAR
+# Poor quality, as determined via technical replicate linear regression
+  # Superoxide Dismutase: ISLTGPHSIIGR
 
-SRM.data.screened <- SRM.data.numeric[!grepl(c("THGAPTDEER|LYSYSDTHR|NNKPSDYQGGR|MVTGDNVNTAR|TTPSYVAFNDTER|LVQAFQFTDK|QITMNDLPVGR|VVLVGDSGVGK|AQLWDTAGQER"), SRM.data.numeric$`Peptide Sequence`),]
+SRM.data.screened <- SRM.data.numeric[!grepl(c("THGAPTDEER|LYSYSDTHR|NNKPSDYQGGR|MVTGDNVNTAR|TTPSYVAFNDTER|LVQAFQFTDK|QITMNDLPVGR|VVLVGDSGVGK|AQLWDTAGQER|ISLTGPHSIIGR"), SRM.data.numeric$`Peptide Sequence`),]
 SRM.data.screened.noPRTC <- SRM.data.screened[!grepl("PRTC peptides", SRM.data.screened$`Protein Name`),]
 # write.csv(SRM.data.screened.noPRTC, file="Analyses/2017-September_SRM-results/2017-09-04_SRM-data-NotNORM-screenednoPRTC.csv")
 
