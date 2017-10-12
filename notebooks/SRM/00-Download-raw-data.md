@@ -14,7 +14,7 @@
   * The .raw files on the Owl server include data for: geoduck gill peptides, PRTC/bsa QC, true blanks, and dilution curve peptides  
   * The [sequence file](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/SRM-Sequence-final.csv) indicates which sample each file corresponds to
   
-### Step 1: Open this [00-Downloading-raw-files.R](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/analyses/SRM/00-Downloading-raw-files.R) script in RStudio or R. The script will:
+### Step 1: Open this [00-Downloading-raw-files.R](../../analyses/SRM/00-Downloading-raw-files.R) script in RStudio or R. The script will:
   1) install required R packages
   2) Create a directory in the Downloads folder
   3) Download all .raw files associated with geoduck gill samples and dilution curve samples
@@ -22,7 +22,8 @@
 ### Ste 2: Execute R script
 NOTE: the .raw files will require 2.57GB on your local Downloads directory
 
-### You are now ready to upload to a Skyline project, see [01-Create-Skyline-Project.md](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/notebooks/SRM/01-Create-Skyline-Project.md)
+### You are now ready to upload to a Skyline project, see [01-Create-Skyline-Project.md](../../notebooks/SRM/01-Create-Skyline-Project.md)
+
   
   
   
