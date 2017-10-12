@@ -10,9 +10,9 @@ This notebook outlines how to create a new Skyline project file & upload .raw fi
 ![00](../../images/New-SRM-Skyline-Project-00.PNG)
 
 ## Files:
-  * Fasta file with SRM target proteins: [2017-geoduck-SRM-targets.fasta](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-geoduck-SRM-targets.fasta)
+  * Fasta file with SRM target proteins: [2017-geoduck-SRM-targets.fasta](../../data/SRM/2017-geoduck-SRM-targets.fasta)
   * .blib from DIA, aka background proteome: [2017-05-23_geoduck_desearleinated.blib](http://owl.fish.washington.edu/generosa/Generosa_DNR/Skyline_June2017/)
-  * Fully created Skyline project file for this SRM data is [2017-geoduck-SRM]() TBD!!!
+  * Fully created Skyline project .zip file for this SRM data is in Owl: [2017-geoduck-SRM](http://owl.fish.washington.edu/generosa/Generosa_DNR/2017-July-SRM-various-files/2017-geoduck-SRM.sky.zip)
 
 ## Step 1: Open new Skyline Daily file, save and name. 
 
@@ -27,12 +27,12 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
      * Type a short-hand name for your proteome (e.g. "2017 Geoduck SRM Targets")  
      * Select **_Create_**;  
      * Type a file name for your proteome (e.g. 2017-geoduck-SRM-targets), select **_Save_**  
-     * Add .fasta file via **_Add_**, select the .fasta file with your SRM target proteins (e.g. "[2017-geoduck-SRM-targets.fasta](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/2017-geoduck-SRM-targets.fasta)"), **_Open_**  
+     * Add .fasta file via **_Add_**, select the .fasta file with your SRM target proteins (e.g. "[2017-geoduck-SRM-targets.fasta](../../data/SRM/2017-geoduck-SRM-targets.fasta)"), **_Open_**  
    * Enforce peptide uniqueness by: "None"  
 
-![01](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-01.PNG?raw=true)
-![02](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-02.PNG?raw=true)
-![03](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-03.PNG?raw=true)
+![01](../../images/New-SRM-Skyline-Project-01.PNG?raw=true)
+![02](../../images/New-SRM-Skyline-Project-02.PNG?raw=true)
+![03](../../images/New-SRM-Skyline-Project-03.PNG?raw=true)
      
 ---
 
@@ -42,7 +42,7 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
   * Drift time predictor: None  
   * Use spectral library drift times when present: NOT checked  
 
-![05](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-05.PNG?raw=true)
+![05](../../images/New-SRM-Skyline-Project-05.PNG?raw=true)
 
 --- 
 
@@ -54,7 +54,7 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
   * Exclude peptides containing: all NOT checked  
   * Auto-select all matching peptides: checked  
 
-![06](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-06.PNG?raw=true)
+![06](../../images/New-SRM-Skyline-Project-06.PNG?raw=true)
 
 ---
 
@@ -66,8 +66,8 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
   * Pick peptides matching: Library  
   * Rank peptides by: (nothing selected)  
 
-![4](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-04.PNG?raw=true)
-![4a](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-04a.PNG?raw=true)
+![4](../../images/New-SRM-Skyline-Project-04.PNG?raw=true)
+![4a](../../images/New-SRM-Skyline-Project-04a.PNG?raw=true)
 
 ---
 
@@ -79,7 +79,7 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
   * Isotope modifications: NOT checked  
   * Internal standard type: light  
 
-![07](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-07.PNG?raw=true)
+![07](../../images/New-SRM-Skyline-Project-07.PNG?raw=true)
 
 ---
 
@@ -90,16 +90,16 @@ Select **_Settings -> Peptide Settings_** and adjust each tab settings as follow
   * MS Level: All  
   * Units: (blank)  
 
-![08](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-08.PNG?raw=true)
+![08](../../images/New-SRM-Skyline-Project-08.PNG?raw=true)
 
 ## Step 3: Populate analyte tree, aka add your SRM target proteins to "Targets" pane
 Open your SRM targeted protein fasta in a text reader, highlight all contents and copy
 
-![09](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-09.PNG?raw=true)
-![10](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-10.PNG?raw=true)
+![09](../../images/New-SRM-Skyline-Project-09.PNG?raw=true)
+![10](../../images/New-SRM-Skyline-Project-10.PNG?raw=true)
 
 Your Targets pane should now list all proteins, which you can unfold to reveal peptides and transitions:
-![11](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-11.PNG?raw=true)
+![11](../../images/New-SRM-Skyline-Project-11.PNG?raw=true)
 
 ## Step 4: Adjust Transition Settings
 
@@ -112,7 +112,7 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
   * Compensation voltage: None  
   * Use optimization values when present: NOT checked  
 
-![12](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-12.PNG?raw=true)
+![12](../../master/images/New-SRM-Skyline-Project-12.PNG?raw=true)
 
 ---
 
@@ -127,7 +127,7 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
   * Precursor m/z exclusion window: (blank)  
   * Auto-select all matching transitions: checked  
 
-![13](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-13.PNG?raw=true)
+![13](../../images/New-SRM-Skyline-Project-13.PNG?raw=true)
 
 ---
 
@@ -135,7 +135,7 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
   * Ion match tolerance: 0.5 m/z  
   * If a library spectrum is available, pick its most intense ions: NOT checked  
 
-![14](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-14.PNG?raw=true)
+![14](../../images/New-SRM-Skyline-Project-14.PNG?raw=true)
 
 ---
 
@@ -149,7 +149,7 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
   * Min time: (blank)  
   * Max time: (blank)  
 
-![15](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-15.PNG?raw=true)
+![15](../../images/New-SRM-Skyline-Project-15.PNG?raw=true)
 
 ---
 
@@ -167,24 +167,24 @@ Your Targets pane should now list all proteins, which you can unfold to reveal p
   * Use high-sensitivity extraction: NOT checked  
   * Select "Use only scans within **2** minutes of MS/MS IDs"   
 
-![16](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-16.PNG?raw=true)
+![16](../../images/New-SRM-Skyline-Project-16.PNG?raw=true)
 
 ## Step 5: Import .raw files into Skyline.  
 
 In [Notebook 00]() you downloaded all .raw files associated with geoduck samples, and saved locally. To import into Skyline go to **_File -> Import -> Results_**
-![17](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-17.PNG?raw=true)
+![17](../../images/New-SRM-Skyline-Project-17.PNG?raw=true)
 
 #### A box will pop up; I used the default settings:
-![18](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-18.PNG?raw=true)
+![18](../../images/New-SRM-Skyline-Project-18.PNG?raw=true)
 
 #### Another box will pop up where you navigate to the folder containing your .raw files. Highlight all .raw files and click _**Open**_:
-![18a](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-18a.PNG?raw=true)
+![18a](../../images/New-SRM-Skyline-Project-18a.PNG?raw=true)
 
 #### Another box will pop up giving you the option to remove extraneous info for each replicate, which I recommend: 
-![19](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-19.PNG?raw=true)
+![19](../../images/New-SRM-Skyline-Project-19.PNG?raw=true)
 
 #### As the SRM data is importing you'll see chromatograms popping up. 
-![20](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-20.PNG?raw=true)
+![20](../../images/New-SRM-Skyline-Project-20.PNG?raw=true)
 
 ## Step 6: Re-arrange Skyline window
 
@@ -199,4 +199,4 @@ Check out my quick screen capture to see me doing these steps in action:
 [![Rearranging Skyline Window](https://img.youtube.com/vi/mBdTaqwpQ98/0.jpg)](https://www.youtube.com/watch?v=mBdTaqwpQ98)
 
 #### Your Skyline window should look something like this, and you're now ready to QC the data: 
-![21](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/New-SRM-Skyline-Project-21.PNG?raw=true)
+![21](../../images/New-SRM-Skyline-Project-21.PNG?raw=true)
