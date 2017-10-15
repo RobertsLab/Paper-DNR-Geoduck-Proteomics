@@ -2,6 +2,12 @@
 
 # Script #1 in data processing for SRM data (not normalized)
 
+### Install packages if you don't already have them
+# install.packages("dplyr")
+# install.packages("RColorBrewer")
+# install.packages("plotly")
+# install.packages("ggplot2")
+
 ############# IMPORT DATASETS (YOU HAVE 2 OPTIONS) #######################################################################
 
 # Import using URL's
@@ -14,7 +20,7 @@ SRMreport <- read.csv("../../data/SRM/2017-Geoduck-SRM-Skyline-Report.csv", head
 SRMsequence <- read.csv("../../data/SRM/SRM-Sequence-final-annotated.csv", header=TRUE, stringsAsFactors = FALSE)
 sample.key <- read.csv("../../data/SRM/2017-08-14-Geoduck-samples.csv", header=TRUE, stringsAsFactors = FALSE)
 
-SRMsamples <- noquote(as.character(c("G013", "G120", "G047", "G017", "G079", "G127", "G060", "G009", "G002", "G128", "G016", "G071-A", "G114", "G045", "G132", "G031", "G012", "G116", "G043", "G015", "G040", "G110", "G008", "G109", "G122", "G041", "G066", "G105", "G032", "G129", "G054", "G081", "G003", "G074", "G014", "G049", "G053", "G104", "G055", "G042", "G064", "G073", "G057", "G007", "G070", "G001", "G071-B", "G062")))
+SRMsamples <- as.character(c("G013", "G120", "G047", "G017", "G079", "G127", "G060", "G009", "G002", "G128", "G016", "G071-A", "G114", "G045", "G132", "G031", "G012", "G116", "G043", "G015", "G040", "G110", "G008", "G109", "G122", "G041", "G066", "G105", "G032", "G129", "G054", "G081", "G003", "G074", "G014", "G049", "G053", "G104", "G055", "G042", "G064", "G073", "G057", "G007", "G070", "G001", "G071-B", "G062"))
 
 ############ REPLACE REP NAMES WITH SAMPLE NAMES ###################################################################
 
@@ -156,6 +162,11 @@ library(RColorBrewer)
 colors <- colorRampPalette(brewer.pal(8,"Dark2"))(48)
 
 ### PLOTTING ALL REPS WITH SAMPLE NUMBER ID'S ### 
+
+#For interactive graph: 
+plot_ly(data=as.data.frame(SRM.nmds.samples.sorted), x=~NMDS1, y=~NMDS2, type="scatter", mode="text", text=rownames(SRM.nmds.samples.sorted))
+
+#To plot points individually & save
 png("../../analyses/SRM/NMDS-tech-rep.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-1,3), ylim=c(-0.5,0.5), asp=NA, main= "NMDS of SRM data for technical rep QA")
 text(SRM.nmds.samples.sorted[c("G001-A", "G001-B"),], labels=c("1A", "1B"), col=colors[1])
@@ -264,6 +275,22 @@ points(SRM.nmds.samples.sorted[c("G129-A", "G129-B"),], col=colors[47], pch=15)
 points(SRM.nmds.samples.sorted[c("G132-A", "G132-C", "G132-D"),], col=colors[48], pch=15)
 dev.off()
 
+#### Calculate distances between tech rep points on NMDS plot and plot to ID technical rep outliers
+srm.nmds.tech.distances <- NULL
+for(i in 1:length(SRMsamples)) {
+  G <- SRMsamples[i]
+  D <- dist(SRM.nmds.samples.sorted[grepl(G, rownames(SRM.nmds.samples.sorted)),], method="euclidian") 
+  M <- melt(as.matrix(D), varnames = c("row", "col"))
+  srm.nmds.tech.distances <- rbind(srm.nmds.tech.distances, M)
+}
+srm.nmds.tech.distances <- srm.nmds.tech.distances[!srm.nmds.tech.distances$value == 0,] #remove rows with value=0 (distance between same points)
+srm.nmds.tech.distances[,1:2] <- apply(srm.nmds.tech.distances[,1:2], 2, function(y) gsub('G|G0|G00', '', y)) #remove extraneous "G00" from point names
+library(ggplot2)
+library(plotly)
+plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text", text=~row)
+summary(srm.nmds.tech.distances$value)
+srm.nmds.tech.distances[srm.nmds.tech.distances$value>.2,] #which tech rep distances are > than 3rd quartile
+
 #### NEXT, REMOVE SAMPLES THAT DON'T LOOK GOOD, AVERAGE TECH REPS, THEN RE-PLOT BY SITE/TREATMENT #### 
 
 # average sample technical reps.  (there's probably an easier way to do this to not manually enter the tech rep names for each sample, possibly via a loop?); remove reps that were poor quality as per NMDS
@@ -291,7 +318,7 @@ G043 <- ave(SRM.data.screened.noPRTC$`G043-A`, SRM.data.screened.noPRTC$`G043-B`
 G045 <- ave(SRM.data.screened.noPRTC$`G045-A`, SRM.data.screened.noPRTC$`G045-B`)
 G047 <- ave(SRM.data.screened.noPRTC$`G047-A`, SRM.data.screened.noPRTC$`G047-B`)
 G049 <- ave(SRM.data.screened.noPRTC$`G049-A`, SRM.data.screened.noPRTC$`G049-B`)
-G053 <- ave(SRM.data.screened.noPRTC$`G053-A`, SRM.data.screened.noPRTC$`G053-remake-C`, SRM.data.screened.noPRTC$`G053-remake-D`) #B removed 
+G053 <- ave(SRM.data.screened.noPRTC$`G053-A`, SRM.data.screened.noPRTC$`G053-remake-C`) #B & D removed 
 G054 <- ave(SRM.data.screened.noPRTC$`G054-A`, SRM.data.screened.noPRTC$`G054-B`)
 G055 <- ave(SRM.data.screened.noPRTC$`G055-A`, SRM.data.screened.noPRTC$`G055-B`, SRM.data.screened.noPRTC$`G055-C`)
 # G057 <- ave(SRM.data.screened.noPRTC$`G057-A`, SRM.data.screened.noPRTC$`G057-C`) #all reps removed
@@ -317,7 +344,7 @@ G127 <- ave(SRM.data.screened.noPRTC$`G127-A`, SRM.data.screened.noPRTC$`G127-C`
 G128 <- ave(SRM.data.screened.noPRTC$`G128-A`, SRM.data.screened.noPRTC$`G128-C`,SRM.data.screened.noPRTC$`G128-D`)
 G129 <- ave(SRM.data.screened.noPRTC$`G129-A`, SRM.data.screened.noPRTC$`G129-B`)
 G132 <- ave(SRM.data.screened.noPRTC$`G132-A`, SRM.data.screened.noPRTC$`G132-C`, SRM.data.screened.noPRTC$`G132-D`)
-# Tech reps removed: 3C, 42C, 53B, 70C, 73B, 104B, 104D, 127B
+# Tech reps removed: 3C, 42C, 53B, 53D, 70C, 73B, 104B, 104D, 127B
 # Entire sample removed: 57
 
 # Sample 57 is from FB-bare; remove from that sample list 
