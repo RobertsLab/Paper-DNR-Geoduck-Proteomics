@@ -7,6 +7,7 @@
 # install.packages("RColorBrewer")
 # install.packages("plotly")
 # install.packages("ggplot2")
+# install.packages("reshape2")
 
 ############# IMPORT DATASETS (YOU HAVE 2 OPTIONS) #######################################################################
 
@@ -276,6 +277,7 @@ points(SRM.nmds.samples.sorted[c("G132-A", "G132-C", "G132-D"),], col=colors[48]
 dev.off()
 
 #### Calculate distances between tech rep points on NMDS plot and plot to ID technical rep outliers
+library(reshape2)
 srm.nmds.tech.distances <- NULL
 for(i in 1:length(SRMsamples)) {
   G <- SRMsamples[i]
@@ -290,6 +292,7 @@ library(plotly)
 plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text", text=~row)
 summary(srm.nmds.tech.distances$value)
 srm.nmds.tech.distances[srm.nmds.tech.distances$value>.2,] #which tech rep distances are > than 3rd quartile
+View(srm.nmds.tech.distances)
 
 #### NEXT, REMOVE SAMPLES THAT DON'T LOOK GOOD, AVERAGE TECH REPS, THEN RE-PLOT BY SITE/TREATMENT #### 
 
@@ -320,7 +323,7 @@ G047 <- ave(SRM.data.screened.noPRTC$`G047-A`, SRM.data.screened.noPRTC$`G047-B`
 G049 <- ave(SRM.data.screened.noPRTC$`G049-A`, SRM.data.screened.noPRTC$`G049-B`)
 G053 <- ave(SRM.data.screened.noPRTC$`G053-A`, SRM.data.screened.noPRTC$`G053-remake-C`) #B & D removed 
 G054 <- ave(SRM.data.screened.noPRTC$`G054-A`, SRM.data.screened.noPRTC$`G054-B`)
-G055 <- ave(SRM.data.screened.noPRTC$`G055-A`, SRM.data.screened.noPRTC$`G055-B`, SRM.data.screened.noPRTC$`G055-C`)
+G055 <- ave(SRM.data.screened.noPRTC$`G055-B`, SRM.data.screened.noPRTC$`G055-C`)
 # G057 <- ave(SRM.data.screened.noPRTC$`G057-A`, SRM.data.screened.noPRTC$`G057-C`) #all reps removed
 G060 <- ave(SRM.data.screened.noPRTC$`G060-A`, SRM.data.screened.noPRTC$`G060-B`)
 G062 <- ave(SRM.data.screened.noPRTC$`G062-B`, SRM.data.screened.noPRTC$`G062-C`)
@@ -336,15 +339,15 @@ G081 <- ave(SRM.data.screened.noPRTC$`G081-A`, SRM.data.screened.noPRTC$`G081-B`
 G104 <- ave(SRM.data.screened.noPRTC$`G104-A`, SRM.data.screened.noPRTC$`G104-remake-C`) #B & D removed
 G105 <- ave(SRM.data.screened.noPRTC$`G105-A`, SRM.data.screened.noPRTC$`G105-B`)
 G109 <- ave(SRM.data.screened.noPRTC$`G109-A`, SRM.data.screened.noPRTC$`G109-C`)
-G114 <- ave(SRM.data.screened.noPRTC$`G114-A`, SRM.data.screened.noPRTC$`G114-B`, SRM.data.screened.noPRTC$`G114-remake-C`, SRM.data.screened.noPRTC$`G114-remake-D`)
+G114 <- ave(SRM.data.screened.noPRTC$`G114-B`, SRM.data.screened.noPRTC$`G114-remake-C`)
 G116 <- ave(SRM.data.screened.noPRTC$`G116-A`, SRM.data.screened.noPRTC$`G116-B`)
 G120 <- ave(SRM.data.screened.noPRTC$`G120-A`, SRM.data.screened.noPRTC$`G120-B`)
 G122 <- ave(SRM.data.screened.noPRTC$`G122-A`, SRM.data.screened.noPRTC$`G122-B`)
 G127 <- ave(SRM.data.screened.noPRTC$`G127-A`, SRM.data.screened.noPRTC$`G127-C`) #B removed
-G128 <- ave(SRM.data.screened.noPRTC$`G128-A`, SRM.data.screened.noPRTC$`G128-C`,SRM.data.screened.noPRTC$`G128-D`)
+G128 <- ave(SRM.data.screened.noPRTC$`G128-C`,SRM.data.screened.noPRTC$`G128-D`)
 G129 <- ave(SRM.data.screened.noPRTC$`G129-A`, SRM.data.screened.noPRTC$`G129-B`)
 G132 <- ave(SRM.data.screened.noPRTC$`G132-A`, SRM.data.screened.noPRTC$`G132-C`, SRM.data.screened.noPRTC$`G132-D`)
-# Tech reps removed: 3C, 42C, 53B, 53D, 70C, 73B, 104B, 104D, 127B
+# Tech reps removed: 3C, 42C, 53B, 53D, 70C, 73B, 104B, 104D, 127B, 128A, 55A, 114A, 114D
 # Entire sample removed: 57
 
 # Sample 57 is from FB-bare; remove from that sample list 
