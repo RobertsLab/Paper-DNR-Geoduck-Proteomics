@@ -1,19 +1,76 @@
-# Script #3 in data processing for NOT NORMALIZED DATA
+############# BONE YARD SCRIPT ############### 
 
-######## CALCULATE & PLOT MEAN & STANDARD ERROR FOR SAMPLES BY SITE FOR EACH PROTEIN ########
-# Use data4anosim.noNA dataset 
-#melt data to prepare for ggplot
-library(reshape2)
-data.melted <- melt(data4anosim.noNA, id=c("SAMPLE", "SITE", "TREATMENT", "BOTH"), variable.name = "Transition", value.name = "Area")
+# Principal Component Analysis
+SRM.nmds.pca <- rda(SRM.data.t.noNA, scale = TRUE)
+summary(SRM.nmds.pca)
+plot(SRM.nmds.pca, scaling = 3)
+dim(SRM.data.t.noNA)
+biplot(SRM.nmds.pca, scaling = -1)
+SRM.nmds.ca <- cca(SRM.data.t.noNA)
+plot(SRM.nmds.ca)
+#inertia is the sum of all variance in transitions; eigenvalues sum to total inertia, aka each eigenvalue "explains" a certain proportion of the total variance. Percent that each eigenvalue is responsible for total variance is: eigenvalue/total inertia. For example, PC1/total inertia = 83%
 
-# Merge protein names back to abundance data
-SRM.proteins <- data.frame(SRM.data.screened.noPRTC[,1:4]) #protein name to each transition
-SRM.proteins[,1] <- sub(" cds.*", "", SRM.proteins[,1])
-data.melted.plus <- merge(x=data.melted, y=SRM.proteins, by.x = "Transition", by.y = "row.names", all.x=TRUE, all.y=FALSE)
-colnames(data.melted.plus)[1] <- "Pep.Trans"
-# write.csv(data.melted.plus, file="Analyses/2017-September_SRM-results/2017-09-04_SRM-data-notNORM-melted-annotated.csv")
 
-####### Can move to Script #4 if you only want to see ANOSIM/plots based on proteins ########
+require(plotrix)
+# Standard error for tech reps ###FYI THIS IS NOT WORKING !!!!!!!!!!!!
+G001.err <- std.error(c(SRM.data.screened.noPRTC$`G001-A`, SRM.data.screened.noPRTC$`G001-B`))
+G002.err <- std.error(c(SRM.data.screened.noPRTC$`G002-A`, SRM.data.screened.noPRTC$`G002-B`, SRM.data.screened.noPRTC$`G002-C`))
+G003.err <- std.error(c(SRM.data.screened.noPRTC$`G003-A`, SRM.data.screened.noPRTC$`G003-B`)) #C removed
+G007.err <- std.error(c(SRM.data.screened.noPRTC$`G007-A`, SRM.data.screened.noPRTC$`G007-B`))
+G008.err <- std.error(c(SRM.data.screened.noPRTC$`G008-A`, SRM.data.screened.noPRTC$`G008-B`))
+G009.err <- std.error(c(SRM.data.screened.noPRTC$`G009-A`, SRM.data.screened.noPRTC$`G009-B`))
+G110.err <- std.error(c(SRM.data.screened.noPRTC$`G110-A`, SRM.data.screened.noPRTC$`G110-B`))
+G012.err <- std.error(c(SRM.data.screened.noPRTC$`G012-A`, SRM.data.screened.noPRTC$`G012-B`, SRM.data.screened.noPRTC$`G012-C`))
+G013.err <- std.error(c(SRM.data.screened.noPRTC$'G013-A', SRM.data.screened.noPRTC$'G013-C'))
+G014.err <- std.error(c(SRM.data.screened.noPRTC$`G014-A`, SRM.data.screened.noPRTC$`G014-B`))
+G015.err <- std.error(c(SRM.data.screened.noPRTC$`G015-A`, SRM.data.screened.noPRTC$`G015-B`))
+G016.err <- std.error(c(SRM.data.screened.noPRTC$`G016-A`, SRM.data.screened.noPRTC$`G016-B`, SRM.data.screened.noPRTC$`G016-C`))
+G017.err <- std.error(c(SRM.data.screened.noPRTC$`G017-A`, SRM.data.screened.noPRTC$`G017-B`))
+G031.err <- std.error(c(SRM.data.screened.noPRTC$`G031-A`, SRM.data.screened.noPRTC$`G031-B`, SRM.data.screened.noPRTC$`G031-C`))
+G032.err <- std.error(c(SRM.data.screened.noPRTC$`G032-A`, SRM.data.screened.noPRTC$`G032-B`))
+G040.err <- std.error(c(SRM.data.screened.noPRTC$`G040-A`, SRM.data.screened.noPRTC$`G040-B`))
+G041.err <- std.error(c(SRM.data.screened.noPRTC$`G041-A`, SRM.data.screened.noPRTC$`G041-B`))
+G042.err <- std.error(c(SRM.data.screened.noPRTC$`G042-A`, SRM.data.screened.noPRTC$`G042-B`)) #C removed
+G043.err <- std.error(c(SRM.data.screened.noPRTC$`G043-A`, SRM.data.screened.noPRTC$`G043-B`))
+G045.err <- std.error(c(SRM.data.screened.noPRTC$`G045-A`, SRM.data.screened.noPRTC$`G045-B`))
+G047.err <- std.error(c(SRM.data.screened.noPRTC$`G047-A`, SRM.data.screened.noPRTC$`G047-B`))
+G049.err <- std.error(c(SRM.data.screened.noPRTC$`G049-A`, SRM.data.screened.noPRTC$`G049-B`))
+G053.err <- std.error(c(SRM.data.screened.noPRTC$`G053-A`, SRM.data.screened.noPRTC$`G053-remake-C`, SRM.data.screened.noPRTC$`G053-remake-D`)) #B removed 
+G054.err <- std.error(c(SRM.data.screened.noPRTC$`G054-A`, SRM.data.screened.noPRTC$`G054-B`))
+G055.err <- std.error(c(SRM.data.screened.noPRTC$`G055-A`, SRM.data.screened.noPRTC$`G055-B`, SRM.data.screened.noPRTC$`G055-C`))
+G057.err <- std.error(c(SRM.data.screened.noPRTC$`G057-A`, SRM.data.screened.noPRTC$`G057-C`)) #B removed
+G060.err <- std.error(c(SRM.data.screened.noPRTC$`G060-A`, SRM.data.screened.noPRTC$`G060-B`))
+G062.err <- std.error(c(SRM.data.screened.noPRTC$`G062-B`, SRM.data.screened.noPRTC$`G062-C`))
+G064.err <- std.error(c(SRM.data.screened.noPRTC$`G064-A`, SRM.data.screened.noPRTC$`G064-B`))
+G066.err <- std.error(c(SRM.data.screened.noPRTC$`G066-A`, SRM.data.screened.noPRTC$`G066-B`))
+G070.err <- std.error(c(SRM.data.screened.noPRTC$`G070-A`, SRM.data.screened.noPRTC$`G070-B`, SRM.data.screened.noPRTC$`G070-C`))
+G071.A.err <- std.error(cor(SRM.data.screened.noPRTC$`G071-A-A`, SRM.data.screened.noPRTC$`G071-A-B`))
+G071.B.err <- std.error(cor(SRM.data.screened.noPRTC$`G071-B-A`, SRM.data.screened.noPRTC$`G071-B-B`))
+G073.err <- std.error(c(SRM.data.screened.noPRTC$`G073-A`, SRM.data.screened.noPRTC$`G073-B`, SRM.data.numeric$`G073-C`))
+G074.err <- std.error(c(SRM.data.screened.noPRTC$`G074-A`, SRM.data.screened.noPRTC$`G074-B`))
+G079.err <- std.error(c(SRM.data.screened.noPRTC$`G079-A`, SRM.data.screened.noPRTC$`G079-B`))
+G081.err <- std.error(c(SRM.data.screened.noPRTC$`G081-A`, SRM.data.screened.noPRTC$`G081-B`))
+G104.err <- std.error(c(SRM.data.screened.noPRTC$`G104-A`, SRM.data.screened.noPRTC$`G104-remake-C`, SRM.data.screened.noPRTC$`G104-remake-D`)) #B removed
+G105.err <- std.error(c(SRM.data.screened.noPRTC$`G105-A`, SRM.data.screened.noPRTC$`G105-B`))
+G109.err <- std.error(c(SRM.data.screened.noPRTC$`G109-A`, SRM.data.screened.noPRTC$`G109-C`))
+G114.err <- std.error(c(SRM.data.screened.noPRTC$`G114-A`, SRM.data.screened.noPRTC$`G114-B`, SRM.data.screened.noPRTC$`G114-remake-C`, SRM.data.screened.noPRTC$`G114-remake-D`))
+G116.err <- std.error(c(SRM.data.screened.noPRTC$`G116-A`, SRM.data.screened.noPRTC$`G116-B`))
+G120.err <- std.error(c(SRM.data.screened.noPRTC$`G120-A`, SRM.data.screened.noPRTC$`G120-B`))
+G122.err <- std.error(c(SRM.data.screened.noPRTC$`G122-A`, SRM.data.screened.noPRTC$`G122-B`))
+G127.err <- std.error(c(SRM.data.screened.noPRTC$`G127-A`, SRM.data.screened.noPRTC$`G127-C`)) #B removed
+G128.err <- std.error(c(SRM.data.screened.noPRTC$`G128-A`, SRM.data.screened.noPRTC$`G128-C`,SRM.data.screened.noPRTC$`G128-D`))
+G129.err <- std.error(c(SRM.data.screened.noPRTC$`G129-A`, SRM.data.screened.noPRTC$`G129-B`))
+G132.err <- std.error(c(SRM.data.screened.noPRTC$`G132-A`, SRM.data.screened.noPRTC$`G132-C`, SRM.data.screened.noPRTC$`G132-D`))
+
+SRM.data.stderr <- cbind.data.frame(rownames(SRM.data.screened.noPRTC), G001.err,G002.err,G003.err,G007.err,G008.err,G009.err,G110.err,G012.err,G013.err,G014.err,G015.err,G016.err,G017.err,G031.err,G032.err,G040.err,G041.err,G042.err,G043.err,G045.err,G047.err,G049.err,G053.err,G054.err,G055.err,G057.err,G060.err,G062.err,G064.err,G066.err,G070.err,G071.A.err,G071.B.err,G073.err, G074.err,G079.err,G081.err,G104.err,G105.err,G109.err,G114.err,G116.err,G120.err,G122.err,G127.err,G128.err,G129.err,G132.err)
+
+
+# Eigenvectors 
+eigen.ml <- envfit(SRM.mean.log.nmds$points, SRM.data.mean.t.log, perm=1000)
+eigen.ml
+
+
+# PLOT TOTAL ABUNDANCE BY SITE WITH ERROR BARS
 
 ####### check out total abundance & other stats by site
 TotAbund.SITE <- do.call(data.frame, aggregate(Area ~ SITE, data.melted, function(x) c(sum=sum(x), sd=sd(x), range=range(x), min=min(x), max=max(x))))

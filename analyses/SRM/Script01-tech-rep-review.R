@@ -1,12 +1,19 @@
 ### Note: this script works with datasets downloaded from Skyline.  Skyline data is exported as report, and this script works with data with the following metrics: Protein Name, Transitions, Peptide Sequence, Fragment Ion, Peptide Retention Time, Area
 
-# Script #1 in data processing for NOT-NORMALIZED DATA
+# Script #1 in data processing for SRM data (not normalized)
 
-############# IMPORT DATASETS ########################################################################################
+############# IMPORT DATASETS (YOU HAVE 2 OPTIONS) #######################################################################
 
-SRMreport <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/2017-Geoduck-SRM-Skyline-Report.csv"), header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
-SRMsequence <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/SRM-Sequence-final-annotated.csv"), header=TRUE, stringsAsFactors = FALSE)
-sample.key <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/2017-08-14-Geoduck-samples.csv"), header=TRUE, stringsAsFactors = FALSE)
+# Import using URL's
+# SRMreport <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/2017-Geoduck-SRM-Skyline-Report.csv"), header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
+# SRMsequence <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/SRM/SRM-Sequence-final-annotated.csv"), header=TRUE, stringsAsFactors = FALSE)
+# sample.key <- read.csv(url("https://raw.githubusercontent.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/master/data/SRM/2017-08-14-Geoduck-samples.csv"), header=TRUE, stringsAsFactors = FALSE)
+
+# Import datasets using relative paths in this repo
+SRMreport <- read.csv("../../data/SRM/2017-Geoduck-SRM-Skyline-Report.csv", header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
+SRMsequence <- read.csv("../../data/SRM/SRM-Sequence-final-annotated.csv", header=TRUE, stringsAsFactors = FALSE)
+sample.key <- read.csv("../../data/SRM/2017-08-14-Geoduck-samples.csv", header=TRUE, stringsAsFactors = FALSE)
+
 SRMsamples <- noquote(as.character(c("G013", "G120", "G047", "G017", "G079", "G127", "G060", "G009", "G002", "G128", "G016", "G071-A", "G114", "G045", "G132", "G031", "G012", "G116", "G043", "G015", "G040", "G110", "G008", "G109", "G122", "G041", "G066", "G105", "G032", "G129", "G054", "G081", "G003", "G074", "G014", "G049", "G053", "G104", "G055", "G042", "G064", "G073", "G057", "G007", "G070", "G001", "G071-B", "G062")))
 
 ############ REPLACE REP NAMES WITH SAMPLE NAMES ###################################################################
@@ -29,7 +36,7 @@ head(SRM.data) #spot check to make sure the column names are correct (row 1 stil
 # Create separate reports for dilution curve data and sample data 
 SRM.dilution.data <- SRM.data[-1,c(grepl("Protein Name|Transition|Peptide Sequence|Fragment Ion|^D.-G$", colnames(SRM.data)))]  #dilution curve data
 SRM.sample.data <- (SRM.data[,c(!grepl("^D.-G$", colnames(SRM.data)))]) #sample data
-View(SRM.sample.data)
+
 ############ ANNOTATE SAMPLE NAMES WITH SITE & TREATMENT ##################################################################################
 
 repsTOsamples.filtered.annotated <- filter(sample.key[,c(8,9)], sample.key$PRVial %in% repsTOsamples.filtered$Comment) #pull site & treatment from sample key
@@ -46,7 +53,6 @@ s71.B[1,1] <- "G071.B"
 s71.B[1,2] <- "PG-E"
 colnames(s71.B) <- colnames(repsTOsamples.filtered.annotated)
 sample.key.annotated <- rbind(repsTOsamples.filtered.annotated, s71.A, s71.B) # row bind annotated key w/ 71 info
-sample.key.annotated
 
 # Subset sample names for site & treatment combos
 CI.E <- sample.key.annotated[c(sample.key.annotated$Sample.Shorthand == "CI-E"),]
@@ -91,7 +97,7 @@ for (i in 1:nTransitions) {
 Transition.ID # confirm correctly named transition IDs
 length(SRM.data.numeric$Transition) == length(Transition.ID) # confirm that I didn't lose any transitions
 row.names(SRM.data.numeric) <- Transition.ID # assign newly created transition IDs as row names
-# write.csv(SRM.data.numeric, file="Analyses/2017-September_SRM-results/2017-09-04_SRM-data-NotNORM-annotated.csv") #write this file out for safe keeping
+write.csv(SRM.data.numeric, file="../../analyses/SRM/SRM-data-annotated.csv") #write this file out for safe keeping
 
 ########### REMOVE POOR QUALITY PEPTIDES IDENTIFIED VIA SKYLINE & DILUTION CURVE RESULTS #############################
 # Poor quality, determined via Skyline due to lack of consistent signal as compared to other peptides in the protein: 
@@ -109,13 +115,13 @@ row.names(SRM.data.numeric) <- Transition.ID # assign newly created transition I
 
 SRM.data.screened <- SRM.data.numeric[!grepl(c("THGAPTDEER|LYSYSDTHR|NNKPSDYQGGR|MVTGDNVNTAR|TTPSYVAFNDTER|LVQAFQFTDK|QITMNDLPVGR|VVLVGDSGVGK|AQLWDTAGQER|ISLTGPHSIIGR"), SRM.data.numeric$`Peptide Sequence`),]
 SRM.data.screened.noPRTC <- SRM.data.screened[!grepl("PRTC peptides", SRM.data.screened$`Protein Name`),]
-# write.csv(SRM.data.screened.noPRTC, file="Analyses/2017-September_SRM-results/2017-09-04_SRM-data-NotNORM-screenednoPRTC.csv")
+write.csv(SRM.data.screened.noPRTC, file="../../analyses/SRM/SRM-data-screened.csv")
 
 ############ CREATE NMDS PLOT ########################################################################################
 
-#Load the source file for the biostats package, biostats.R script must be saved in working directory
-
-source("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/references/BioStats.R") #Either load the source R script or copy paste. Must run this code before NMDS.
+#Load the source file for the biostats package
+#source("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/references/BioStats.R") #load via url
+source("../../references/BioStats.R") #Load via repo directory
 library(vegan)
 
 #Transpose the file so that rows and columns are switched 
@@ -126,28 +132,31 @@ SRM.data.t.noNA <- SRM.data.t
 SRM.data.t.noNA[is.na(SRM.data.t.noNA)] <- 0
 
 #Make MDS dissimilarity matrix
-#
 SRM.nmds <- metaMDS(SRM.data.t.noNA, distance = 'bray', k = 2, trymax = 3000, autotransform = FALSE)
 # comm= your data.frame or matrix
-# distance= bray, (not sure what this means)
+# distance= bray 
 # k= # of dimensions to assess
 # trymax = max # iterations to attempt if no solution is reached
 # Create Shepard plot, which shows scatter around the regression between the interpoint distances in the final configuration (i.e., the distances between each pair of communities) against their original dissimilarities.
-stressplot(SRM.nmds) 
 
-###### Make figure
+#stress plot shows variance of NMDS results around regression 
+png("../..analyses/NMDS-tech-rep-stressplot.png")
+stressplot(SRM.nmds)
+dev.off()
+
+#Make NMDS figure
+plot(SRM.nmds)
 # site (aka sample) in black circle
 # species (aka transition) in red ticks
-plot(SRM.nmds)
 
 # make figure with sample annotations https://stat.ethz.ch/pipermail/r-sig-ecology/2011-September/002371.html
 SRM.nmds.samples <- scores(SRM.nmds, display = "sites")
 SRM.nmds.samples.sorted <- SRM.nmds.samples[ order(row.names(SRM.nmds.samples)), ]
-rownames(SRM.nmds.samples.sorted)
 library(RColorBrewer)
 colors <- colorRampPalette(brewer.pal(8,"Dark2"))(48)
 
 ### PLOTTING ALL REPS WITH SAMPLE NUMBER ID'S ### 
+png("../..analyses/NMDS-tech-rep.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-1,3), ylim=c(-0.5,0.5), asp=NA, main= "NMDS of SRM data for technical rep QA")
 text(SRM.nmds.samples.sorted[c("G001-A", "G001-B"),], labels=c("1A", "1B"), col=colors[1])
 text(SRM.nmds.samples.sorted[c("G002-A", "G002-B", "G002-C"),], labels=c("2A", "2B", "2C"), col=colors[2])
@@ -197,12 +206,13 @@ text(SRM.nmds.samples.sorted[c("G127-A", "G127-B", "G127-C"),], labels=c("127A",
 text(SRM.nmds.samples.sorted[c("G128-A", "G128-C", "G128-D"),], labels=c("128A", "128C", "128D"), col=colors[46])
 text(SRM.nmds.samples.sorted[c("G129-A", "G129-B"),], labels=c("129A", "129B"), col=colors[47])
 text(SRM.nmds.samples.sorted[c("G132-A", "G132-C", "G132-D"),], labels=c("132A", "132C", "132D"), col=colors[48])
-
+dev.off()
 
 ### PLOTTING ALL REPS COLOR CODED AND WITH TREATMENT SYMBOL ### 
 # symbol key
 # 15 = eelgrass = filled square
 # 21 = bare = open circle
+png("../../analyses/NMDS-tech-rep-coded.png")
 plot.default(x=NULL, y=NULL, type="n", main="NMDS of all SRM data, eelgrass vs. bare", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-1,3), ylim=c(-0.5,0.5), asp=NA)
 points(SRM.nmds.samples.sorted[c("G001-A", "G001-B"),], col=colors[1], pch=15)
 points(SRM.nmds.samples.sorted[c("G002-A", "G002-B", "G002-C"),], col=colors[2], pch=15)
@@ -252,7 +262,7 @@ points(SRM.nmds.samples.sorted[c("G127-A", "G127-B", "G127-C"),], col=colors[45]
 points(SRM.nmds.samples.sorted[c("G128-A", "G128-C", "G128-D"),], col=colors[46], pch=15)
 points(SRM.nmds.samples.sorted[c("G129-A", "G129-B"),], col=colors[47], pch=15)
 points(SRM.nmds.samples.sorted[c("G132-A", "G132-C", "G132-D"),], col=colors[48], pch=15)
-
+dev.off()
 
 #### NEXT, REMOVE SAMPLES THAT DON'T LOOK GOOD, AVERAGE TECH REPS, THEN RE-PLOT BY SITE/TREATMENT #### 
 
@@ -315,70 +325,4 @@ FB.B.samples <- FB.B.samples[!FB.B.samples %in% "G057"] #revised FB.B.sample lis
 
 SRM.data.mean <- cbind.data.frame(rownames(SRM.data.screened.noPRTC), G001,G002,G003,G007,G008,G009,G110,G012,G013,G014,G015,G016,G017,G031,G032,G040,G041,G042,G043,G045,G047,G049,G053,G054,G055,G060,G062,G064,G066,G070,G071.A,G071.B,G073,G074,G079,G081,G104,G105,G109,G114,G116,G120,G122,G127,G128,G129,G132)
 SRM.data.mean <- data.frame(SRM.data.mean[,-1], row.names=SRM.data.mean[,1]) #make first column row names, and delete first column
-# write.csv(SRM.data.mean, file="Analyses/2017-September_SRM-results/2017-09-04_SRM-data-meanBYsample.csv")
-
-############# BONE YARD ############### 
-
-# Principal Component Analysis
-SRM.nmds.pca <- rda(SRM.data.t.noNA, scale = TRUE)
-summary(SRM.nmds.pca)
-plot(SRM.nmds.pca, scaling = 3)
-dim(SRM.data.t.noNA)
-biplot(SRM.nmds.pca, scaling = -1)
-SRM.nmds.ca <- cca(SRM.data.t.noNA)
-plot(SRM.nmds.ca)
-#inertia is the sum of all variance in transitions; eigenvalues sum to total inertia, aka each eigenvalue "explains" a certain proportion of the total variance. Percent that each eigenvalue is responsible for total variance is: eigenvalue/total inertia. For example, PC1/total inertia = 83%
-
-
-require(plotrix)
-# Standard error for tech reps ###FYI THIS IS NOT WORKING !!!!!!!!!!!!
-G001.err <- std.error(c(SRM.data.screened.noPRTC$`G001-A`, SRM.data.screened.noPRTC$`G001-B`))
-G002.err <- std.error(c(SRM.data.screened.noPRTC$`G002-A`, SRM.data.screened.noPRTC$`G002-B`, SRM.data.screened.noPRTC$`G002-C`))
-G003.err <- std.error(c(SRM.data.screened.noPRTC$`G003-A`, SRM.data.screened.noPRTC$`G003-B`)) #C removed
-G007.err <- std.error(c(SRM.data.screened.noPRTC$`G007-A`, SRM.data.screened.noPRTC$`G007-B`))
-G008.err <- std.error(c(SRM.data.screened.noPRTC$`G008-A`, SRM.data.screened.noPRTC$`G008-B`))
-G009.err <- std.error(c(SRM.data.screened.noPRTC$`G009-A`, SRM.data.screened.noPRTC$`G009-B`))
-G110.err <- std.error(c(SRM.data.screened.noPRTC$`G110-A`, SRM.data.screened.noPRTC$`G110-B`))
-G012.err <- std.error(c(SRM.data.screened.noPRTC$`G012-A`, SRM.data.screened.noPRTC$`G012-B`, SRM.data.screened.noPRTC$`G012-C`))
-G013.err <- std.error(c(SRM.data.screened.noPRTC$'G013-A', SRM.data.screened.noPRTC$'G013-C'))
-G014.err <- std.error(c(SRM.data.screened.noPRTC$`G014-A`, SRM.data.screened.noPRTC$`G014-B`))
-G015.err <- std.error(c(SRM.data.screened.noPRTC$`G015-A`, SRM.data.screened.noPRTC$`G015-B`))
-G016.err <- std.error(c(SRM.data.screened.noPRTC$`G016-A`, SRM.data.screened.noPRTC$`G016-B`, SRM.data.screened.noPRTC$`G016-C`))
-G017.err <- std.error(c(SRM.data.screened.noPRTC$`G017-A`, SRM.data.screened.noPRTC$`G017-B`))
-G031.err <- std.error(c(SRM.data.screened.noPRTC$`G031-A`, SRM.data.screened.noPRTC$`G031-B`, SRM.data.screened.noPRTC$`G031-C`))
-G032.err <- std.error(c(SRM.data.screened.noPRTC$`G032-A`, SRM.data.screened.noPRTC$`G032-B`))
-G040.err <- std.error(c(SRM.data.screened.noPRTC$`G040-A`, SRM.data.screened.noPRTC$`G040-B`))
-G041.err <- std.error(c(SRM.data.screened.noPRTC$`G041-A`, SRM.data.screened.noPRTC$`G041-B`))
-G042.err <- std.error(c(SRM.data.screened.noPRTC$`G042-A`, SRM.data.screened.noPRTC$`G042-B`)) #C removed
-G043.err <- std.error(c(SRM.data.screened.noPRTC$`G043-A`, SRM.data.screened.noPRTC$`G043-B`))
-G045.err <- std.error(c(SRM.data.screened.noPRTC$`G045-A`, SRM.data.screened.noPRTC$`G045-B`))
-G047.err <- std.error(c(SRM.data.screened.noPRTC$`G047-A`, SRM.data.screened.noPRTC$`G047-B`))
-G049.err <- std.error(c(SRM.data.screened.noPRTC$`G049-A`, SRM.data.screened.noPRTC$`G049-B`))
-G053.err <- std.error(c(SRM.data.screened.noPRTC$`G053-A`, SRM.data.screened.noPRTC$`G053-remake-C`, SRM.data.screened.noPRTC$`G053-remake-D`)) #B removed 
-G054.err <- std.error(c(SRM.data.screened.noPRTC$`G054-A`, SRM.data.screened.noPRTC$`G054-B`))
-G055.err <- std.error(c(SRM.data.screened.noPRTC$`G055-A`, SRM.data.screened.noPRTC$`G055-B`, SRM.data.screened.noPRTC$`G055-C`))
-G057.err <- std.error(c(SRM.data.screened.noPRTC$`G057-A`, SRM.data.screened.noPRTC$`G057-C`)) #B removed
-G060.err <- std.error(c(SRM.data.screened.noPRTC$`G060-A`, SRM.data.screened.noPRTC$`G060-B`))
-G062.err <- std.error(c(SRM.data.screened.noPRTC$`G062-B`, SRM.data.screened.noPRTC$`G062-C`))
-G064.err <- std.error(c(SRM.data.screened.noPRTC$`G064-A`, SRM.data.screened.noPRTC$`G064-B`))
-G066.err <- std.error(c(SRM.data.screened.noPRTC$`G066-A`, SRM.data.screened.noPRTC$`G066-B`))
-G070.err <- std.error(c(SRM.data.screened.noPRTC$`G070-A`, SRM.data.screened.noPRTC$`G070-B`, SRM.data.screened.noPRTC$`G070-C`))
-G071.A.err <- std.error(cor(SRM.data.screened.noPRTC$`G071-A-A`, SRM.data.screened.noPRTC$`G071-A-B`))
-G071.B.err <- std.error(cor(SRM.data.screened.noPRTC$`G071-B-A`, SRM.data.screened.noPRTC$`G071-B-B`))
-G073.err <- std.error(c(SRM.data.screened.noPRTC$`G073-A`, SRM.data.screened.noPRTC$`G073-B`, SRM.data.numeric$`G073-C`))
-G074.err <- std.error(c(SRM.data.screened.noPRTC$`G074-A`, SRM.data.screened.noPRTC$`G074-B`))
-G079.err <- std.error(c(SRM.data.screened.noPRTC$`G079-A`, SRM.data.screened.noPRTC$`G079-B`))
-G081.err <- std.error(c(SRM.data.screened.noPRTC$`G081-A`, SRM.data.screened.noPRTC$`G081-B`))
-G104.err <- std.error(c(SRM.data.screened.noPRTC$`G104-A`, SRM.data.screened.noPRTC$`G104-remake-C`, SRM.data.screened.noPRTC$`G104-remake-D`)) #B removed
-G105.err <- std.error(c(SRM.data.screened.noPRTC$`G105-A`, SRM.data.screened.noPRTC$`G105-B`))
-G109.err <- std.error(c(SRM.data.screened.noPRTC$`G109-A`, SRM.data.screened.noPRTC$`G109-C`))
-G114.err <- std.error(c(SRM.data.screened.noPRTC$`G114-A`, SRM.data.screened.noPRTC$`G114-B`, SRM.data.screened.noPRTC$`G114-remake-C`, SRM.data.screened.noPRTC$`G114-remake-D`))
-G116.err <- std.error(c(SRM.data.screened.noPRTC$`G116-A`, SRM.data.screened.noPRTC$`G116-B`))
-G120.err <- std.error(c(SRM.data.screened.noPRTC$`G120-A`, SRM.data.screened.noPRTC$`G120-B`))
-G122.err <- std.error(c(SRM.data.screened.noPRTC$`G122-A`, SRM.data.screened.noPRTC$`G122-B`))
-G127.err <- std.error(c(SRM.data.screened.noPRTC$`G127-A`, SRM.data.screened.noPRTC$`G127-C`)) #B removed
-G128.err <- std.error(c(SRM.data.screened.noPRTC$`G128-A`, SRM.data.screened.noPRTC$`G128-C`,SRM.data.screened.noPRTC$`G128-D`))
-G129.err <- std.error(c(SRM.data.screened.noPRTC$`G129-A`, SRM.data.screened.noPRTC$`G129-B`))
-G132.err <- std.error(c(SRM.data.screened.noPRTC$`G132-A`, SRM.data.screened.noPRTC$`G132-C`, SRM.data.screened.noPRTC$`G132-D`))
-
-SRM.data.stderr <- cbind.data.frame(rownames(SRM.data.screened.noPRTC), G001.err,G002.err,G003.err,G007.err,G008.err,G009.err,G110.err,G012.err,G013.err,G014.err,G015.err,G016.err,G017.err,G031.err,G032.err,G040.err,G041.err,G042.err,G043.err,G045.err,G047.err,G049.err,G053.err,G054.err,G055.err,G057.err,G060.err,G062.err,G064.err,G066.err,G070.err,G071.A.err,G071.B.err,G073.err, G074.err,G079.err,G081.err,G104.err,G105.err,G109.err,G114.err,G116.err,G120.err,G122.err,G127.err,G128.err,G129.err,G132.err)
+write.csv(SRM.data.mean, file="../../analyses/SRM-data-meaned.csv")
