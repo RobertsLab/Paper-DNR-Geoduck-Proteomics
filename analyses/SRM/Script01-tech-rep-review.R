@@ -140,8 +140,8 @@ SRM.nmds <- metaMDS(SRM.data.t.noNA, distance = 'bray', k = 2, trymax = 3000, au
 # Create Shepard plot, which shows scatter around the regression between the interpoint distances in the final configuration (i.e., the distances between each pair of communities) against their original dissimilarities.
 
 #stress plot shows variance of NMDS results around regression 
-png("../..analyses/NMDS-tech-rep-stressplot.png")
-stressplot(SRM.nmds)
+png("../..analyses/SRM/NMDS-tech-rep-stressplot.png")
+stressplot(SRM.nmds, main="NMDS Stress Plot, SRM Technical Replicate Data")
 dev.off()
 
 #Make NMDS figure
@@ -156,7 +156,7 @@ library(RColorBrewer)
 colors <- colorRampPalette(brewer.pal(8,"Dark2"))(48)
 
 ### PLOTTING ALL REPS WITH SAMPLE NUMBER ID'S ### 
-png("../..analyses/NMDS-tech-rep.png")
+png("../../analyses/SRM/NMDS-tech-rep.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-1,3), ylim=c(-0.5,0.5), asp=NA, main= "NMDS of SRM data for technical rep QA")
 text(SRM.nmds.samples.sorted[c("G001-A", "G001-B"),], labels=c("1A", "1B"), col=colors[1])
 text(SRM.nmds.samples.sorted[c("G002-A", "G002-B", "G002-C"),], labels=c("2A", "2B", "2C"), col=colors[2])
@@ -212,7 +212,7 @@ dev.off()
 # symbol key
 # 15 = eelgrass = filled square
 # 21 = bare = open circle
-png("../../analyses/NMDS-tech-rep-coded.png")
+png("../../analyses/SRM/NMDS-tech-rep-coded.png")
 plot.default(x=NULL, y=NULL, type="n", main="NMDS of all SRM data, eelgrass vs. bare", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-1,3), ylim=c(-0.5,0.5), asp=NA)
 points(SRM.nmds.samples.sorted[c("G001-A", "G001-B"),], col=colors[1], pch=15)
 points(SRM.nmds.samples.sorted[c("G002-A", "G002-B", "G002-C"),], col=colors[2], pch=15)
@@ -322,7 +322,7 @@ G132 <- ave(SRM.data.screened.noPRTC$`G132-A`, SRM.data.screened.noPRTC$`G132-C`
 
 # Sample 57 is from FB-bare; remove from that sample list 
 FB.B.samples <- FB.B.samples[!FB.B.samples %in% "G057"] #revised FB.B.sample list 
-
 SRM.data.mean <- cbind.data.frame(rownames(SRM.data.screened.noPRTC), G001,G002,G003,G007,G008,G009,G110,G012,G013,G014,G015,G016,G017,G031,G032,G040,G041,G042,G043,G045,G047,G049,G053,G054,G055,G060,G062,G064,G066,G070,G071.A,G071.B,G073,G074,G079,G081,G104,G105,G109,G114,G116,G120,G122,G127,G128,G129,G132)
 SRM.data.mean <- data.frame(SRM.data.mean[,-1], row.names=SRM.data.mean[,1]) #make first column row names, and delete first column
-write.csv(SRM.data.mean, file="../../analyses/SRM-data-meaned.csv")
+write.csv(SRM.data.mean, file="../../analyses/SRM/SRM-data-meaned.csv")
+graphics.off()

@@ -13,7 +13,7 @@ SRM.data.mean.t.noNA[is.na(SRM.data.mean.t.noNA)] <- 0
 SRM.mean.nmds <- metaMDS(SRM.data.mean.t.noNA, distance = 'bray', k = 2, trymax = 3000, autotransform = FALSE)
 
 #Make NMDS stressplot
-png("../..analyses/NMDS-meanbysample-stressplot.png")
+png("../../analyses/SRM/NMDS-meanbysample-stressplot.png")
 stressplot(SRM.mean.nmds) 
 dev.off()
 
@@ -27,7 +27,7 @@ SRM.nmds.mean.samples <- scores(SRM.mean.nmds, display = "sites")
 library(RColorBrewer)
 marker = c("indianred1", "forestgreen", "turquoise3", "mediumpurple1")
 
-png("../..analyses/NMDS-meaned.png")
+png("../../analyses/SRM/NMDS-meaned.png")
 ordiplot(SRM.mean.nmds, type="n", main="SRM NMDS, unzoomed")
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=8)
 points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15)
@@ -42,7 +42,7 @@ dev.off()
 
 #### Create plot with forced aspect ratio to zoom in ### 
 
-png("../..analyses/NMDS-meaned-zoomed.png")
+png("../../analyses/SRM/NMDS-meaned-zoomed.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-3,1), ylim=c(-0.5,0.5), asp=NA, main="SRM NMDS, zoomed")
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=8)
 points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15)
@@ -56,7 +56,7 @@ legend(-2.5,0.4, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble",
 dev.off()
 
 ### Create plot with sample #'s to ID outliers AND with forced aspect ratio to zoom in
-png("../..analyses/NMDS-meaned-zoomed-coded.png")
+png("../../analyses/SRM/NMDS-meaned-zoomed-coded.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-3,1), ylim=c(-0.5,0.5), asp=NA, main="SRM NMDS, zoomed")
 text(SRM.nmds.mean.samples[c(CI.B.samples),], label=rownames(SRM.nmds.mean.samples[c(CI.B.samples),]), col=marker[2], pch=8)
 text(SRM.nmds.mean.samples[c(CI.E.samples),], label=rownames(SRM.nmds.mean.samples[c(CI.E.samples),]),  col=marker[2], pch=15)
@@ -70,7 +70,7 @@ legend(-2.5,0.4, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble",
 dev.off()
 
 #### Create plot with forced aspect ratio to zoom in, not including CI outliers ### 
-png("../..analyses/NMDS-meaned-zoomed-coded-nooutliers.png")
+png("../../analyses/SRM/NMDS-meaned-zoomed-coded-nooutliers.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-1.2,1), ylim=c(-0.2,0.2), asp=NA, main="Geoduck Gill NMDS, Similarity Plot", width=600,height=600)
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=8, cex=2)
 points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15, cex=2)
@@ -84,7 +84,7 @@ legend(-1.2,-0.07, pch=c(rep(16,4), 8, 15), cex=1.1, pt.cex=1.3, legend=c("Fidal
 dev.off()
 
 #### Create plot with forced aspect ratio to zoom in, no eel/bare separation ### 
-png("../..analyses/NMDS-meaned-zoomed-sitecoded.png")
+png("../../analyses/SRM/NMDS-meaned-zoomed-sitecoded.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="Dimension 1", ylab="Dimension 2", xlim=c(-2.8,1), ylim=c(-0.4,0.2), asp=NA, main="Geoduck Gill NMDS, Similarity Plot", width=600,height=600, cex.axis=1.4, cex.lab=1.6)
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15, cex=2)
@@ -98,7 +98,7 @@ legend(-2.7,0.2, pch=c(rep(16,4)), cex=1.1, pt.cex=1.3, legend=c("Fidalgo Bay", 
 dev.off()
 
 #### Create plot with forced aspect ratio to zoom in, no eel/bare separation, no outliers ### 
-png("../..analyses/NMDS-meaned-zoomed-sitecoded-nooutliers.png")
+png("../../analyses/SRM/NMDS-meaned-zoomed-sitecoded-nooutliers.png")
 par(mar=c(5.1,4.8,4.1,2.1))
 plot.default(x=NULL, y=NULL, type="n", xlab="Dimension 1", ylab="Dimension 2",  xlim=c(-1.2,1), ylim=c(-0.2,0.2), asp=NA, main="Geoduck Gill NMDS, Similarity Plot", width=600,height=600, cex.axis=1.4, cex.lab=1.6, cex.main=1.8)
 points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=15, cex=2)
@@ -129,7 +129,7 @@ plot(SRM.mean.log.nmds)
 
 SRM.nmds.mean.log.samples <- scores(SRM.mean.log.nmds, display = "sites")
 
-png("../../analyses/NMDS-mean-log.png")
+png("../../analyses/SRM/NMDS-mean-log.png")
 ordiplot(SRM.mean.log.nmds, type="n", main="SRM NMDS, log+1 transformed, unzoomed")
 points(SRM.nmds.mean.log.samples[c(CI.B.samples),], col=marker[2], pch=8)
 points(SRM.nmds.mean.log.samples[c(CI.E.samples),], col=marker[2], pch=15)
@@ -144,7 +144,7 @@ dev.off()
 
 #### Create plot with forced aspect ratio to zoom in ### 
 
-png("../../analyses/NMDS-mean-log-zoomed.png")
+png("../../analyses/SRM/NMDS-mean-log-zoomed.png")
 plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-.15,.15), ylim=c(-0.05,.06), asp=NA, main="SRM NMDS, log+1 transformed, zoomed")
 points(SRM.nmds.mean.log.samples[c(CI.B.samples),], col=marker[2], pch=8)
 points(SRM.nmds.mean.log.samples[c(CI.E.samples),], col=marker[2], pch=15)
@@ -174,6 +174,11 @@ FB.e <- data.frame(SAMPLE=FB.E.samples, SITE=rep("FB", times=length(FB.E.samples
 samples4anosim <- rbind.data.frame(CI.b, CI.e, PG.b, PG.e, WB.b, WB.e, FB.e, FB.b, stringsAsFactors = TRUE)
 samples4anosim$SAMPLE <- as.character(samples4anosim$SAMPLE)
 
+#Add region category for ANOSIMS
+samples4anosim$REGION <-
+  ifelse(grepl("FB|PG", samples4anosim$SITE)==T,"North",
+         ifelse(grepl("CI|WB",samples4anosim$SITE)==T,"South","Error"))
+
 ###############
 
 # ANOSIM of data (not log transformed, no zeros in data (instead, ignore NAs))
@@ -181,78 +186,111 @@ data4anosim <- cbind.data.frame(SRM.data.mean.t[order(rownames(SRM.data.mean.t))
 data4anosim$SITE <- as.factor(data4anosim$SITE)
 data4anosim$TREATMENT <- as.factor(data4anosim$TREATMENT)
 data4anosim$BOTH <- as.factor(data4anosim$BOTH)
+data4anosim$REGION <- as.factor(data4anosim$REGION)
+
+sdms.vegdist <- vegdist(data4anosim[,-(ncol(data4anosim)-4):-(ncol(data4anosim))], 'bray', na.rm=TRUE) #this also removes the last 5 columns of data, since they are factors
 
 # ANOSIM between sites
-sdms.vegdist <- vegdist(data4anosim[,-(ncol(data4anosim)-3):-(ncol(data4anosim))], 'bray', na.rm=TRUE) #this also removes the last 4 columns of data, since they are factors
 site.anos<-anosim(sdms.vegdist, grouping=data4anosim$SITE, permutations = 2000)
 summary(site.anos)
-png("../../analyses/ANOSIM-site-ignoreNA.png")
+png("../../analyses/SRM/ANOSIM-site-ignoreNA.png")
 plot(site.anos)
 dev.off()
+graphics.off()
 
 # ANOSIM between treatments
 treatment.anos<-anosim(sdms.vegdist, grouping=data4anosim$TREATMENT, permutations = 2000)
 summary(treatment.anos)
-png("../../analyses/ANOSIM-treatment-ignoreNA.png")
+png("../../analyses/SRM/ANOSIM-treatment-ignoreNA.png")
 plot(treatment.anos)
 dev.off()
+graphics.off()
 
 # ANOSIM between both site/treatments
 siteANDtreatment.anos<-anosim(sdms.vegdist, grouping=data4anosim$BOTH, permutations = 2000)
 summary(siteANDtreatment.anos)
-png("../../analyses/ANOSIM-sitetreatment-ignoreNA.png")
+png("../../analyses/SRM/ANOSIM-sitetreatment-ignoreNA.png")
 plot(siteANDtreatment.anos)
 dev.off()
+
+# ANOSIM between region
+region.anos<-anosim(sdms.vegdist, grouping=data4anosim$REGION, permutations = 2000)
+summary(region.anos)
+png("../../analyses/SRM/ANOSIM-region-ignoreNA.png")
+plot(region.anos)
+dev.off()
+graphics.off()
 
 ############
 # ANOSIM of data (not log transformed, including zeros where no peak found)
 data4anosim.noNA <- cbind.data.frame(SRM.data.mean.t.noNA[order(rownames(SRM.data.mean.t.noNA)),], samples4anosim[order(samples4anosim$SAMPLE),])
+sdms.noNA.vegdist <- vegdist(data4anosim.noNA[,-(ncol(data4anosim)-4):-(ncol(data4anosim))], 'bray', na.rm=TRUE)
 
 # ANOSIM between sites, no NA
-sdms.noNA.vegdist <- vegdist(data4anosim.noNA[,-(ncol(data4anosim)-3):-(ncol(data4anosim))], 'bray', na.rm=TRUE)
 site.noNA.anos<-anosim(sdms.vegdist, grouping=data4anosim.noNA$SITE, permutations = 2000)
 summary(site.noNA.anos)
-png("../../analyses/ANOSIM-site-zeroNA.png")
+png("../../analyses/SRM/ANOSIM-site-zeroNA.png")
 plot(site.noNA.anos)
 dev.off()
+graphics.off()
 
 # ANOSIM between treatments, no NA
 treatment.noNA.anos<-anosim(sdms.noNA.vegdist, grouping=data4anosim.noNA$TREATMENT, permutations = 2000)
 summary(treatment.noNA.anos)
-png("../../analyses/ANOSIM-treatment-zeroNA.png")
+png("../../analyses/SRM/ANOSIM-treatment-zeroNA.png")
 plot(treatment.noNA.anos)
 dev.off()
+graphics.off()
 
 # ANOSIM between both site/treatments, no NA
 siteANDtreatment.noNA.anos <- anosim(sdms.noNA.vegdist, grouping=data4anosim.noNA$BOTH, permutations = 2000)
 siteANDtreatment.noNA.anos
 summary(siteANDtreatment.noNA.anos)
-png("../../analyses/ANOSIM-sitetreatment-zeroNA.png")
+png("../../analyses/SRM/ANOSIM-sitetreatment-zeroNA.png")
 plot(siteANDtreatment.noNA.anos)
 dev.off()
+
+# ANOSIM between region, no NA
+region.noNA.anos <- anosim(sdms.noNA.vegdist, grouping=data4anosim.noNA$REGION, permutations = 2000)
+region.noNA.anos
+summary(region.noNA.anos)
+png("../../analyses/SRM/ANOSIM-region-zeroNA.png")
+plot(region.noNA.anos)
+dev.off()
+graphics.off()
 
 #############
 # ANOSIM of data after log+1 transformation  
 data4anosim.log <- cbind.data.frame(SRM.data.mean.t.log[order(rownames(SRM.data.mean.t.log)),], samples4anosim[order(samples4anosim$SAMPLE),])
+sdms.log.vegdist <- vegdist(data4anosim.log[,-(ncol(data4anosim)-4):-(ncol(data4anosim))], 'bray', na.rm=TRUE)
 
 # ANOSIM between sites, log+1 transf.
-sdms.log.vegdist <- vegdist(data4anosim.log[,-(ncol(data4anosim)-3):-(ncol(data4anosim))], 'bray', na.rm=TRUE)
 site.log.anos<-anosim(sdms.log.vegdist, grouping=data4anosim.log$SITE, permutations = 2000)
 summary(site.log.anos)
-png("../../analyses/ANOSIM-site-log.png")
+png("../../analyses/SRM/ANOSIM-site-log.png")
 plot(site.log.anos)
 dev.off()
+graphics.off()
 
 # ANOSIM between treatments, log+1 transf.
 treatment.log.anos<-anosim(sdms.log.vegdist, grouping=data4anosim.log$TREATMENT, permutations = 2000)
 summary(treatment.log.anos)
-png("../../analyses/ANOSIM-treatment-log.png")
+png("../../analyses/SRM/ANOSIM-treatment-log.png")
 plot(treatment.log.anos)
 dev.off()
+graphics.off()
 
 # ANOSIM between site/treatments, log+1 transf.
 siteANDtreatment.log.anos <- anosim(sdms.log.vegdist, grouping=data4anosim.log$BOTH, permutations = 2000)
 summary(siteANDtreatment.log.anos)
-png("../../analyses/ANOSIM-sitetreatment-log.png")
+png("../../analyses/SRM/ANOSIM-sitetreatment-log.png")
 plot(siteANDtreatment.log.anos)
 dev.off()
+
+# ANOSIM between region, log+1 transf.
+region.log.anos <- anosim(sdms.log.vegdist, grouping=data4anosim.log$REGION, permutations = 2000)
+summary(region.log.anos)
+png("../../analyses/SRM/ANOSIM-region-log.png")
+plot(region.log.anos)
+dev.off()
+graphics.off()
