@@ -12,9 +12,9 @@
   * All .raw data files are saved on the Roberts Lab Owl server: [2017-July-SRM-Data](http://owl.fish.washington.edu/generosa/Generosa_DNR/2017-July-SRM-Data/)  
   * .raw files are labeled "2017_July_10_bivalves_###"_, where "###" is a 3-digit number generated chronologically as the samples were injected  
   * The .raw files on the Owl server include data for: geoduck gill peptides, PRTC/bsa QC, true blanks, and dilution curve peptides  
-  * The [sequence file](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/data/SRM/SRM-Sequence-final.csv) indicates which sample each file corresponds to
+  * The [sequence file](../../data/SRM/SRM-Sequence-final.csv) indicates which sample each file corresponds to
   
-### Step 1: Open this [00-Downloading-raw-files.R](../../analyses/SRM/00-Downloading-raw-files.R) script in RStudio or R. The script will:
+### Step 1: Open this [00-Downloading-raw-files.R](../../analyses/SRM/Script00-downloading-raw-files.R) script in RStudio or R. The script will:
   1) install required R packages
   2) Create a directory in the Downloads folder
   3) Download all .raw files associated with geoduck gill samples and dilution curve samples
