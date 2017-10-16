@@ -295,6 +295,7 @@ p1 <- plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text
 htmlwidgets::saveWidget(as_widget(p1), "NMDS-technical-replicate-distances.html")
 summary(srm.nmds.tech.distances$value)
 bad.tech.reps <- srm.nmds.tech.distances[srm.nmds.tech.distances$value>.2,] #which tech rep distances are >0.2
+write.csv(bad.tech.reps, file="../../analyses/SRM/bad-tech-reps.csv")
 View(bad.tech.reps)
 
 #### NEXT, REMOVE SAMPLES THAT DON'T LOOK GOOD, AVERAGE TECH REPS, THEN RE-PLOT BY SITE/TREATMENT #### 
