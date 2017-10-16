@@ -165,6 +165,7 @@ colors <- colorRampPalette(brewer.pal(8,"Dark2"))(48)
 ### PLOTTING ALL REPS WITH SAMPLE NUMBER ID'S ### 
 
 #For interactive graph: 
+library(plotly)
 plot_ly(data=as.data.frame(SRM.nmds.samples.sorted), x=~NMDS1, y=~NMDS2, type="scatter", mode="text", text=rownames(SRM.nmds.samples.sorted))
 
 #To plot points individually & save
