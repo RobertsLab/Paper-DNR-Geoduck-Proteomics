@@ -166,7 +166,8 @@ colors <- colorRampPalette(brewer.pal(8,"Dark2"))(48)
 
 #For interactive graph: 
 library(plotly)
-plot_ly(data=as.data.frame(SRM.nmds.samples.sorted), x=~NMDS1, y=~NMDS2, type="scatter", mode="text", text=rownames(SRM.nmds.samples.sorted))
+p <- plot_ly(data=as.data.frame(SRM.nmds.samples.sorted), x=~NMDS1, y=~NMDS2, type="scatter", mode="text", text=rownames(SRM.nmds.samples.sorted))
+htmlwidgets::saveWidget(as_widget(p), "NMDS-technical-replicate.html")
 
 #To plot points individually & save
 png("../../analyses/SRM/NMDS-tech-rep.png")
@@ -290,10 +291,11 @@ srm.nmds.tech.distances <- srm.nmds.tech.distances[!srm.nmds.tech.distances$valu
 srm.nmds.tech.distances[,1:2] <- apply(srm.nmds.tech.distances[,1:2], 2, function(y) gsub('G|G0|G00', '', y)) #remove extraneous "G00" from point names
 library(ggplot2)
 library(plotly)
-plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text", text=~row)
+p1 <- plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text", text=~row)
+htmlwidgets::saveWidget(as_widget(p1), "NMDS-technical-replicate-distances.html")
 summary(srm.nmds.tech.distances$value)
-srm.nmds.tech.distances[srm.nmds.tech.distances$value>.2,] #which tech rep distances are > than 3rd quartile
-View(srm.nmds.tech.distances)
+bad.tech.reps <- srm.nmds.tech.distances[srm.nmds.tech.distances$value>.2,] #which tech rep distances are >0.2
+View(bad.tech.reps)
 
 #### NEXT, REMOVE SAMPLES THAT DON'T LOOK GOOD, AVERAGE TECH REPS, THEN RE-PLOT BY SITE/TREATMENT #### 
 
