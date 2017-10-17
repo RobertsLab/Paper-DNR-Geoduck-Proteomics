@@ -8,6 +8,7 @@
 # install.packages("plotly")
 # install.packages("ggplot2")
 # install.packages("reshape2")
+# install.packages("vegan")
 
 ############# IMPORT DATASETS (YOU HAVE 2 OPTIONS) #######################################################################
 
