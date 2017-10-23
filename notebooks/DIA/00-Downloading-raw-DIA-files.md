@@ -11,7 +11,7 @@
   * An error occurred when on the injection resulting in file named geoduck7, so Lumos immediately re-injected and re-ran that sample, resulting in file name geoduck7_170124190430. 
   * All .raw data files are saved on the Roberts Lab Owl server: [Lumos_Raw](http://owl.fish.washington.edu/generosa/Generosa_DNR/Lumos_Raw/)  
   * .raw files on owl are labeled "2017_January_23_envtstress_geoduck##.raw" & "2017_January_23_envtstress_blank##.raw" where "##" is a 2-digit number generated chronologically as the samples were injected. 
-  * The .raw files on the Owl server include data for: geoduck gill peptides + PRTC ("geoduck) and one blank prepared alongside the samples ("geoduckBlank"); true blank injections (should not contain any peptides, "blank")
+  * The .raw files on the Owl server include data for: geoduck gill peptides + PRTC ("geoduck") and one blank prepared alongside the samples ("geoduckBlank"); true blank injections (should not contain any peptides, "blank")
   * The [sequence file](../../data/DIA/2017_January_23_sequence_file.csv) indicates to which sample each file corresponds
 
   
@@ -20,9 +20,7 @@
   2) Create a directory in which the .raw files will be saved
   3) Download all .raw files associated with geoduck gill samples, and the one blank sample
   
-### Ste 2: Execute R script
+### Step 2: Execute R script
 NOTE: the .raw files will require 10.6GB 
 
-### You are now ready to demultiplex and convert the .raw data to .mzML in preparation for PECAN, see [01-Demultiplexing .raw data.ipynb](../../notebooks/DIA/01-Demultiplexing .raw data.ipynb)
-
-
+### You are now ready to demultiplex and convert the .raw data to .mzML in preparation for PECAN, see [01-Demultiplexing raw data](../../notebooks/DIA/01-Demultiplexing%20.raw%20data.ipynb)
