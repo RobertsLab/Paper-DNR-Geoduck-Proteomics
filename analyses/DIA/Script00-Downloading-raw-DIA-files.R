@@ -2,8 +2,8 @@
 
 ## IMPORTANT: the first step in this script creates a directory, where all .raw files will be downloaded. Feel free to change the location of this directory
 getwd() # see which directory is currently your working directory; change wd if desired
-dir.create("/2017-Geoduck-DIA-raw/") 
-setwd("/2017-Geoduck-DIA-raw/")
+dir.create("2017-Geoduck-DIA-raw/") 
+setwd("2017-Geoduck-DIA-raw/")
 
 # Install package not available in base R
 install.packages("stringr", dep=TRUE) #only install stringr package if you don't already have it
@@ -42,3 +42,11 @@ for(i in 1:nrow(GeoURLS)) {
 # Files should now be in the directory ../Downloads/2017-Geoduck-SRM-raw/ ... let's confirm that we have all of them:
 howmanyfiles <- list.files(pattern="*.raw")
 length(howmanyfiles) == nrow(GeoURLS) #should equal TRUE
+
+####### Download geoduck gonad transcriptome fasta 
+
+# Download Transcriptome to current working directory
+curl_download("https://raw.githubusercontent.com/sr320/paper-pano-go/52c6b18b5b09e5c3a49250cf47ad4ddc8e9dc004/data-results/Geoduck-transcriptome-v2.transdecoder.pep", destfile="Geoduck-transcriptome-v2.transdecoder.pep", quiet = TRUE, mode="wb")
+
+# OPTIONAL: if you didn't download the whole repo, you need to download the PRTC fasta file too
+# curl_download("https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/data/DIA/P00000_Pierce_prtc.fasta", destfile="P00000_Pierce_prtc.fasta", quiet = TRUE, mode="wb")
