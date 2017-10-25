@@ -112,6 +112,24 @@ points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15, cex=2)
 legend(-1.2,-0.07, pch=c(rep(15,4)), cex=1.6, pt.cex=2, legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay"), col=c(marker[4], marker[3], marker[2], marker[1]))
 dev.off()
 
+#Create interactive graph in Plotly
+SRM.nmds4plotly <- as.data.frame(SRM.nmds.mean.samples)
+SRM.nmds4plotly$Sample <- rownames(SRM.nmds4plotly)
+SRM.nmds4plotly.annotated <- merge(x=SRM.nmds4plotly, y=sample.key[,c(3,5,8,9)], by.x="Sample", by.y="PRVial")
+SRM.nmds4plotly.annotated$Site <- factor(SRM.nmds4plotly.annotated$Site, levels=c("WB", "CI", "PG", "FB"))
+library(plotly)
+p.NMDS <- plot_ly(data=SRM.nmds4plotly.annotated, x=~NMDS1, y=~NMDS2, color=~Site, symbol=~Patch, type="scatter", mode="markers", marker = list(size = 20), colors=marker, hoverinfo = 'text', text = ~Sample) %>% 
+  layout(title="SRM NMDS of all proteins by Site, Treatment",
+         xaxis = list(title = 'NMDS Axis 1'),
+         yaxis = list(title = 'NMDS Axis 2'))
+htmlwidgets::saveWidget(as_widget(p.NMDS), "NMDS-meaned-Plotly.html") #Save plotly plot as html widget
+
+# OPTIONAL: POST PLOTLY GRAPHS ONLINE 
+# Sys.setenv("plotly_username"="<PLOTLY USERNAME HERE>") #Insert Plotly username
+# Sys.setenv("plotly_api_key"="<PLOTLY ACCOUNT API KEY HERE>") #Insert Plotly API key, find key @ https://plot.ly/settings/api
+api_create(p.NMDS, filename = "Geoduck-SRM-NMDS") #Pushes plot to Plotly online
+
+
 #### 2. CREATE NMDS PLOT, MEAN OF TECH REPS - LOG TRANSFORMED ########
 
 #Transpose the file so that rows and columns are switched and normalized by log(x+1)
