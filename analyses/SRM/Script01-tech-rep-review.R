@@ -167,8 +167,16 @@ colors <- colorRampPalette(brewer.pal(8,"Dark2"))(48)
 
 #For interactive graph: 
 library(plotly)
-p <- plot_ly(data=as.data.frame(SRM.nmds.samples.sorted), x=~NMDS1, y=~NMDS2, type="scatter", mode="text", text=rownames(SRM.nmds.samples.sorted))
-htmlwidgets::saveWidget(as_widget(p), "NMDS-technical-replicate.html")
+p <- plot_ly(data=as.data.frame(SRM.nmds.samples.sorted), x=~NMDS1, y=~NMDS2, type="scatter", mode="text", text=rownames(SRM.nmds.samples.sorted)) %>% 
+  layout(title="SRM Technical Replicate NMDS",
+         xaxis = list(title = 'NMDS Axis 1'),
+         yaxis = list(title = 'NMDS Axis 2'))
+htmlwidgets::saveWidget(as_widget(p), "NMDS-technical-replicate.html") #Save plotly plot as html widget 
+
+# OPTIONAL: POST PLOTLY GRAPHS ONLINE 
+# Sys.setenv("plotly_username"="<PLOTLY USERNAME HERE>") #Insert Plotly username
+# Sys.setenv("plotly_api_key"="<PLOTLY ACCOUNT API KEY HERE>") #Insert Plotly API key, find key @ https://plot.ly/settings/api
+# api_create(p, filename = "Geoduck-SRM-tech-rep-NMDS") #Pushes plot to Plotly online
 
 #To plot points individually & save
 png("../../analyses/SRM/NMDS-tech-rep.png")
@@ -290,14 +298,22 @@ for(i in 1:length(SRMsamples)) {
 }
 srm.nmds.tech.distances <- srm.nmds.tech.distances[!srm.nmds.tech.distances$value == 0,] #remove rows with value=0 (distance between same points)
 srm.nmds.tech.distances[,1:2] <- apply(srm.nmds.tech.distances[,1:2], 2, function(y) gsub('G|G0|G00', '', y)) #remove extraneous "G00" from point names
+
 library(ggplot2)
 library(plotly)
-p1 <- plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text", text=~row)
-htmlwidgets::saveWidget(as_widget(p1), "NMDS-technical-replicate-distances.html")
-summary(srm.nmds.tech.distances$value)
-bad.tech.reps <- srm.nmds.tech.distances[srm.nmds.tech.distances$value>.2,] #which tech rep distances are >0.2
-write.csv(bad.tech.reps, file="../../analyses/SRM/bad-tech-reps.csv")
-View(bad.tech.reps)
+p1 <- plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text", text=~row) %>% 
+  layout(title="Euclidean Distances Between Tech Reps on NMDS",
+         xaxis = list(title = 'Geoduck Sample Number'),
+         yaxis = list(title = 'distance on NMDS plot'))
+htmlwidgets::saveWidget(as_widget(p1), "NMDS-technical-replicate-distances.html") #Save plotly as html widget
+
+# OPTIONAL: POST PLOTLY GRAPHS ONLINE 
+# api_create(p1, filename = "Geoduck-SRM-tech-rep-NMDS-distances") #Pushes plot to Plotly online
+
+# Identify unaligned tech reps
+summary(srm.nmds.tech.distances$value) #check out range, mean, median, etc. of euclidean distnaces on NMDS 
+bad.tech.reps <- srm.nmds.tech.distances[srm.nmds.tech.distances$value>.2,] #which tech rep distances are >0.2? 
+write.csv(bad.tech.reps, file="../../analyses/SRM/bad-tech-reps.csv") #save reps with distance >0.2 in a .csv 
 
 #### NEXT, REMOVE SAMPLES THAT DON'T LOOK GOOD, AVERAGE TECH REPS, THEN RE-PLOT BY SITE/TREATMENT #### 
 
