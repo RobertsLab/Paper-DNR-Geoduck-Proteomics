@@ -2,11 +2,11 @@
 
 ## IMPORTANT: the first step in this script creates a directory, where all .raw files will be downloaded. Feel free to change the location of this directory
 getwd() # see which directory is currently your working directory; change wd if desired
-dir.create("2017-Geoduck-SRM-raw/") 
-setwd("2017-Geoduck-SRM-raw/")
+dir.create("2017-Geoduck-SRM-raw/") #create a directory, in which all .raw files will bes aved
+setwd("2017-Geoduck-SRM-raw/") #set your working directory to the one you just created
 
 # Install package not available in base R
-install.packages("stringr", dep=TRUE) #only install stringr package if you don't already have it
+install.packages("stringr", dep=TRUE)
 install.packages("curl", dep=TRUE)
 
 # Scrape website that houses all .raw files of file names
@@ -30,6 +30,8 @@ GeoFiles <- subset(rawfiles.2, !(rawfiles.2  %in% NotGeoFiles$V1))
 GeoURLS <-  as.data.frame(paste0("http://owl.fish.washington.edu/generosa/Generosa_DNR/2017-July-SRM-Data/", GeoFiles[,1], ".raw"), stringsAsFactors = FALSE)
 nrow(GeoURLS) # number of .raw files you will download
 
+#### Now you're ready to actually download the .raw files!
+                    
 # Download all url's in your GeoURL database - #this could take a while depending on your computer
 library(curl)
 for(i in 1:nrow(GeoURLS)) {
