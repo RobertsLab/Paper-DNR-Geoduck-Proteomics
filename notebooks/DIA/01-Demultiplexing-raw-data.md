@@ -51,6 +51,8 @@ If no errors, run all files at once.  First, make sure you are in the directory 
   --filter "peakPicking true 1-2" 
   --filter "demultiplex optimization=overlap_only" 2017_January_23_envtstress_g*.raw`
 
-Once complete, the converted files will be .mzML format, located in the same folder as your .raw files.  In this screen shot I am running the script in a folder containing 5 .raw files: 
+In this screen shot I am running the script in a folder containing 5 .raw files: 
 
 ![Using MS Convert on Woodpecker](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Demultiplexing-.raw-files.png?raw=true)
+
+### Once complete, the converted files will be .mzML format, located in the same folder as your .raw files. You will use these in PECAN in [Notebook 04, building spectral library with PECAN](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/notebooks/DIA/04-Building%20Spectral%20Library%20with%20PECAN%20.ipynb)
