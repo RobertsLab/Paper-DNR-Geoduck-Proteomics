@@ -66,4 +66,4 @@ PECAN needs a list of the DIA data files (in .mzML format) in order to execute t
 
 ---
 
-### You are now ready to move to Notebook 04, [Building a Spectral Library with PECAN](../notebooks/DIA/04-Building%20Spectral%20Library%20with%20PECAN%20.ipynb)
+### You are now ready to move to Notebook 04, [Building a Spectral Library with PECAN](../../notebooks/DIA/04-Building%20Spectral%20Library%20with%20PECAN%20.ipynb)
