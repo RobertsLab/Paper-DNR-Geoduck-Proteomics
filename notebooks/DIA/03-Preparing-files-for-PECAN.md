@@ -24,25 +24,25 @@ Before running PECAN is to tryptic digest our geoduck transcriptome + PRTC fasta
 #### The following are screen shots showing settings used in PDS; note I selected the transcriptome with trimmed header for our input file, which we generated in Step 1 of this notebook. 
 
 #### Tab 1:
-![PDS tab 1](../../images/PDS01.png)
+![PDS tab 1](../images/PDS01.png)
 
 #### Tab 2:
-![PDS tab 2](../../images/PDS02.png)
+![PDS tab 2](../images/PDS02.png)
 
 #### Tab 3:
-![PDS tab 3](../../images/PDS03.png)
+![PDS tab 3](../images/PDS03.png)
 
 #### Tab 4:
-![PDS tab 4](../../images/PDS04.png)
+![PDS tab 4](../images/PDS04.png)
 
 #### Go back to Tab 2 to execute the digestion: 
-![PDS pushing "go"](../../images/PDS06.png)
+![PDS pushing "go"](../images/PDS06.png)
 
 #### The digestion took ~30 minutes; you can watch the % complete on the Progress tab: 
-![PDS progress](../../images/PDS07.png)
+![PDS progress](../images/PDS07.png)
 
 #### When complete a box will pop up describing how many proteins were processed. We know we should have 35952 proteins (from step 2 of this notebook):
-![PDS complete](../../images/PDS08.png)
+![PDS complete](../images/PDS08.png)
 
 ---
 ## Step 4. Convert isolation scheme text file to .csv
