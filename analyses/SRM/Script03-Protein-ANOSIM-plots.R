@@ -210,10 +210,11 @@ png("../../analyses/SRM/boxplot-HSP90-site.png", width = 400, height = 500)
 ggplot(subset(data.melted.plus, Pep.Trans %in% "GVVDSEDLPLNISR y7"), aes(x=SITE, y=Area, fill=SITE)) + 
   geom_boxplot(color="black", position = position_dodge()) + 
   ggtitle("Heat shock 90 \nabundance by site") + 
-  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
+  theme(plot.title = element_text(size=18), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
   scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Fidalgo Bay", "Port Gamble")) + 
   ylab("Protein Abundance (Peak Intensity)") +
-  coord_flip()
+  coord_flip() +
+  annotate("text", label="ANOSIM Results: \nObserved R=0.08 \nExpected R=0.001 \nP=0.014493", x = 1, y = 4.5e+06, size = 4.5) 
 dev.off()
 
 # HSP 70
@@ -225,11 +226,12 @@ ggplot(subset(data.melted.plus, Pep.Trans %in% "IINEPTAAALAYGLDK y12"), aes(x=SI
   guides(fill=FALSE) +
   scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Fidalgo Bay", "Port Gamble")) + 
   ylab("Protein Abundance (Peak Intensity)") +
-  coord_flip()
+  coord_flip() +
+  annotate("text", label="ANOSIM Results: \nObserved R=0.156 \nExpected R=0 \nP=0.0009995", x = 1, y = 1.15e+07, size = 4.5) 
 dev.off()
 
 # PDI
-png("../../analyses/SRM/boxplot-PDI-ste.png", width = 400, height = 500)
+png("../../analyses/SRM/boxplot-PDI-site.png", width = 400, height = 500)
 ggplot(subset(data.melted.plus, Pep.Trans %in% "DNVVVIGFFK y5"), aes(x=SITE, y=Area, fill=SITE)) + 
   geom_boxplot(color="black", position = position_dodge()) + 
   ggtitle("Protein Disulfide Isomerase \nabundance by site") + 
@@ -237,8 +239,11 @@ ggplot(subset(data.melted.plus, Pep.Trans %in% "DNVVVIGFFK y5"), aes(x=SITE, y=A
   guides(fill=FALSE) +
   scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Fidalgo Bay", "Port Gamble")) + 
   ylab("Protein Abundance (Peak Intensity)") +
-  coord_flip()
+  coord_flip() +
+  annotate("text", label="ANOSIM Results: \nObserved R=0.093 \nExpected R=0 \nP=0.011994", x = 1, y = 1650000, size = 4.5) 
 dev.off()
+
+########## Box plots of proteins found to be significantly different between regions (ANOSIM)
 
 # HSP 90
 png("../../analyses/SRM/boxplot-HSP90-region.png", width = 400, height = 500)
