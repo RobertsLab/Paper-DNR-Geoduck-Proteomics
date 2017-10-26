@@ -5,7 +5,7 @@
   2. Convert Isolation scheme (from Emma from Lumos) to .csv file 
   3. Create .txt file with list of paths to all mzML files  
 
-Note: you also need a .txt file listing the name of the background proteome database. This has already been created, and is located in [DNR_Geoduck_DatabasePath.txt](../analyses/DIA/DNR_Geoduck_DatabasePath.txt)
+Note: you also need a .txt file listing the name of the background proteome database. This has already been created, and is located in [DNR_Geoduck_DatabasePath.txt](../../analyses/DIA/DNR_Geoduck_DatabasePath.txt)
 
 ---
 
@@ -50,11 +50,11 @@ Before running PECAN is to tryptic digest our geoduck transcriptome + PRTC fasta
 
 Emma sent us the isolation scheme file, extracted from Lumos. To use this in PECAN we need it in .csv format
 
-* **Input File:** [2017_January_23_envtstress_geoduck1_isoscheme.txt](../data/DIA/2017_January_23_envtstress_geoduck1_isoscheme.txt). 
-* **Output File:** [DNR_Geoduck_IsolationScheme.csv](../data/DIA/DNR_Geoduck_IsolationScheme.csv)
+* **Input File:** [2017_January_23_envtstress_geoduck1_isoscheme.txt](../../data/DIA/2017_January_23_envtstress_geoduck1_isoscheme.txt). 
+* **Output File:** [DNR_Geoduck_IsolationScheme.csv](../../data/DIA/DNR_Geoduck_IsolationScheme.csv)
 
 To convert, I simply opened the .txt file in Excel, then saved as .csv and re-named:
-![save-as csv](../images/Isolation-scheme-csv.png)
+![save-as csv](../../images/Isolation-scheme-csv.png)
 
 ---
 ## Step 5. Create a .txt file with list of paths to all mzML files
@@ -62,7 +62,7 @@ To convert, I simply opened the .txt file in Excel, then saved as .csv and re-na
 PECAN needs a list of the DIA data files (in .mzML format) in order to execute the run, so we need to create a .txt file that lists all .mzml file names. 
 
 * **Input File:** R-script to extract .mzML file names and create a .txt file: [Script01-File-path-for-PECAN.R](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/Script01-File-path-for-PECAN.R)
-* **Output File:** Text file: [DNR_Geoduck_mzMLpath.txt](../analyses/DIA/2017-Geoduck-DIA-raw/DNR_Geoduck_mzMLpath.txt)   
+* **Output File:** Text file: [DNR_Geoduck_mzMLpath.txt](../../analyses/DIA/2017-Geoduck-DIA-raw/DNR_Geoduck_mzMLpath.txt)   
 
 ---
 
