@@ -3,7 +3,7 @@
 #### 1. CREATE NMDS PLOT, MEAN OF TECH REPS - NOT LOG TRANSFORMED ########
 
 #Transpose the file so that rows and columns are switched 
-SRM.data.mean.t <- t(SRM.data.mean) # t() function transposes, removes PRTC transitions & extraneous info
+SRM.data.mean.t <- t(SRM.data.mean) # t() function transposes
 
 #Replace NA cells with 0; metaMDS() does not handle NA's
 SRM.data.mean.t.noNA <- SRM.data.mean.t
