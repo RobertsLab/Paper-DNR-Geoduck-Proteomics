@@ -279,32 +279,32 @@ ggplot(subset(data.melted.plus, Pep.Trans %in% "DNVVVIGFFK y5"), aes(x=REGION, y
 dev.off()
 
 ### Scatter plots of all transitions by sample for proteins, coded by site
-library(ggplot2)
+
 #HSP90
 png("../../analyses/SRM/scatterbysample-HSP90.png", width = 800, height = 700)
-ggplot(subset(data.melted.plus, Protein.Name %in% "HSP90-alpha"), aes(x=SAMPLE, y=Area, color=SITE)) + 
+ggplot(subset(data.melted.plus, Protein.Name %in% "HSP90-alpha"), aes(x=SAMPLE, y=Area, color=SITE, shape=Peptide.Sequence)) + 
   geom_point(position = position_dodge()) + 
   ggtitle("Heat shock 90 \nTransition abundances by sample") + 
-  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), legend.position = c(0.95, .9), legend.title=element_blank(), legend.key.size = unit(2,"line"), legend.text=element_text(size=12)) + 
+  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), legend.position = c(0.95, .85), legend.title=element_blank(), legend.key.size = unit(2,"line"), legend.text=element_text(size=12)) + 
   ylab("Protein Abundance (Peak Intensity)") + 
   coord_flip()
 dev.off()
 
 #HSP70
 png("../../analyses/SRM/scatterbysample-HSP70.png", width = 800, height = 700)
-ggplot(subset(data.melted.plus, Protein.Name %in% "HSP70"), aes(x=SAMPLE, y=Area, color=SITE)) + 
+ggplot(subset(data.melted.plus, Protein.Name %in% "HSP70"), aes(x=SAMPLE, y=Area, color=SITE, shape=Peptide.Sequence)) + 
   geom_point(position = position_dodge()) + 
   ggtitle("Heat shock 70 \nTransition abundances by sample") + 
-  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), legend.position = c(0.95, .9), legend.title=element_blank(), legend.key.size = unit(2,"line"), legend.text=element_text(size=12)) + 
+  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), legend.position = c(0.95, .85), legend.title=element_blank(), legend.key.size = unit(2,"line"), legend.text=element_text(size=12)) + 
   ylab("Protein Abundance (Peak Intensity)") +
   coord_flip()
 dev.off()
 
 #PDI 
 png("../../analyses/SRM/scatterbysample-PDI.png", width = 800, height = 700)
-ggplot(subset(data.melted.plus, Protein.Name %in% "PDI"), aes(x=SAMPLE, y=Area, color=SITE)) + 
+ggplot(subset(data.melted.plus, Protein.Name %in% "PDI"), aes(x=SAMPLE, y=Area, color=SITE, shape=Peptide.Sequence)) + 
   geom_point(position = position_dodge()) + 
   ggtitle("Protein Disulfide Isomerase \nTransition abundances by sample") + 
-  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), legend.position = c(0.95, .9), legend.title=element_blank(), legend.key.size = unit(2,"line"), legend.text=element_text(size=12)) +  ylab("Protein Abundance (Peak Intensity)") +
+  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), legend.position = c(0.95, .85), legend.title=element_blank(), legend.key.size = unit(2,"line"), legend.text=element_text(size=12)) +  ylab("Protein Abundance (Peak Intensity)") +
   coord_flip()
 dev.off()
