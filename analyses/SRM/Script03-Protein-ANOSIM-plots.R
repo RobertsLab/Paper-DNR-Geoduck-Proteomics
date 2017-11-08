@@ -6,6 +6,9 @@
 library(reshape2)
 data.melted <- melt(data4anosim.noNA, id=c("SAMPLE", "SITE", "TREATMENT", "BOTH", "REGION"), variable.name = "Transition", value.name = "Area")
 
+View(data4anosim.noNA)
+View(data.melted)
+
 # Merge protein names back to abundance data
 SRM.proteins <- data.frame(SRM.data.screened.noPRTC[,1:4]) #protein name to each transition
 SRM.proteins[,1] <- sub(" cds.*", "", SRM.proteins[,1])
