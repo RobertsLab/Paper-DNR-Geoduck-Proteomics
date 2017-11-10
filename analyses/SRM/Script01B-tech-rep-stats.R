@@ -9,8 +9,6 @@ SRM.temp2$X1 <- gsub('-remake-', '-', SRM.temp2$X1)
 SRM.temp2$X1 <- as.character(SRM.temp2$X1) #convert sample ID to character strings
 library(tidyr) #open tidyr program package
 SRM.temp3 <- separate(data=SRM.temp2, col=X1, into = c('Sample', 'Replicate'), sep = -3, convert = TRUE) #split sample ID into number, replicate 
-
-
 # Calculate stats
 library(reshape2)
 SRM.reps4stats <- dcast(SRM.temp3, Sample + Transition ~ Replicate) #widen data to create a column for each replicate with area data
@@ -67,5 +65,4 @@ p.techrep.20 <- plot_ly(data = SRM.reps4stats.20, x = ~Sample, y = ~variance, ty
          yaxis = list(title = 'Coefficient of Variance'))
 htmlwidgets::saveWidget(as_widget(p.techrep.20), "SRM-screened-tech-rep-CV20.html") #Save plotly plot as html widget 
 api_create(p.techrep.20, filename = "Geoduck-SRM-tech-rep-CV20") #Pushes plot to Plotly online
-
 ### NOTE: the mean abundance for tech reps to be used in analysis is SRM.reps4stats.20$mean

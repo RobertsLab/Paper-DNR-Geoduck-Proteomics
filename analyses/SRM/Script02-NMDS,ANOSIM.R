@@ -96,7 +96,7 @@ points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15, cex=2)
 legend(-2.7,0.2, pch=c(rep(16,4)), cex=1.1, pt.cex=1.3, legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay"), col=c(marker[4], marker[3], marker[2], marker[1]))
 dev.off()
-
+warnings()
 #### Create plot with forced aspect ratio to zoom in, no eel/bare separation, no outliers ### 
 png("../../analyses/SRM/NMDS-meaned-zoomed-sitecoded-nooutliers.png")
 par(mar=c(5.1,4.8,4.1,2.1))

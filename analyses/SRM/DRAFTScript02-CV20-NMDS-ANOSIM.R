@@ -6,16 +6,15 @@ SRM.data20.mean <- SRM.data20.mean[,-1]
 #### 1. CREATE NMDS PLOT, MEAN OF TECH REPS - NOT LOG TRANSFORMED ########
 
 #Replace NA cells with 0; metaMDS() does not handle NA's
-SRM.data20.mean.noNA <- SRM.data20.mean
+SRM.data20.mean.noNA <- t(t(SRM.data20.mean))
 SRM.data20.mean.noNA[is.na(SRM.data20.mean.noNA)] <- 0
-
-SRM.data20.mean.noNA[1,]
-SRM.data.mean.t.noNA[1,]
-View(SRM.data20.mean.noNA) # Something weird is happening with this dataframe - need to figure it out before I can move on
-View(SRM.data.mean.t.noNA)
+sum(count(SRM.data20.mean.noNA >0)) / ncol(SRM.data20.mean.noNA)*nrow(SRM.data20.mean.noNA)
+(sum(count(SRM.data20.mean.noNA >0)))/(ncol(SRM.data20.mean.noNA)*nrow(SRM.data20.mean.noNA))*100 #how many transitions have >0 abundance in my samples after filtering due to CV>20
+View(SRM.data20.mean.noNA)
+#======
 
 #Make MDS dissimilarity matrix
-SRM.mean20.nmds <- metaMDS(SRM.data20.mean.noNA, distance = 'bray', k = 2, trymax = 100, autotransform = FALSE) 
+SRM.mean20.nmds <- metaMDS(SRM.data20.mean.noNA, distance = 'bray', k = 2, trymax = 1000, autotransform = FALSE)
 
 #Make NMDS stressplot
 png("../../analyses/SRM/NMDS-meanbysample-stressplot.png")
@@ -203,12 +202,14 @@ samples4anosim$REGION <-
          ifelse(grepl("CI|WB",samples4anosim$SITE)==T,"South","Error"))
 
 # ANOSIM of data (not log transformed, no zeros in data (instead, ignore NAs))
-data20.4anosim <- cbind.data.frame(SRM.data20.mean.t[order(rownames(SRM.data20.mean.t)),], samples4anosim[order(samples4anosim$SAMPLE),])
+data20.4anosim <- merge(x=SRM.data20.mean, y=samples4anosim, by.x=0, by.y=1) 
+rownames(data20.4anosim) <- data20.4anosim$Row.names
+data20.4anosim <- data20.4anosim[,-1]
 data20.4anosim$SITE <- as.factor(data20.4anosim$SITE)
 data20.4anosim$TREATMENT <- as.factor(data20.4anosim$TREATMENT)
 data20.4anosim$BOTH <- as.factor(data20.4anosim$BOTH)
 data20.4anosim$REGION <- as.factor(data20.4anosim$REGION)
-
+View(data20.4anosim)
 sdms20.vegdist <- vegdist(data20.4anosim[,-(ncol(data20.4anosim)-4):-(ncol(data20.4anosim))], 'bray', na.rm=TRUE) #this also removes the last 5 columns of data, since they are factors
 
 # ANOSIM between sites

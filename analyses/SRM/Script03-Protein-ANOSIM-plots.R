@@ -59,6 +59,7 @@ plot(Arachidonate.ANOSIM.site, main="Arachidonate, ANOSIM by Site")
 plot(Arachidonate.ANOSIM.region, main="Arachidonate, ANOSIM by Region")
 # dev.off()
 # graphics.off()
+Arachidonate.ANOSIM.site$signif
 
 # P=0.83008
 Catalase.vegdist <- vegdist(Catalase.4anosim[,1:6], 'bray', na.rm=TRUE)
@@ -204,6 +205,7 @@ plot(Trifunctional.ANOSIM.region, main="Trifunctional enzyme, ANOSIM by Region")
 # graphics.off()
 
 ########## Box plots of proteins found to be significantly different between sites (ANOSIM)
+
 library(ggplot2)
 data.melted.plus$SITE <- factor(data.melted.plus$SITE, levels=c("WB", "CI", "PG", "FB"))
 data.melted.plus$REGION <- factor(data.melted.plus$REGION, levels=c("South", "North"))
@@ -214,7 +216,7 @@ ggplot(subset(data.melted.plus, Pep.Trans %in% "GVVDSEDLPLNISR y7"), aes(x=SITE,
   geom_boxplot(color="black", position = position_dodge()) + 
   ggtitle("Heat shock 90 \nabundance by site") + 
   theme(plot.title = element_text(size=18), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
-  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Fidalgo Bay", "Port Gamble")) + 
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
   ylab("Protein Abundance (Peak Intensity)") +
   coord_flip() +
   annotate("text", label="ANOSIM Results: \nObserved R=0.08 \nExpected R=0.001 \nP=0.014493", x = 1, y = 4.5e+06, size = 4.5) 
@@ -227,7 +229,7 @@ ggplot(subset(data.melted.plus, Pep.Trans %in% "IINEPTAAALAYGLDK y12"), aes(x=SI
   ggtitle("Heat shock 70 \nabundance by site") + 
   theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
   guides(fill=FALSE) +
-  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Fidalgo Bay", "Port Gamble")) + 
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
   ylab("Protein Abundance (Peak Intensity)") +
   coord_flip() +
   annotate("text", label="ANOSIM Results: \nObserved R=0.156 \nExpected R=0 \nP=0.0009995", x = 1, y = 1.15e+07, size = 4.5) 
@@ -240,10 +242,52 @@ ggplot(subset(data.melted.plus, Pep.Trans %in% "DNVVVIGFFK y5"), aes(x=SITE, y=A
   ggtitle("Protein Disulfide Isomerase \nabundance by site") + 
   theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
   guides(fill=FALSE) +
-  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Fidalgo Bay", "Port Gamble")) + 
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
   ylab("Protein Abundance (Peak Intensity)") +
   coord_flip() +
   annotate("text", label="ANOSIM Results: \nObserved R=0.093 \nExpected R=0 \nP=0.011994", x = 1, y = 1650000, size = 4.5) 
+dev.off()
+
+########## Box plots where the transitions have been summed by protein 
+
+data.melted.plus.sum <- aggregate(Area ~ Protein.Name + SAMPLE + SITE + TREATMENT + BOTH + REGION, data.melted.plus, sum)
+
+# HSP 90
+png("../../analyses/SRM/boxplot-HSP90-site-trans-sums.png", width = 400, height = 500)
+ggplot(subset(data.melted.plus.sum, Protein.Name %in% "HSP90-alpha"), aes(x=SITE, y=Area, fill=SITE)) + 
+  geom_boxplot(color="black", position = position_dodge()) + 
+  ggtitle("Heat shock 90 \nabundance by site, transition sums") + 
+  theme(plot.title = element_text(size=18), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
+  ylab("Protein Abundance (Peak Intensity)") +
+  coord_flip() +
+  annotate("text", label="ANOSIM Results: \nObserved R=0.08 \nExpected R=0.001 \nP=0.014493", x = 1, y = 5e+07, size = 4.5) 
+dev.off()
+
+# HSP 70
+png("../../analyses/SRM/boxplot-HSP70-site-trans-sums.png", width = 400, height = 500)
+ggplot(subset(data.melted.plus.sum, Protein.Name %in% "HSP70"), aes(x=SITE, y=Area, fill=SITE)) + 
+  geom_boxplot(color="black", position = position_dodge()) + 
+  ggtitle("Heat shock 70 \nabundance by site, transition sums") + 
+  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
+  guides(fill=FALSE) +
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
+  ylab("Protein Abundance (Peak Intensity)") +
+  coord_flip() +
+  annotate("text", label="ANOSIM Results: \nObserved R=0.156 \nExpected R=0 \nP=0.0009995", x = 1, y = 2.15e+07, size = 4.5) 
+dev.off()
+
+# PDI
+png("../../analyses/SRM/boxplot-PDI-site-trans-sums.png", width = 400, height = 500)
+ggplot(subset(data.melted.plus.sum, Protein.Name %in% "PDI"), aes(x=SITE, y=Area, fill=SITE)) + 
+  geom_boxplot(color="black", position = position_dodge()) + 
+  ggtitle("Protein Disulfide Isomerase \nabundance by site, transitions sums") + 
+  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
+  guides(fill=FALSE) +
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
+  ylab("Protein Abundance (Peak Intensity)") +
+  coord_flip() +
+  annotate("text", label="ANOSIM Results: \nObserved R=0.093 \nExpected R=0 \nP=0.011994", x = 1, y = 2.0E7, size = 4.5) 
 dev.off()
 
 ########## Box plots of proteins found to be significantly different between regions (ANOSIM)
