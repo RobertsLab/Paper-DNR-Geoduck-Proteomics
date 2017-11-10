@@ -202,14 +202,14 @@ samples4anosim$REGION <-
          ifelse(grepl("CI|WB",samples4anosim$SITE)==T,"South","Error"))
 
 # ANOSIM of data (not log transformed, no zeros in data (instead, ignore NAs))
-data20.4anosim <- merge(x=SRM.data20.mean, y=samples4anosim, by.x=0, by.y=1) 
+data20.4anosim <- merge(x=SRM.data20.mean, y=samples4anosim, by.x="row.names", by.y="SAMPLE") 
 rownames(data20.4anosim) <- data20.4anosim$Row.names
 data20.4anosim <- data20.4anosim[,-1]
 data20.4anosim$SITE <- as.factor(data20.4anosim$SITE)
 data20.4anosim$TREATMENT <- as.factor(data20.4anosim$TREATMENT)
 data20.4anosim$BOTH <- as.factor(data20.4anosim$BOTH)
 data20.4anosim$REGION <- as.factor(data20.4anosim$REGION)
-View(data20.4anosim)
+
 sdms20.vegdist <- vegdist(data20.4anosim[,-(ncol(data20.4anosim)-4):-(ncol(data20.4anosim))], 'bray', na.rm=TRUE) #this also removes the last 5 columns of data, since they are factors
 
 # ANOSIM between sites

@@ -204,6 +204,12 @@ plot(Trifunctional.ANOSIM.region, main="Trifunctional enzyme, ANOSIM by Region")
 # dev.off()
 # graphics.off()
 
+########## ANOSIM on interesting proteins, where transitions have been summed. 
+transum4stats <- dcast(data.melted.plus.sum, ...~Protein.Name, value.var="Area")
+#TBD
+
+
+
 ########## Box plots of proteins found to be significantly different between sites (ANOSIM)
 
 library(ggplot2)
@@ -261,7 +267,7 @@ ggplot(subset(data.melted.plus.sum, Protein.Name %in% "HSP90-alpha"), aes(x=SITE
   scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
   ylab("Protein Abundance (Peak Intensity)") +
   coord_flip() +
-  annotate("text", label="ANOSIM Results: \nObserved R=0.08 \nExpected R=0.001 \nP=0.014493", x = 1, y = 5e+07, size = 4.5) 
+  annotate("text", label="ANOSIM with Transitions, Results: \nObserved R=0.08 \nExpected R=0.001 \nP=0.01799", x = 1, y = 5e+07, size = 4.5) 
 dev.off()
 
 # HSP 70
@@ -274,7 +280,7 @@ ggplot(subset(data.melted.plus.sum, Protein.Name %in% "HSP70"), aes(x=SITE, y=Ar
   scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
   ylab("Protein Abundance (Peak Intensity)") +
   coord_flip() +
-  annotate("text", label="ANOSIM Results: \nObserved R=0.156 \nExpected R=0 \nP=0.0009995", x = 1, y = 2.15e+07, size = 4.5) 
+  annotate("text", label="ANOSIM with Transitions, Results: \nObserved R=0.156 \nExpected R=0 \nP=0.000500", x = 1, y = 2.15e+07, size = 4.5) 
 dev.off()
 
 # PDI
@@ -287,7 +293,7 @@ ggplot(subset(data.melted.plus.sum, Protein.Name %in% "PDI"), aes(x=SITE, y=Area
   scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
   ylab("Protein Abundance (Peak Intensity)") +
   coord_flip() +
-  annotate("text", label="ANOSIM Results: \nObserved R=0.093 \nExpected R=0 \nP=0.011994", x = 1, y = 2.0E7, size = 4.5) 
+  annotate("text", label="ANOSIM with Transitions, Results: \nObserved R=0.093 \nExpected R=0 \nP=0.0125", x = 1, y = 2.0E7, size = 4.5) 
 dev.off()
 
 ########## Box plots of proteins found to be significantly different between regions (ANOSIM)

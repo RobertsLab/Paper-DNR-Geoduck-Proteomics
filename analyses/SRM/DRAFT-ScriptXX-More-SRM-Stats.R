@@ -92,6 +92,51 @@ length(unique(data.melted.plus.sum$SAMPLE))
 pairwise.t.test(HSP90$Area, HSP90$SITE, p.adj = "none")
 pairwise.t.test(data.melted.plus$Area, data.melted.plus$SITE, p.adj = "none")
 
+### 1-way ANOVA on Protein area, which represent the sum of the transitions in those proteins.
+transum4stats.log <- transum4stats
+transum4stats.log[,6:18] <- lapply(transum4stats[,6:18], log)
+
+Proteins4aov <- noquote(names(transum4stats.log[-1:-5]))
+nProteins4aov <- length(Proteins4aov)
+stats.aov <- data.frame(matrix(vector(), length(Proteins4aov)*3, 3, dimnames=list(c(), c("Protein", "Group", "ANOVA-P"))), stringsAsFactors = F)
+stats.tukey <- data.frame(matrix(vector(), length(Proteins4aov)*8, 4, dimnames=list(c(), c("Protein", "Group", "Comparison", "P"))), stringsAsFactors = F)
+tukeyseq <- c(seq(from=0, to=104, by=8))
+for (i in 1:nProteins4aov) { 
+  aov.site <- aov(transum4stats.log[[5+i]] ~ transum4stats.log[[2]], data=transum4stats.log) 
+  stats.aov[i,1] <- Proteins4aov[i]
+  stats.aov[i,2] <- "Site"
+  stats.aov[i,3] <- summary(aov.site)[[1]][["Pr(>F)"]][[1]]
+  aov.treatment <- aov(transum4stats.log[[5+i]] ~ transum4stats.log[[3]], data=transum4stats.log)  
+  stats.aov[i+nProteins,1] <- Proteins4aov[i]
+  stats.aov[i+nProteins,2] <- "Treatment"
+  stats.aov[i+nProteins,3] <- summary(aov.treatment)[[1]][["Pr(>F)"]][[1]]
+  aov.region <- aov(transum4stats.log[[5+i]] ~ transum4stats.log[[5]], data=transum4stats.log) 
+  stats.aov[i+2*nProteins,1] <- Proteins4aov[i]
+  stats.aov[i+2*nProteins,2] <- "Region"
+  stats.aov[i+2*nProteins,3] <- summary(aov.region)[[1]][["Pr(>F)"]][[1]]
+  tukey.site <- TukeyHSD(aov.site, ordered=T, conf.level=0.95)              #####not working for tukey table
+  tukey.treatment <- TukeyHSD(aov.treatment, ordered=T, conf.level=0.95)
+  tukey.region <- TukeyHSD(aov.region, ordered=T, conf.level=0.95)
+  stats.tukey[tukeyseq[i]+1,1] <- Proteins4aov[i]
+  stats.tukey[tukeyseq[i]+1,2] <- "Treatment"
+  stats.tukey[tukeyseq[i]+1,3] <- rownames(tukey.treatment$`transum4stats.log[[3]]`)
+  stats.tukey[tukeyseq[i]+1,4] <- tukey.treatment$`transum4stats.log[[3]]`[4]
+  stats.tukey[tukeyseq[i]+2,1] <- Proteins4aov[i]
+  stats.tukey[tukeyseq[i]+2,2] <- "Region"    
+  stats.tukey[tukeyseq[i]+2,3] <- rownames(tukey.region$`transum4stats.log[[5]]`)
+  stats.tukey[tukeyseq[i]+2,4] <- tukey.region$`transum4stats.log[[5]]`[1,4]
+    for (j in 1:6) {
+      stats.tukey[j*i+2,1] <- Proteins4aov[i]
+      stats.tukey[j*i+2,2] <- "Site"
+      stats.tukey[j*i+2,3] <- names(tukey.site$`transum4stats.log[[2]]`[1:6,4][j])
+      stats.tukey[j*i+2,4] <- tukey.site$`transum4stats.log[[2]]`[1:6,4][j]
+    }
+  }
+
+View(stats.tukey)
+View(stats.aov)
+
+
 ### Overall stats for paper
 library(plyr)
 To <- nrow(SRM.data[!grepl(c("PRTC|Protein Name"), SRM.data$`Protein Name`),]) 
@@ -147,6 +192,30 @@ hist(SRM.data.mean.t.melted$value)
 shapiro.test(SRM.data.mean.t.melted$value)
 qqnorm(SRM.data.mean.t.melted$value)
 qqline(SRM.data.mean.t.melted$value)
+
+# Checking normality of HSP70 area (transitions summed)
+hist(transum4stats$HSP70) 
+hist(log(transum4stats$HSP70))
+shapiro.test(transum4stats$HSP70) #is HSP70 summed transition data normal? no.
+shapiro.test(log(transum4stats$HSP70)) #is HSP70 summed transition data log-transformed normal? yes
+qqnorm(transum4stats$HSP70)
+qqnorm(log(transum4stats$HSP70))
+
+# Checking normality of HSP90 area (transitions summed)
+hist(transum4stats$`HSP90-alpha`)
+hist(log(transum4stats$`HSP90-alpha`))
+shapiro.test(transum4stats$`HSP90-alpha`) #is HSP90 summed transition data normal? no
+shapiro.test(log(transum4stats$`HSP90-alpha`)) #log? yes
+qqnorm(transum4stats$`HSP90-alpha`)
+qqnorm(log(transum4stats$`HSP90-alpha`))
+
+# Checking normality of PDI area (transitions summed)
+hist(transum4stats$PDI)
+hist(log(transum4stats$PDI))
+shapiro.test(transum4stats$PDI) #is PDI summed transition data normal?
+shapiro.test(log(transum4stats$PDI)) #is PDI summed transition data normal?
+qqnorm(transum4stats$PDI)
+qqnorm(log(transum4stats$PDI))
 
 # is it normal after log transformation?
 SRM.data.mean.t.log.melted <- melt(SRM.data.mean.t.log)
