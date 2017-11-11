@@ -205,9 +205,10 @@ plot(Trifunctional.ANOSIM.region, main="Trifunctional enzyme, ANOSIM by Region")
 # graphics.off()
 
 ########## ANOSIM on interesting proteins, where transitions have been summed. 
-transum4stats <- dcast(data.melted.plus.sum, ...~Protein.Name, value.var="Area")
-#TBD
-
+transumpro4stats <- dcast(data.melted.plus.prosum, ...~Protein.Name, value.var="Area")
+# transumpep4stats <- dcast(data.melted.plus.pepsum, ...~Peptide.Sequence, value.var="Area")
+View(transumpep4stats)
+# See "other stats"
 
 
 ########## Box plots of proteins found to be significantly different between sites (ANOSIM)
@@ -256,11 +257,13 @@ dev.off()
 
 ########## Box plots where the transitions have been summed by protein 
 
-data.melted.plus.sum <- aggregate(Area ~ Protein.Name + SAMPLE + SITE + TREATMENT + BOTH + REGION, data.melted.plus, sum)
+data.melted.plus.prosum <- aggregate(Area ~ Protein.Name + SAMPLE + SITE + TREATMENT + BOTH + REGION, data.melted.plus, sum)
+data.melted.plus.pepsum <- aggregate(Area ~ Peptide.Sequence + Protein.Name + SAMPLE + SITE + TREATMENT + BOTH + REGION, data.melted.plus, sum)
+
 
 # HSP 90
 png("../../analyses/SRM/boxplot-HSP90-site-trans-sums.png", width = 400, height = 500)
-ggplot(subset(data.melted.plus.sum, Protein.Name %in% "HSP90-alpha"), aes(x=SITE, y=Area, fill=SITE)) + 
+ggplot(subset(data.melted.plus.prosum, Protein.Name %in% "HSP90-alpha"), aes(x=SITE, y=Area, fill=SITE)) + 
   geom_boxplot(color="black", position = position_dodge()) + 
   ggtitle("Heat shock 90 \nabundance by site, transition sums") + 
   theme(plot.title = element_text(size=18), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
@@ -272,7 +275,7 @@ dev.off()
 
 # HSP 70
 png("../../analyses/SRM/boxplot-HSP70-site-trans-sums.png", width = 400, height = 500)
-ggplot(subset(data.melted.plus.sum, Protein.Name %in% "HSP70"), aes(x=SITE, y=Area, fill=SITE)) + 
+ggplot(subset(data.melted.plus.prosum, Protein.Name %in% "HSP70"), aes(x=SITE, y=Area, fill=SITE)) + 
   geom_boxplot(color="black", position = position_dodge()) + 
   ggtitle("Heat shock 70 \nabundance by site, transition sums") + 
   theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
@@ -285,7 +288,7 @@ dev.off()
 
 # PDI
 png("../../analyses/SRM/boxplot-PDI-site-trans-sums.png", width = 400, height = 500)
-ggplot(subset(data.melted.plus.sum, Protein.Name %in% "PDI"), aes(x=SITE, y=Area, fill=SITE)) + 
+ggplot(subset(data.melted.plus.prosum, Protein.Name %in% "PDI"), aes(x=SITE, y=Area, fill=SITE)) + 
   geom_boxplot(color="black", position = position_dodge()) + 
   ggtitle("Protein Disulfide Isomerase \nabundance by site, transitions sums") + 
   theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
@@ -295,6 +298,39 @@ ggplot(subset(data.melted.plus.sum, Protein.Name %in% "PDI"), aes(x=SITE, y=Area
   coord_flip() +
   annotate("text", label="ANOSIM with Transitions, Results: \nObserved R=0.093 \nExpected R=0 \nP=0.0125", x = 1, y = 2.0E7, size = 4.5) 
 dev.off()
+
+# Peroxiredoxin-1
+ggplot(subset(data.melted.plus.prosum, Protein.Name %in% "Peroxiredoxin-1"), aes(x=SITE, y=Area, fill=SITE)) + 
+  geom_boxplot(color="black", position = position_dodge()) + 
+  ggtitle("Peroxiredoxin-1 \nabundance by site, transitions sums") + 
+  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
+  guides(fill=FALSE) +
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
+  ylab("Protein Abundance (Peak Intensity)") +
+  coord_flip() #+
+  #annotate("text", label="ANOSIM with Transitions, Results: \nObserved R=0.093 \nExpected R=0 \nP=0.0125", x = 1, y = 5.5E6, size = 4.5) 
+
+# Trifuctional Enzyme Subunit
+ggplot(subset(data.melted.plus.prosum, Protein.Name %in% "Trifunctional"), aes(x=SITE, y=Area, fill=SITE)) + 
+  geom_boxplot(color="black", position = position_dodge()) + 
+  ggtitle("Trifunctional Enzyme Subunit-beta \nabundance by site, transitions sums") + 
+  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
+  guides(fill=FALSE) +
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
+  ylab("Protein Abundance (Peak Intensity)") +
+  coord_flip() #+
+  #annotate("text", label="ANOSIM with Transitions, Results: \nObserved R=0.093 \nExpected R=0 \nP=0.0125", x = 1, y = 2E6, size = 4.5) 
+
+# Puromycin-sensitive
+ggplot(subset(data.melted.plus.prosum, Protein.Name %in% "Puromycin-sensitive"), aes(x=SITE, y=Area, fill=SITE)) + 
+  geom_boxplot(color="black", position = position_dodge()) + 
+  ggtitle("Puromycin-sensitive Aminopeptidase \nabundance by site, transitions sums") + 
+  theme(plot.title = element_text(size=22), axis.text=element_text(size=12), axis.title=element_text(size=14,face="bold"), axis.title.y=element_blank(), axis.text.y=element_blank(), axis.ticks.y=element_blank()) + 
+  guides(fill=FALSE) +
+  scale_fill_discrete(labels=c("Willapa Bay", "Case Inlet", "Port Gamble", "Fidalgo Bay")) + 
+  ylab("Protein Abundance (Peak Intensity)") +
+  coord_flip() #+
+  #annotate("text", label="ANOSIM with Transitions, Results: \nObserved R=0.093 \nExpected R=0 \nP=0.0125", x = 1, y = 9E6, size = 4.5) 
 
 ########## Box plots of proteins found to be significantly different between regions (ANOSIM)
 

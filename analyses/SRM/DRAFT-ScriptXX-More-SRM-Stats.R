@@ -86,31 +86,32 @@ TukeyHSD(HSP70, Area)
 ?TukeyHSD
 
 ### PERMANOVA - figure out how to do this! 
-length(unique(data.melted.plus.sum$SAMPLE))
+length(unique(data.melted.plus.prosum$SAMPLE))
 
 ### Pairwise T-test
 pairwise.t.test(HSP90$Area, HSP90$SITE, p.adj = "none")
 pairwise.t.test(data.melted.plus$Area, data.melted.plus$SITE, p.adj = "none")
 
 ### 1-way ANOVA on Protein area, which represent the sum of the transitions in those proteins.
-transum4stats.log <- transum4stats
-transum4stats.log[,6:18] <- lapply(transum4stats[,6:18], log)
 
-Proteins4aov <- noquote(names(transum4stats.log[-1:-5]))
+# on transitions pooled by sample # for each protein individually
+transumpro4stats.log <- transumpro4stats
+transumpro4stats.log[,6:18] <- lapply(transumpro4stats[,6:18], log)
+Proteins4aov <- noquote(names(transumpro4stats.log[-1:-5]))
 nProteins4aov <- length(Proteins4aov)
-stats.aov <- data.frame(matrix(vector(), length(Proteins4aov)*3, 3, dimnames=list(c(), c("Protein", "Group", "ANOVA-P"))), stringsAsFactors = F)
-stats.tukey <- data.frame(matrix(vector(), length(Proteins4aov)*8, 4, dimnames=list(c(), c("Protein", "Group", "Comparison", "P"))), stringsAsFactors = F)
+stats.aov <- data.frame(matrix(vector(), length(Proteins4aov)*3+3, 3, dimnames=list(c(), c("Protein", "Group", "ANOVA-P"))), stringsAsFactors = F)
+stats.tukey <- data.frame(matrix(vector(), length(Proteins4aov)*8+8, 4, dimnames=list(c(), c("Protein", "Group", "Comparison", "P"))), stringsAsFactors = F)
 tukeyseq <- c(seq(from=0, to=104, by=8))
 for (i in 1:nProteins4aov) { 
-  aov.site <- aov(transum4stats.log[[5+i]] ~ transum4stats.log[[2]], data=transum4stats.log) 
+  aov.site <- aov(transumpro4stats.log[[5+i]] ~ transumpro4stats.log[[2]], data=transumpro4stats.log) 
   stats.aov[i,1] <- Proteins4aov[i]
   stats.aov[i,2] <- "Site"
   stats.aov[i,3] <- summary(aov.site)[[1]][["Pr(>F)"]][[1]]
-  aov.treatment <- aov(transum4stats.log[[5+i]] ~ transum4stats.log[[3]], data=transum4stats.log)  
+  aov.treatment <- aov(transumpro4stats.log[[5+i]] ~ transumpro4stats.log[[3]], data=transumpro4stats.log)  
   stats.aov[i+nProteins,1] <- Proteins4aov[i]
   stats.aov[i+nProteins,2] <- "Treatment"
   stats.aov[i+nProteins,3] <- summary(aov.treatment)[[1]][["Pr(>F)"]][[1]]
-  aov.region <- aov(transum4stats.log[[5+i]] ~ transum4stats.log[[5]], data=transum4stats.log) 
+  aov.region <- aov(transumpro4stats.log[[5+i]] ~ transumpro4stats.log[[5]], data=transumpro4stats.log) 
   stats.aov[i+2*nProteins,1] <- Proteins4aov[i]
   stats.aov[i+2*nProteins,2] <- "Region"
   stats.aov[i+2*nProteins,3] <- summary(aov.region)[[1]][["Pr(>F)"]][[1]]
@@ -119,26 +120,67 @@ for (i in 1:nProteins4aov) {
   tukey.region <- TukeyHSD(aov.region, ordered=T, conf.level=0.95)
   stats.tukey[tukeyseq[i]+1,1] <- Proteins4aov[i]
   stats.tukey[tukeyseq[i]+1,2] <- "Treatment"
-  stats.tukey[tukeyseq[i]+1,3] <- rownames(tukey.treatment$`transum4stats.log[[3]]`)
-  stats.tukey[tukeyseq[i]+1,4] <- tukey.treatment$`transum4stats.log[[3]]`[4]
+  stats.tukey[tukeyseq[i]+1,3] <- rownames(tukey.treatment$`transumpro4stats.log[[3]]`)
+  stats.tukey[tukeyseq[i]+1,4] <- tukey.treatment$`transumpro4stats.log[[3]]`[4]
   stats.tukey[tukeyseq[i]+2,1] <- Proteins4aov[i]
   stats.tukey[tukeyseq[i]+2,2] <- "Region"    
-  stats.tukey[tukeyseq[i]+2,3] <- rownames(tukey.region$`transum4stats.log[[5]]`)
-  stats.tukey[tukeyseq[i]+2,4] <- tukey.region$`transum4stats.log[[5]]`[1,4]
-    for (j in 1:6) {
-      stats.tukey[j*i+2,1] <- Proteins4aov[i]
-      stats.tukey[j*i+2,2] <- "Site"
-      stats.tukey[j*i+2,3] <- names(tukey.site$`transum4stats.log[[2]]`[1:6,4][j])
-      stats.tukey[j*i+2,4] <- tukey.site$`transum4stats.log[[2]]`[1:6,4][j]
-    }
+  stats.tukey[tukeyseq[i]+2,3] <- rownames(tukey.region$`transumpro4stats.log[[5]]`)
+  stats.tukey[tukeyseq[i]+2,4] <- tukey.region$`transumpro4stats.log[[5]]`[1,4]
+  for (j in 1:6) {
+    stats.tukey[tukeyseq[i]+2+j,1] <- Proteins4aov[i]
+    stats.tukey[tukeyseq[i]+2+j,2] <- "Site"
+    stats.tukey[tukeyseq[i]+2+j,3] <- names(tukey.site$`transumpro4stats.log[[2]]`[1:6,4][j])
+    stats.tukey[tukeyseq[i]+2+j,4] <- tukey.site$`transumpro4stats.log[[2]]`[1:6,4][j]
   }
+}
 
-View(stats.tukey)
-View(stats.aov)
+# on transitions pooled by sample # for all proteins, add to stats datasets created above
+transumpro4stats.melt.log <- data.melted.plus.prosum
+transumpro4stats.melt.log$Area <- log(transumpro4stats.melt.log$Area)
+shapiro.test(transumpro4stats.melt.log$Area) # is this normal? yes.
+
+aov.all.site <- aov(transumpro4stats.melt.log$Area ~ transumpro4stats.melt.log$SITE, data=transumpro4stats.melt.log)
+stats.aov[nrow(stats.aov)-2,1] <- "All Proteins"
+stats.aov[nrow(stats.aov)-2,2] <- "Site"
+stats.aov[nrow(stats.aov)-2,3] <- summary(aov.all.site)[[1]][["Pr(>F)"]][[1]]
+tukey.all.site <- TukeyHSD(aov.all.site, ordered = T, conf.level = 0.95)
+for (k in 1:6) {
+  stats.tukey[nrow(stats.tukey)-(k+1),1] <- "All Proteins"
+  stats.tukey[nrow(stats.tukey)-(k+1),2] <- "Site"
+  stats.tukey[nrow(stats.tukey)-(k+1),3] <- names(tukey.all.site$`transumpro4stats.melt.log$SITE`[1:6,4][k])
+  stats.tukey[nrow(stats.tukey)-(k+1),4] <- tukey.all.site$`transumpro4stats.melt.log$SITE`[1:6,4][k]
+}
+aov.all.region <- aov(transumpro4stats.melt.log$Area ~ transumpro4stats.melt.log$REGION, data=transumpro4stats.melt.log)
+stats.aov[nrow(stats.aov)-1,1] <- "All Proteins"
+stats.aov[nrow(stats.aov)-1,2] <- "Region"
+stats.aov[nrow(stats.aov)-1,3] <- summary(aov.all.region)[[1]][["Pr(>F)"]][[1]]
+tukey.all.region <- TukeyHSD(stats.aov.all.region, ordered=T, conf.level = 0.95)
+stats.tukey[nrow(stats.tukey)-1,1] <- "All Proteins"
+stats.tukey[nrow(stats.tukey)-1,2] <- "Region"
+stats.tukey[nrow(stats.tukey)-1,3] <- rownames(tukey.all.region$`transumpro4stats.melt.log$REGION`)
+stats.tukey[nrow(stats.tukey)-1,4] <- tukey.all.region$`transumpro4stats.melt.log$REGION`[1,4]
+aov.all.treatment <- aov(transumpro4stats.melt.log$Area ~ transumpro4stats.melt.log$TREATMENT, data=transumpro4stats.melt.log)
+stats.aov[nrow(stats.aov),1] <- "All Proteins"
+stats.aov[nrow(stats.aov),2] <- "Treatment"
+stats.aov[nrow(stats.aov),3] <- summary(aov.all.treatment)[[1]][["Pr(>F)"]][[1]]
+tukey.all.region <- TukeyHSD(aov.all.treatment, ordered=T, conf.level = 0.95)
+stats.tukey[nrow(stats.tukey),1] <- "All Proteins"
+stats.tukey[nrow(stats.tukey),2] <- "Region"
+stats.tukey[nrow(stats.tukey),3] <- rownames(tukey.all.region$`transumpro4stats.melt.log$TREATMENT`)
+stats.tukey[nrow(stats.tukey),4] <- tukey.all.region$`transumpro4stats.melt.log$TREATMENT`[1,4]
+write.csv(file="../../analyses/SRM/ANOVA-Stats.csv", stats.aov)
+write.csv(file="../../analyses/SRM/TukeyHSD-Stats.csv", stats.tukey)
+
+stats.aov[c(stats.aov$ANOVA.P < .05),]
+stats.tukey[c(stats.tukey$P < .05),]
 
 
 ### Overall stats for paper
 library(plyr)
+summary(SRM.reps4stats.plots$variance) # summary stats on CV for technical reps, BEFORE screening out poor quality reps. 
+summary(SRM.reps4stats.s.plots$variance) # summary stats on CV for technical reps, AFTER screening out poor quality reps. 
+count(SRM.reps4stats.s.plots[c(SRM.reps4stats.s.plots$variance > 100),])
+
 To <- nrow(SRM.data[!grepl(c("PRTC|Protein Name"), SRM.data$`Protein Name`),]) 
 Tf <- nrow(SRM.data.screened[!grepl(c("PRTC|Protein Name"), SRM.data.screened$`Protein Name`),])
 Tf/To # % transitions kept in analysis
@@ -153,18 +195,18 @@ Ro <- nrow(SRM.temp2) #original # tech reps
 Rf <- nrow(SRM.temp2.screened)  # final # tech reps
 Rf/Ro
 summary(data.melted.plus$Area)
-summary(data.melted.plus.sum$Area) #summary stats on protein abundance (summed transitions)
-data.melted.plus.sum$log <- log(data.melted.plus.sum$Area)
+summary(data.melted.plus.prosum$Area) #summary stats on protein abundance (summed transitions)
+data.melted.plus.prosum$log <- log(data.melted.plus.prosum$Area)
 Agg <- do.call(data.frame, aggregate(Area ~ Protein.Name + SITE + REGION, data=data.melted.plus, FUN= function(x) c(mn = mean(x), sd = sd(x))))
 Agg$Area.cv <- Agg$Area.sd / Agg$Area.mn
-Agg.HSP90.site <- do.call(data.frame, aggregate(Area ~ Protein.Name + SITE + REGION, data=subset(data.melted.plus.sum, Protein.Name %in% "HSP90-alpha"), FUN= function(x) c(mn = mean(x), sd = sd(x))))
+Agg.HSP90.site <- do.call(data.frame, aggregate(Area ~ Protein.Name + SITE + REGION, data=subset(data.melted.plus.prosum, Protein.Name %in% "HSP90-alpha"), FUN= function(x) c(mn = mean(x), sd = sd(x))))
 Agg.HSP90.site$Area.cv <- Agg.HSP90.site$Area.sd/Agg.HSP90.site$Area.mn
-Agg.HSP70.region <- do.call(data.frame, aggregate(Area ~ Protein.Name + REGION, data=subset(data.melted.plus.sum, Protein.Name %in% "HSP70"), FUN= function(x) c(mn = mean(x), sd = sd(x))))
+Agg.HSP70.region <- do.call(data.frame, aggregate(Area ~ Protein.Name + REGION, data=subset(data.melted.plus.prosum, Protein.Name %in% "HSP70"), FUN= function(x) c(mn = mean(x), sd = sd(x))))
 Agg.HSP70.region$Area.cv <- Agg.HSP70.region$Area.sd/Agg.HSP70.region$Area.mn
-Agg.PDI.region <- do.call(data.frame, aggregate(Area ~ Protein.Name + REGION, data=subset(data.melted.plus.sum, Protein.Name %in% "PDI"), FUN= function(x) c(mn = mean(x), sd = sd(x))))
+Agg.PDI.region <- do.call(data.frame, aggregate(Area ~ Protein.Name + REGION, data=subset(data.melted.plus.prosum, Protein.Name %in% "PDI"), FUN= function(x) c(mn = mean(x), sd = sd(x))))
 Agg.PDI.region$Area.cv <- Agg.PDI.region$Area.sd/Agg.PDI.region$Area.mn
 
-hist(log(data.melted.plus.sum$Area))
+hist(log(data.melted.plus.prosum$Area))
 
 
 Agg
@@ -194,28 +236,28 @@ qqnorm(SRM.data.mean.t.melted$value)
 qqline(SRM.data.mean.t.melted$value)
 
 # Checking normality of HSP70 area (transitions summed)
-hist(transum4stats$HSP70) 
-hist(log(transum4stats$HSP70))
-shapiro.test(transum4stats$HSP70) #is HSP70 summed transition data normal? no.
-shapiro.test(log(transum4stats$HSP70)) #is HSP70 summed transition data log-transformed normal? yes
-qqnorm(transum4stats$HSP70)
-qqnorm(log(transum4stats$HSP70))
+hist(transumpro4stats$HSP70) 
+hist(log(transumpro4stats$HSP70))
+shapiro.test(transumpro4stats$HSP70) #is HSP70 summed transition data normal? no.
+shapiro.test(log(transumpro4stats$HSP70)) #is HSP70 summed transition data log-transformed normal? yes
+qqnorm(transumpro4stats$HSP70)
+qqnorm(log(transumpro4stats$HSP70))
 
 # Checking normality of HSP90 area (transitions summed)
-hist(transum4stats$`HSP90-alpha`)
-hist(log(transum4stats$`HSP90-alpha`))
-shapiro.test(transum4stats$`HSP90-alpha`) #is HSP90 summed transition data normal? no
-shapiro.test(log(transum4stats$`HSP90-alpha`)) #log? yes
-qqnorm(transum4stats$`HSP90-alpha`)
-qqnorm(log(transum4stats$`HSP90-alpha`))
+hist(transumpro4stats$`HSP90-alpha`)
+hist(log(transumpro4stats$`HSP90-alpha`))
+shapiro.test(transumpro4stats$`HSP90-alpha`) #is HSP90 summed transition data normal? no
+shapiro.test(log(transumpro4stats$`HSP90-alpha`)) #log? yes
+qqnorm(transumpro4stats$`HSP90-alpha`)
+qqnorm(log(transumpro4stats$`HSP90-alpha`))
 
 # Checking normality of PDI area (transitions summed)
-hist(transum4stats$PDI)
-hist(log(transum4stats$PDI))
-shapiro.test(transum4stats$PDI) #is PDI summed transition data normal?
-shapiro.test(log(transum4stats$PDI)) #is PDI summed transition data normal?
-qqnorm(transum4stats$PDI)
-qqnorm(log(transum4stats$PDI))
+hist(transumpro4stats$PDI)
+hist(log(transumpro4stats$PDI))
+shapiro.test(transumpro4stats$PDI) #is PDI summed transition data normal?
+shapiro.test(log(transumpro4stats$PDI)) #is PDI summed transition data normal?
+qqnorm(transumpro4stats$PDI)
+qqnorm(log(transumpro4stats$PDI))
 
 # is it normal after log transformation?
 SRM.data.mean.t.log.melted <- melt(SRM.data.mean.t.log)

@@ -41,18 +41,19 @@ legend(-2.5,-0.3, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble"
 dev.off()
 
 #### Create plot with forced aspect ratio to zoom in ### 
+plot.default(x=NULL, y=NULL, type="n", xlab="Dimension 1", ylab="Dimension 2", xlim=c(-2.8,1), ylim=c(-0.4,0.2), asp=NA, main="Geoduck Gill NMDS, Similarity Plot", width=600,height=600, cex.axis=1.4, cex.lab=1.6)
 
 png("../../analyses/SRM/NMDS-meaned-zoomed.png")
-plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-3,1), ylim=c(-0.5,0.5), asp=NA, main="SRM NMDS, zoomed")
-points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=8)
-points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15)
-points(SRM.nmds.mean.samples[c(PG.B.samples),], col=marker[3], pch=8)
-points(SRM.nmds.mean.samples[c(PG.E.samples),], col=marker[3], pch=15)
-points(SRM.nmds.mean.samples[c(WB.B.samples),], col=marker[1], pch=8)
-points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker[1], pch=15)
-points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=8)
-points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15)
-legend(-2.5,0.4, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Bare", "Eelgrass"), col=c(marker[4], marker[3], marker[2], marker[1], "black", "black"))
+plot.default(x=NULL, y=NULL, type="n", xlab="NMDS axis 1", ylab="NMDS axis 2", xlim=c(-2.8,1), ylim=c(-0.45,0.25), asp=NA, main="Geoduck Gill NMDS, Similarity Plot", width=600,height=600, cex.axis=1.4, cex.lab=1.6)
+points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker[2], pch=8, cex=2)
+points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker[2], pch=15, cex=2)
+points(SRM.nmds.mean.samples[c(PG.B.samples),], col=marker[3], pch=8, cex=2)
+points(SRM.nmds.mean.samples[c(PG.E.samples),], col=marker[3], pch=15, cex=2)
+points(SRM.nmds.mean.samples[c(WB.B.samples),], col=marker[1], pch=8, cex=2)
+points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker[1], pch=15, cex=2)
+points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=8, cex=2)
+points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15, cex=2)
+legend(-2.8,-0.23, pch=c(rep(16,4), 8, 15), legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Bare", "Eelgrass"), col=c(marker[4], marker[3], marker[2], marker[1], "black", "black"))
 dev.off()
 
 ### Create plot with sample #'s to ID outliers AND with forced aspect ratio to zoom in

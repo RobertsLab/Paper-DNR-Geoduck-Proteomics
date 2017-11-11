@@ -1,0 +1,43 @@
+"","Protein","Group","ANOVA.P"
+"1","Arachidonate","Site",0.0617613296525442
+"2","Catalase","Site",0.865928133633027
+"3","Cytochrome","Site",0.260501959864293
+"4","Glycogen","Site",0.164068842269334
+"5","HSP70","Site",0.000353056052002997
+"6","HSP90-alpha","Site",0.00205383755107575
+"7","PDI","Site",0.00535889950401756
+"8","Peroxiredoxin-1","Site",0.0175646925203583
+"9","Puromycin-sensitive","Site",0.037786968847347
+"10","Ras-related","Site",0.106410135044477
+"11","Sodium/potassium-transporting","Site",0.253520715926018
+"12","Superoxide","Site",0.375206367886869
+"13","Trifunctional","Site",0.0104812039160912
+"14","Arachidonate","Treatment",0.733644470437784
+"15","Catalase","Treatment",0.688360162601921
+"16","Cytochrome","Treatment",0.866683536916672
+"17","Glycogen","Treatment",0.82813676437537
+"18","HSP70","Treatment",0.394201751662332
+"19","HSP90-alpha","Treatment",0.658297807694292
+"20","PDI","Treatment",0.559379385323975
+"21","Peroxiredoxin-1","Treatment",0.922639490199796
+"22","Puromycin-sensitive","Treatment",0.952508961527821
+"23","Ras-related","Treatment",0.916032340537472
+"24","Sodium/potassium-transporting","Treatment",0.679740873676707
+"25","Superoxide","Treatment",0.710997663425951
+"26","Trifunctional","Treatment",0.734019642387845
+"27","Arachidonate","Region",0.157230137436848
+"28","Catalase","Region",0.991008521580389
+"29","Cytochrome","Region",0.0929555860010356
+"30","Glycogen","Region",0.113184515592747
+"31","HSP70","Region",0.000164026432686285
+"32","HSP90-alpha","Region",0.000565196910186705
+"33","PDI","Region",0.000829635947010005
+"34","Peroxiredoxin-1","Region",0.00891002758576513
+"35","Puromycin-sensitive","Region",0.00721461857693424
+"36","Ras-related","Region",0.0421093507237235
+"37","Sodium/potassium-transporting","Region",0.150354887437443
+"38","Superoxide","Region",0.570730471233913
+"39","Trifunctional","Region",0.00498661059787231
+"40","All Proteins","Site",3.54337189785068e-06
+"41","All Proteins","Region",1.49502231549387e-05
+"42","All Proteins","Treatment",0.518987136528975
