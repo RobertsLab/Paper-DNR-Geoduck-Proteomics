@@ -12,12 +12,12 @@ pH.series <- plot_ly(data = pH.Data.melted.noNA, x = ~DateTime, y = ~value, type
   layout(title="pH across sites, 2016 DNR outplant",
          yaxis = list(title = 'pH (total scale)'),
          legend = list(x=.95, y=.95))
-htmlwidgets::saveWidget(as_widget(pH.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/June2016-Outplant-pH-series.html")
+htmlwidgets::saveWidget(as_widget(pH.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-series.html")
 pH.box <- plot_ly(data = pH.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>% 
   layout(title="pH across sites, 2016 DNR outplant",
          yaxis = list(title = 'pH (total scale)'),
          legend = list(x=.95, y=.95))
-htmlwidgets::saveWidget(as_widget(pH.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/June2016-Outplant-pH-box.html")
+htmlwidgets::saveWidget(as_widget(pH.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-box.html")
 
 # Dissolved Oxygen
 DO.Data <- Env.Data[-nrow(Env.Data),c(1,grep("do\\.", colnames(Env.Data)))]
@@ -29,12 +29,12 @@ DO.series <- plot_ly(data = DO.Data.melted.noNA, x = ~DateTime, y = ~value, type
   layout(title="Dissolved Oxygen across sites, 2016 DNR outplant \n(Values <0 and >20 not included)",
          yaxis = list(title = 'DO (mg/L)'),
          legend = list(x=.95, y=.95))
-htmlwidgets::saveWidget(as_widget(DO.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/June2016-Outplant-DO-series.html")
+htmlwidgets::saveWidget(as_widget(DO.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-series.html")
 DO.box <- plot_ly(data = DO.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
   layout(title="Dissolved Oxygen across sites, 2016 DNR outplant \n(Values <0 and >20 not included)",
          yaxis = list(title = 'DO (mg/L)'),
          legend = list(x=.95, y=.95))
-htmlwidgets::saveWidget(as_widget(DO.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/June2016-Outplant-DO-box.html")
+htmlwidgets::saveWidget(as_widget(DO.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-box.html")
 
 
 # Temperature
@@ -46,12 +46,12 @@ T.series <- plot_ly(data = T.Data.melted.noNA, x = ~DateTime, y = ~value, type="
   layout(title="Temperature (from DO sensor) across sites, 2016 DNR outplant",
          yaxis = list(title = 'Temperature (C)'),
          legend = list(x=.95, y=.95))
-htmlwidgets::saveWidget(as_widget(T.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/June2016-Outplant-Temp-series.html")
+htmlwidgets::saveWidget(as_widget(T.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Temp-series.html")
 T.box <- plot_ly(data = T.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
   layout(title="Temperature (from DO sensor) across sites, 2016 DNR outplant",
          yaxis = list(title = 'Temperature (C)'),
          legend = list(x=.95, y=.95))
-htmlwidgets::saveWidget(as_widget(T.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/June2016-Outplant-Temp-box.html")
+htmlwidgets::saveWidget(as_widget(T.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Temp-box.html")
 
 stats.EnvData <- data.frame(matrix(vector(), 12, 10, dimnames=list(c(), c("WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB"))), stringsAsFactors = F, row.names = c("pH-Mean", "pH-SD", "pH-Var", "pH-CV", "DO-Mean", "DO-SD", "DO-Var", "DO-CV", "T-Mean", "T-SD", "T-Var", "T-CV"))
 stats.EnvData[1,1:10] <- apply(pH.Data[,-1], 2, mean, na.rm=TRUE)
@@ -98,6 +98,33 @@ T.Data4anova$Temp <- log(log(T.Data4anova$Temp))
 # Bartlett Test of Homogeneity of Variances
 bartlett.test(value~variable, data=pH.Data.melted.noNA)
 
+Variance.EnvData <- data.frame(matrix(vector(), 6, 4, dimnames=list(c(), c("Treatment", "Habitat", "Site", "Region"))), stringsAsFactors = F, row.names = c("pH-F", "pH-P", "DO-F", "DO-P", "T-F", "T-P"))
+
+for( i in 1:length(ds)) {
+  Variance.EnvData[k[i]*1,1] <- bartlett.test(ds[[i]][,3]~ds[[i]][,2], data=ds[[i]])[[1]] #treatment F
+  Variance.EnvData[(k[i]*1)+1,1] <- bartlett.test(ds[[i]][,3]~ds[[i]][,2], data=ds[[i]])[[3]] # P #treatment P
+  Variance.EnvData[k[i]*1,2] <- bartlett.test(ds[[i]][,3]~ds[[i]][,4], data=ds[[i]])[[1]]  #habitat F
+  Variance.EnvData[(k[i]*1)+1,2] <- bartlett.test(ds[[i]][,3]~ds[[i]][,4], data=ds[[i]])[[3]]  #habitat P
+  Variance.EnvData[k[i]*1,3] <- bartlett.test(ds[[i]][,3]~ds[[i]][,5], data=ds[[i]])[[1]] #site F
+  Variance.EnvData[(k[i]*1)+1,3] <- bartlett.test(ds[[i]][,3]~ds[[i]][,5], data=ds[[i]])[[3]] #site P
+  Variance.EnvData[k[i]*1,4] <- bartlett.test(ds[[i]][,3]~ds[[i]][,6], data=ds[[i]])[[1]] #region F
+  Variance.EnvData[(k[i]*1)+1,4] <- bartlett.test(ds[[i]][,3]~ds[[i]][,6], data=ds[[i]])[[3]] #region P
+}
+write.csv(file="../../analyses/Environmental/Env-Bartlett-Variance.csv", Variance.EnvData)
+
+png("../../analyses/Env-Normality.png", width = 800, height = 800)
+par(mfrow = c(3, 2), mar=c(1,1,3,1), oma=c(1,2,3,1), cex.main= 1.3, cex=.75)
+qqnorm(pH.Data4anova$pH, main="pH QQ-Norm") #looks normal
+qqline(pH.Data4anova$pH) 
+hist(pH.Data4anova$pH, main="pH Histogram")
+qqnorm(DO.Data4anova$DO, main="DO QQ-Norm") #looks normal
+qqline(DO.Data4anova$DO)
+hist(DO.Data4anova$DO, main="DO Histogram")
+qqnorm(T.Data4anova$Temp, main="T QQ-Norm \n(2x log transformed") #does not look normal
+qqline(T.Data4anova$Temp)
+hist(T.Data4anova$Temp, main="Temp Histogram, \n2x log transformed")
+dev.off()
+
 anova.EnvData <- data.frame(matrix(vector(), 6, 4, dimnames=list(c(), c("Treatment", "Habitat", "Site", "Region"))), stringsAsFactors = F, row.names = c("pH-F", "pH-P", "DO-F", "DO-P", "T-F", "T-P"))
 
 ds <- list(pH.Data4anova, DO.Data4anova, T.Data4anova)
@@ -113,31 +140,4 @@ for( i in 1:length(ds)) {
     round(anova.EnvData[(k[i]*1)+1,4] <- summary(aov(ds[[i]][,3] ~ ds[[i]][,6], data=ds[[i]]))[[1]][[1,5]], digits=4) #region P
   }
 
-Variance.EnvData <- data.frame(matrix(vector(), 6, 4, dimnames=list(c(), c("Treatment", "Habitat", "Site", "Region"))), stringsAsFactors = F, row.names = c("pH-F", "pH-P", "DO-F", "DO-P", "T-F", "T-P"))
-
-for( i in 1:length(ds)) {
-  Variance.EnvData[k[i]*1,1] <- bartlett.test(ds[[i]][,3]~ds[[i]][,2], data=ds[[i]])[[1]] #treatment F
-  Variance.EnvData[(k[i]*1)+1,1] <- bartlett.test(ds[[i]][,3]~ds[[i]][,2], data=ds[[i]])[[3]] # P #treatment P
-  Variance.EnvData[k[i]*1,2] <- bartlett.test(ds[[i]][,3]~ds[[i]][,4], data=ds[[i]])[[1]]  #habitat F
-  Variance.EnvData[(k[i]*1)+1,2] <- bartlett.test(ds[[i]][,3]~ds[[i]][,4], data=ds[[i]])[[3]]  #habitat P
-  Variance.EnvData[k[i]*1,3] <- bartlett.test(ds[[i]][,3]~ds[[i]][,5], data=ds[[i]])[[1]] #site F
-  Variance.EnvData[(k[i]*1)+1,3] <- bartlett.test(ds[[i]][,3]~ds[[i]][,5], data=ds[[i]])[[3]] #site P
-  Variance.EnvData[k[i]*1,4] <- bartlett.test(ds[[i]][,3]~ds[[i]][,6], data=ds[[i]])[[1]] #region F
-  Variance.EnvData[(k[i]*1)+1,4] <- bartlett.test(ds[[i]][,3]~ds[[i]][,6], data=ds[[i]])[[3]] #region P
-}
-
-png("../../analyses/Env-Normality.png", width = 800, height = 800)
-par(mfrow = c(3, 2), mar=c(1,1,3,1), oma=c(1,2,3,1), cex.main= 1.3, cex=.75)
-qqnorm(pH.Data4anova$pH, main="pH QQ-Norm") #looks normal
-qqline(pH.Data4anova$pH) 
-hist(pH.Data4anova$pH, main="pH Histogram")
-qqnorm(DO.Data4anova$DO, main="DO QQ-Norm") #looks normal
-qqline(DO.Data4anova$DO)
-hist(DO.Data4anova$DO, main="DO Histogram")
-qqnorm(T.Data4anova$Temp, main="T QQ-Norm \n(2x log transformed") #does not look normal
-qqline(T.Data4anova$Temp)
-hist(T.Data4anova$Temp, main="Temp Histogram, \n2x log transformed")
-dev.off()
-
-
-
+write.csv(file="../../analyses/Environmental/Env-ANOVA.csv", anova.EnvData)
