@@ -1,5 +1,8 @@
 # More stats on SRM data
 
+# fligner.test() function provides a non-parametric test of the equality of variances
+# fligner.test(y~G, data=mydata)  # Figner-Killeen Test of Homogeneity of Variances
+
 # ANOSIM via loop for all proteins
 Proteins4Anosim <- list("Arachidonate"=Arachidonate.4anosim, "Catalase"=Catalase.4anosim, "Cytochrome"=Cytochrome.4anosim, "Glycogen"=Glycogen.4anosim, "HSP70"=HSP70.4anosim, "HSP90"=HSP90.4anosim, "Peroxiredoxin"=Peroxiredoxin.4anosim, "PDI"=PDI.4anosim, "Puromycin"=Puromycin.4anosim, "Rab.11B"=Rab.11B.4anosim, "NAK"=NAK.4anosim, "Superoxide"=Superoxide.4anosim, "Trifunctional"=Trifunctional.4anosim)
 nProteins4anosim <- length(Proteins4Anosim)
@@ -92,6 +95,9 @@ length(unique(data.melted.plus.prosum$SAMPLE))
 pairwise.t.test(HSP90$Area, HSP90$SITE, p.adj = "none")
 pairwise.t.test(data.melted.plus$Area, data.melted.plus$SITE, p.adj = "none")
 
+# Bartlett Test of Homogeneity of Variances provides a parametric K-sample test of the equality of variances. In the following examples y is a numeric variable and G is the grouping variable.
+bartlett.test(log~SITE, data=transum4stats.melt.log)
+
 ### 1-way ANOVA on Protein area, which represent the sum of the transitions in those proteins.
 
 # on transitions pooled by sample # for each protein individually
@@ -115,7 +121,7 @@ for (i in 1:nProteins4aov) {
   stats.aov[i+2*nProteins,1] <- Proteins4aov[i]
   stats.aov[i+2*nProteins,2] <- "Region"
   stats.aov[i+2*nProteins,3] <- summary(aov.region)[[1]][["Pr(>F)"]][[1]]
-  tukey.site <- TukeyHSD(aov.site, ordered=T, conf.level=0.95)              #####not working for tukey table
+  tukey.site <- TukeyHSD(aov.site, ordered=T, conf.level=0.95)              
   tukey.treatment <- TukeyHSD(aov.treatment, ordered=T, conf.level=0.95)
   tukey.region <- TukeyHSD(aov.region, ordered=T, conf.level=0.95)
   stats.tukey[tukeyseq[i]+1,1] <- Proteins4aov[i]
