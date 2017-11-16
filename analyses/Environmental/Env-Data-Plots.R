@@ -67,6 +67,7 @@ stats.EnvData[10,1:10] <- apply(T.Data[,-1], 2, sd, na.rm=TRUE)
 stats.EnvData[11,1:10] <- apply(T.Data[,-1], 2, var, na.rm=TRUE)
 stats.EnvData[12,1:10] <- stats.EnvData[11,1:10]/stats.EnvData[9,1:10]
 round(stats.EnvData[1:12,1:10], digits = 3)
+write.csv(file="../../analyses/Environmental/Env-stats.csv", stats.EnvData)
 
 # Prepare data for Habitat / Site / Regional Comparisons
 
@@ -77,6 +78,7 @@ pH.Data4anova$Site <- substr(pH.Data4anova$Treatment, start=1, stop=2)
 pH.Data4anova$Region <- gsub("WB|CI", "South", pH.Data4anova$Site)
 pH.Data4anova$Region <- gsub("FB|PG", "North", pH.Data4anova$Region)
 pH.Data4anova$Region <- gsub("SK", "NA", pH.Data4anova$Region)
+write.csv(file="../../analyses/Environmental/pH.csv", pH.Data4anova)
 
 DO.Data4anova <- DO.Data.melted.noNA
 colnames(DO.Data4anova) <- c("DateTime", "Treatment", "DO")
@@ -85,6 +87,7 @@ DO.Data4anova$Site <- substr(DO.Data4anova$Treatment, start=1, stop=2)
 DO.Data4anova$Region <- gsub("WB|CI", "South", DO.Data4anova$Site)
 DO.Data4anova$Region <- gsub("FB|PG", "North", DO.Data4anova$Region)
 DO.Data4anova$Region <- gsub("SK", "NA", DO.Data4anova$Region)
+write.csv(file="../../analyses/Environmental/DO.csv", DO.Data4anova)
 
 T.Data4anova <- T.Data.melted.noNA
 colnames(T.Data4anova) <- c("DateTime", "Treatment", "Temp")
@@ -94,6 +97,7 @@ T.Data4anova$Region <- gsub("WB|CI", "South", T.Data4anova$Site)
 T.Data4anova$Region <- gsub("FB|PG", "North", T.Data4anova$Region)
 T.Data4anova$Region <- gsub("SK", "NA", T.Data4anova$Region)
 T.Data4anova$Temp <- log(log(T.Data4anova$Temp))
+write.csv(file="../../analyses/Environmental/T.csv", T.Data4anova)
 
 # Bartlett Test of Homogeneity of Variances
 bartlett.test(value~variable, data=pH.Data.melted.noNA)

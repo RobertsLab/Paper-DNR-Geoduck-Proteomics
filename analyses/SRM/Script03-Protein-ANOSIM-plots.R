@@ -258,7 +258,9 @@ dev.off()
 ########## Box plots where the transitions have been summed by protein 
 
 data.melted.plus.prosum <- aggregate(Area ~ Protein.Name + SAMPLE + SITE + TREATMENT + BOTH + REGION, data.melted.plus, sum)
+write.csv(data.melted.plus.prosum, "../../analyses/SRM/SRM-data-protein-summed.csv")
 data.melted.plus.pepsum <- aggregate(Area ~ Peptide.Sequence + Protein.Name + SAMPLE + SITE + TREATMENT + BOTH + REGION, data.melted.plus, sum)
+write.csv(data.melted.plus.pepsum, "../../analyses/SRM/SRM-data-peptide-summed.csv")
 
 
 # HSP 90
