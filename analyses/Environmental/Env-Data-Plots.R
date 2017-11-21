@@ -36,7 +36,6 @@ DO.box <- plot_ly(data = DO.Data.melted.noNA, x = ~variable, y = ~value, type="b
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(DO.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-box.html")
 
-
 # Temperature
 T.Data <- Env.Data[-nrow(Env.Data),c(1,grep("doT", colnames(Env.Data)))]
 names(T.Data) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB")
