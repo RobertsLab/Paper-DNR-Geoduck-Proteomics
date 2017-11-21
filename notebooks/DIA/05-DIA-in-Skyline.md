@@ -70,4 +70,9 @@
 ### And it's complete. I've rearranged the windo via VIEW -> RETENTION TIME -> REPLICATE COMPARISON, and VIEW -> PEAK AREAS -> REPLICATE COMPARISON. 
 ![New-DIA-Skyline-23](../../images/New-DIA-Skyline-23.png?raw=true)
 
-### According to Skyline 6,805 proteins were detected across all 10 samples, comprising 24,932 peptdies, with 245,294 transitions.
+### According to Skyline 6,805 proteins were detected across all 10 samples, comprising 24,932 peptdies, with 245,294 transitions. I exported the data by going to FILE -> EXPORT -> REPORT, modified the metrics I'd like in my report to include area data for each transition in each sample.  I also selected the "pivot by replicate" box, since I'll want my data in that form to run an NMDS plot. 
+
+![New-DIA-Skyline-24](../../images/New-DIA-Skyline-24.png?raw=true)
+
+
+
