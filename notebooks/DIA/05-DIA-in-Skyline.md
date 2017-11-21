@@ -1,4 +1,4 @@
-## In this notebook I start a Skyline DIA project, import my protein database and raw data. 
+## In this notebook I start a Skyline DIA project, import my protein database and raw data, then export data as a .csv
   * Emma executed the final PECAN run for me with my DIA data, and sent me the resulting .blib file. 
   * I used the following references for this Skyline workflow: [tutorial slidedeck for SRM](https://github.com/RobertsLab/project-pacific.oyster-larvae/blob/master/Skyline-example-files-ETS.sky/slides01.pdf), Emma's [suggested settings](https://www.evernote.com/shard/s242/sh/2d6c487c-7d9b-423d-a7a0-9a6c64199302/82b8812164cd461f), and this [DIA Analysis Tutorial on the Roberts Lab site](https://github.com/sr320/LabDocs/wiki/DIA-data-Analyses).
 
