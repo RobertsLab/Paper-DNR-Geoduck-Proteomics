@@ -66,3 +66,6 @@
 ![New-DIA-Skyline-21](../../images/New-DIA-Skyline-21.png?raw=true)
 
 ![New-DIA-Skyline-22](../../images/New-DIA-Skyline-22.png?raw=true)
+
+### And it's complete. I've rearranged the windo via VIEW -> RETENTION TIME -> REPLICATE COMPARISON, and VIEW -> PEAK AREAS -> REPLICATE COMPARISON. 
+![New-DIA-Skyline-23](../../images/New-DIA-Skyline-23.png?raw=true)
