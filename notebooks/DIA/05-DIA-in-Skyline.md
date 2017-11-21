@@ -69,3 +69,5 @@
 
 ### And it's complete. I've rearranged the windo via VIEW -> RETENTION TIME -> REPLICATE COMPARISON, and VIEW -> PEAK AREAS -> REPLICATE COMPARISON. 
 ![New-DIA-Skyline-23](../../images/New-DIA-Skyline-23.png?raw=true)
+
+### According to Skyline 6,805 proteins were detected across all 10 samples, comprising 24,932 peptdies, with 245,294 transitions.
