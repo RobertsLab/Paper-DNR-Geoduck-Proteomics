@@ -47,7 +47,7 @@
 
 ![New-DIA-Skyline-15](../../images/New-DIA-Skyline-15.png?raw=true)
 
-##### The fasta loads, tells you how many proteins were imported, then populates the left side of the screen with the protein "names" (protein ID from my fasta):
+### The fasta loads, tells you how many proteins were imported, then populates the left side of the screen with the protein "names" (protein ID from my fasta):
 
 ![New-DIA-Skyline-16](../../images/New-DIA-Skyline-16.png?raw=true)
 
@@ -55,11 +55,14 @@
 
 ![New-DIA-Skyline-18](../../images/New-DIA-Skyline-18.png?raw=true)
 
-##### Now it's time to import my sample files!  According to the tutorial, since I demultiplexed my .raw files during the conversion step, I need to import the converted files into Skyline (as opposed to using .raw files). 
+### Now it's time to import my sample files! Since I demultiplexed my .raw files during the conversion step, I need to import the converted .mzML files into Skyline (as opposed to using .raw files). 
 
 ![New-DIA-Skyline-19](../../images/New-DIA-Skyline-19.png?raw=true)
 
 ![New-DIA-Skyline-20](../../images/New-DIA-Skyline-20.png?raw=true)
 
+### Watching import progress ... 
+
 ![New-DIA-Skyline-21](../../images/New-DIA-Skyline-21.png?raw=true)
 
+![New-DIA-Skyline-22](../../images/New-DIA-Skyline-22.png?raw=true)
