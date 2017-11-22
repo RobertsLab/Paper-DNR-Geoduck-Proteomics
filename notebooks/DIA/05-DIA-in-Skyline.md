@@ -74,8 +74,18 @@
 
 ![New-DIA-Skyline-24](../../images/New-DIA-Skyline-24.png?raw=true)
 
-#### I also exported the report in long form (aka not pivoted by sample). 
+#### I also exported the report in long form (aka not pivoted by sample). This is in [Owl, "DIA-Report-long.csv"](http://owl.fish.washington.edu/generosa/Generosa_DNR/DIA-Report-long.csv)
 
 ![New-DIA-Skyline-25](../../images/New-DIA-Skyline-25.png?raw=true)
+
+---
+
+### During our PECAN run the PRTC standard peptides were not labeled as "heavy", and therefore they aren't correctly included in the .blib file.  To use the PRTC peptides in our DIA analysis for quality control, Emma provided us with a Skyline file loaded with the PRTC peptides.  This project file can be used to view the consistency of the PRTC retention times and abundances. RT likely shifted during the run, and data _can_ be adjusted to account for this shift.  The abundances should be the same in each sample (and definitely between reps), since we loaded the same amount of PRTC standard into all samples. 
+
+#### Download the SkylineDaily [DIA-PRTC-peptides.sky.zip](http://owl.fish.washington.edu/generosa/Generosa_DNR/PRTC%20peptides.sky.zip) project documents from Owl; unzip the folder. Open the .sky file in a SkylineDaily window
+
+#### Import results (mzML files), just like you did previously. 
+
+![New-DIA-Skyline-26](../../images/New-DIA-Skyline-26.png?raw=true)
 
 
