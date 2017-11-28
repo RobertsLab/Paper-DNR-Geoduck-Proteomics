@@ -1,10 +1,10 @@
 library(reshape)
 library(plotly) #open plotly program package
 setwd("~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics")
-Env.Data <- data.frame(read.csv(file="~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/data/EnvDataSync.csv", stringsAsFactors=F, header=T, na.strings = ""))
+Env.Data <- data.frame(read.csv(file="~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/data/Environmental/EnvData-Master.csv", stringsAsFactors=F, header=T, na.strings = ""))
 
 # pH 
-pH.Data <- Env.Data[-nrow(Env.Data),c(1,grep("pH\\.", colnames(Env.Data)))]
+pH.Data <- Env.Data[,c(1,grep("pH\\.", colnames(Env.Data)))]
 names(pH.Data) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB")
 pH.Data.melted <- melt(pH.Data, id="DateTime")
 pH.Data.melted.noNA <- pH.Data.melted[which(!is.na(pH.Data.melted$value)),]
@@ -20,24 +20,24 @@ pH.box <- plot_ly(data = pH.Data.melted.noNA, x = ~variable, y = ~value, type="b
 htmlwidgets::saveWidget(as_widget(pH.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-box.html")
 
 # Dissolved Oxygen
-DO.Data <- Env.Data[-nrow(Env.Data),c(1,grep("do\\.", colnames(Env.Data)))]
-DO.Data.noOuts <- DO.Data[which(DO.Data$FBE < 20),] #Remove FBE values over 20
+DO.Data <- Env.Data[,c(1,grep("do\\.", colnames(Env.Data)))]
+DO.Data.noOuts <- DO.Data[which(DO.Data$FBE < 50),] #Remove FBE values over 50
 names(DO.Data) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB")
 DO.Data.melted <- melt(DO.Data, id="DateTime")
-DO.Data.melted.noNA <- DO.Data.melted[which(!is.na(DO.Data.melted$value) & DO.Data.melted$value < 20 & DO.Data.melted$value > 0),]
+DO.Data.melted.noNA <- DO.Data.melted[which(!is.na(DO.Data.melted$value) & DO.Data.melted$value > 0),]
 DO.series <- plot_ly(data = DO.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%
-  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant \n(Values <0 and >20 not included)",
+  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant \n(Values <0 and >50 not included)",
          yaxis = list(title = 'DO (mg/L)'),
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(DO.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-series.html")
 DO.box <- plot_ly(data = DO.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
-  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant \n(Values <0 and >20 not included)",
+  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant \n(Values <0 and >50 not included)",
          yaxis = list(title = 'DO (mg/L)'),
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(DO.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-box.html")
 
 # Temperature
-T.Data <- Env.Data[-nrow(Env.Data),c(1,grep("doT", colnames(Env.Data)))]
+T.Data <- Env.Data[,c(1,grep("doT", colnames(Env.Data)))]
 names(T.Data) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB")
 T.Data.melted <- melt(T.Data, id="DateTime")
 T.Data.melted.noNA <- T.Data.melted[which(!is.na(T.Data.melted$value)),]
@@ -51,6 +51,40 @@ T.box <- plot_ly(data = T.Data.melted.noNA, x = ~variable, y = ~value, type="box
          yaxis = list(title = 'Temperature (C)'),
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(T.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Temp-box.html")
+
+# Salinity
+S.Data <- Env.Data[,c(1,grep("ctS", colnames(Env.Data)))]
+names(S.Data) <- c("DateTime", "CIB", "CIE", "FBB", "FBE", "PGE", "SKE", "SKB", "WBB", "WBE")
+S.Data.melted <- melt(S.Data, id="DateTime")
+S.Data.melted$value <- as.numeric(levels(S.Data.melted$value))[S.Data.melted$value]
+S.Data.melted.noNA <- S.Data.melted[which(!is.na(S.Data.melted$value)),]
+S.series <- plot_ly(data = S.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%
+  layout(title="Salinity across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Salinity'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(S.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-series.html")
+S.box <- plot_ly(data = S.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
+  layout(title="Salinity across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Salinity'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(S.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-box.html")
+
+# Tidal height
+Tide.Data <- Env.Data[,c(1,grep("Tide", colnames(Env.Data)))]
+names(Tide.Data) <- c("DateTime", "FB", "PG", "CI", "WB")
+Tide.Data.melted <- melt(Tide.Data, id="DateTime")
+# Tide.Data.melted$value <- as.numeric(levels(Tide.Data.melted$value))[Tide.Data.melted$value]
+Tide.Data.melted.noNA <- Tide.Data.melted[which(!is.na(Tide.Data.melted$value)),]
+Tide.series <- plot_ly(data = Tide.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%
+  layout(title="Tidal height across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Tidal Height'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(Tide.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Tide-series.html")
+Tide.box <- plot_ly(data = Tide.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
+  layout(title="Tidal height across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Tidal Height'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(Tide.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Tide-box.html")
 
 stats.EnvData <- data.frame(matrix(vector(), 12, 10, dimnames=list(c(), c("WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB"))), stringsAsFactors = F, row.names = c("pH-Mean", "pH-SD", "pH-Var", "pH-CV", "DO-Mean", "DO-SD", "DO-Var", "DO-CV", "T-Mean", "T-SD", "T-Var", "T-CV"))
 stats.EnvData[1,1:10] <- apply(pH.Data[,-1], 2, mean, na.rm=TRUE)
