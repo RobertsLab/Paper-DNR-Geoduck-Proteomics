@@ -141,3 +141,23 @@ View(Prot.outliers.reg)
 # ====> HSP90-alpha
 # ====> Trifunctional enzyme subunit
 # While ANOVA indicates Arachidonate is significantly different between sites, there are 5 outlying data points; should consider removing those, re-running ANOVA to see if the outliers are having a large effect. 
+
+# Plot peptides within a protein against each other. Should be linearly correlated. summary() shows equation with R^2
+# Peptide 1 x Peptide 2
+pep12 <- lm(`1` ~ `2`, data=data.melted.plus.pepsum.wide)
+summary(pep12)
+with(data.melted.plus.pepsum.wide, plot(`1`,`2`))
+abline(pep12)
+# Peptide 1 x Peptide 3
+pep13 <- lm(`1` ~ `3`, data=data.melted.plus.pepsum.wide)
+summary(pep13)
+with(data.melted.plus.pepsum.wide, plot(`1`,`3`))
+abline(pep13)
+# Peptide 2 x Peptide 3
+pep23 <- lm(`2` ~ `3`, data=data.melted.plus.pepsum.wide)
+summary(pep23)
+with(data.melted.plus.pepsum.wide, plot(`2`,`3`))
+abline(pep13)
+
+# Select 1 of the peptides to develop the linear model. 
+# I will select peptide #1. 

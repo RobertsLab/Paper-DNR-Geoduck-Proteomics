@@ -1,4 +1,4 @@
-#Stats3 script: prep for regression models
+#Stats3 script: prep environmental and protein data for regression models
 
 # Pull summary statistics on environmental data
 
@@ -227,25 +227,6 @@ data.melted.plus.pepsum[grepl(Protein2Peptide[28,1], data.melted.plus.pepsum$Pep
 data.melted.plus.pepsum[grepl(Protein2Peptide[29,1], data.melted.plus.pepsum$Peptide.Sequence),][["Pep"]] <- "3" #Trifunctional 3
 data.melted.plus.pepsum.wide <- cast(data.melted.plus.pepsum, Protein.Name+SAMPLE+SITE+TREATMENT+BOTH+REGION~Pep, value="lambda.t")
 
-# Plot peptides within a protein against each other. Should be linearly correlated. summary() shows equation with R^2
-# Peptide 1 x Peptide 2
-pep12 <- lm(`1` ~ `2`, data=data.melted.plus.pepsum.wide)
-summary(pep12)
-with(data.melted.plus.pepsum.wide, plot(`1`,`2`))
-abline(pep12)
-# Peptide 1 x Peptide 3
-pep13 <- lm(`1` ~ `3`, data=data.melted.plus.pepsum.wide)
-summary(pep13)
-with(data.melted.plus.pepsum.wide, plot(`1`,`3`))
-abline(pep13)
-# Peptide 2 x Peptide 3
-pep23 <- lm(`2` ~ `3`, data=data.melted.plus.pepsum.wide)
-summary(pep23)
-with(data.melted.plus.pepsum.wide, plot(`2`,`3`))
-abline(pep13)
-
-# Select 1 of the peptides to develop the linear model. 
-# I will select peptide #1. 
 
 # Merge Environmental summary data with my peptide data
 
