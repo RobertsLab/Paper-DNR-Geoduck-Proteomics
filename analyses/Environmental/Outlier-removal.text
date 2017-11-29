@@ -1,0 +1,210 @@
+The following is the result of the `outlierKD` function on pH, DO & Salinity data at each probe location. Please also see the .png plots of with outliers, and without outliers. 
+
+> #pH
+
+## FBB
+Outliers identified: 0 from 6787 observations
+Proportion (%) of outliers: 0
+Mean of the outliers: NaN
+Mean without removing outliers: 7.4637056136732
+Mean if we remove outliers: 7.4637056136732
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+## FBE
+Outliers identified: 84 from 6787 observations
+Proportion (%) of outliers: 1.237660232798
+Mean of the outliers: 7.40738095238095
+Mean without removing outliers: 7.89787387652866
+Mean if we remove outliers: 7.90402058779651
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+## PGB
+Outliers identified: 12 from 6652 observations
+Proportion (%) of outliers: 0.180396873120866
+Mean of the outliers: 6.77
+Mean without removing outliers: 7.4198120865905
+Mean if we remove outliers: 7.42098644578313
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+# _No PGE pH Data_
+
+#CIB
+Outliers identified: 765 from 6787 observations
+Proportion (%) of outliers: 11.271548548696
+Mean of the outliers: 8.21267973856209
+Mean without removing outliers: 7.71339030499484
+Mean if we remove outliers: 7.64996346728662
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#CIE
+Outliers identified: 129 from 6787 observations
+Proportion (%) of outliers: 1.90069250036835
+Mean of the outliers: 7.69193798449612
+Mean without removing outliers: 7.91345955503168
+Mean if we remove outliers: 7.91775157705016
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#WBB
+Outliers identified: 9 from 7185 observations
+Proportion (%) of outliers: 0.125260960334029
+Mean of the outliers: 7.06555555555556
+Mean without removing outliers: 7.61024495476688
+Mean if we remove outliers: 7.61092809364548
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#WBE
+Outliers identified: 374 from 7185 observations
+Proportion (%) of outliers: 5.20528879610299
+Mean of the outliers: 7.63729946524064
+Mean without removing outliers: 7.80819485038274
+Mean if we remove outliers: 7.81757891645867
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+
+# Dissolved Oxygen
+
+#FBB
+Outliers identified: 320 from 6787 observations
+Proportion (%) of outliers: 4.71489612494475
+Mean of the outliers: 33.7355625
+Mean without removing outliers: 12.1312656549285
+Mean if we remove outliers: 11.0622421524664
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#FBE
+Outliers identified: 691 from 5428 observations
+Proportion (%) of outliers: 12.7302873986735
+Mean of the outliers: 42119.5058465991
+Mean without removing outliers: 5373.39082535004
+Mean if we remove outliers: 13.1278995144606
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#PGB
+Outliers identified: 192 from 6652 observations
+Proportion (%) of outliers: 2.88634996993385
+Mean of the outliers: 25.2258854166667
+Mean without removing outliers: 12.376486770896
+Mean if we remove outliers: 11.9945851393189
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#PGE
+Outliers identified: 547 from 6652 observations
+Proportion (%) of outliers: 8.22309079975947
+Mean of the outliers: 30.2785740402194
+Mean without removing outliers: 12.5993430547204
+Mean if we remove outliers: 11.0153071253071
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#CIB
+Outliers identified: 18 from 6787 observations
+Proportion (%) of outliers: 0.265212907028142
+Mean of the outliers: 15.1283333333333
+Mean without removing outliers: 9.25296743774864
+Mean if we remove outliers: 9.23734377308317
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#CIE
+Outliers identified: 136 from 6787 observations
+Proportion (%) of outliers: 2.00383085310152
+Mean of the outliers: 19.3588970588235
+Mean without removing outliers: 11.0473066155886
+Mean if we remove outliers: 10.8773507743197
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#WBB
+Outliers identified: 968 from 7184 observations
+Proportion (%) of outliers: 13.4743875278396
+Mean of the outliers: 18.2467252066116
+Mean without removing outliers: 10.136699610245
+Mean if we remove outliers: 8.87374839124839
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#WBE
+Outliers identified: 944 from 7184 observations
+Proportion (%) of outliers: 13.1403118040089
+Mean of the outliers: 14.8616737288136
+Mean without removing outliers: 9.47339782850779
+Mean if we remove outliers: 8.6582483974359
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#Salinity
+
+#FBB
+Outliers identified: 337 from 4866 observations
+Proportion (%) of outliers: 6.92560624743116
+Mean of the outliers: 25.1510385756677
+Mean without removing outliers: 36.8480065762433
+Mean if we remove outliers: 37.7183705012144
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#FBE
+Outliers identified: 277 from 6778 observations
+Proportion (%) of outliers: 4.08675125405724
+Mean of the outliers: 30.0028880866426
+Mean without removing outliers: 38.3189731484214
+Mean if we remove outliers: 38.6733117981849
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+# No PGB Salinity Data
+
+#PGE
+Outliers identified: 179 from 6494 observations
+Proportion (%) of outliers: 2.75639051432091
+Mean of the outliers: 12.5435754189944
+Mean without removing outliers: 29.8186171850939
+Mean if we remove outliers: 30.3082818685669
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#CIB
+Outliers identified: 73 from 6720 observations
+Proportion (%) of outliers: 1.08630952380952
+Mean of the outliers: 18.7356164383562
+Mean without removing outliers: 29.433556547619
+Mean if we remove outliers: 29.5510455844742
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#CIE
+Outliers identified: 1075 from 6524 observations
+Proportion (%) of outliers: 16.477621091355
+Mean of the outliers: 4.75953488372093
+Mean without removing outliers: 21.9956621704476
+Mean if we remove outliers: 25.3960726738851
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#WBB
+Outliers identified: 0 from 6979 observations
+Proportion (%) of outliers: 0
+Mean of the outliers: NaN
+Mean without removing outliers: 20.1267660123227
+Mean if we remove outliers: 20.1267660123227
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed
+
+#WBE
+Outliers identified: 484 from 7064 observations
+Proportion (%) of outliers: 6.85164212910532
+Mean of the outliers: 22.8574380165289
+Mean without removing outliers: 31.4673414496036
+Mean if we remove outliers: 32.1006534954407
+Do you want to remove outliers and to replace with NA? [yes/no]: yes
+Outliers successfully removed

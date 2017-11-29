@@ -12,14 +12,20 @@ Each Protein:  (assume proteins are independent)
     9. Compare total abundance between sites (sum peptide abundance)  
 
 Each environmental variable:  
-    1. Normality of each env. variable (all time points)  
-    2. Determine P-adjusted, correct for multiple comparisons (P/4)  
-    3. N-way ANOVA for each env. variable by location  
-    4. Post-hoc test (name?) to ID differences  
-    5. Ultimate goal: which env. variables are different between locations?   
+    1. Edit pH, DO & Salinity data:  
+      a. Remove data from exposed time points, as determined from tidal charts  
+      b. Identify and remove outliers from pH, DO & Salinity data  
+      c. Recombined outlier-scrubed data with Temp, Tide data. 
+    2. Assess Normality of each env. variable (all time points)  
+      * Found to be non-parametric (pH is kinda, but let's assume not). Dataset is large (>6000 for each parameter), so did not determine lambda via `tukeytransform` function. Instead, used Krusgal-Wallis non-parametric analysis in lieu of ANOVA
+    3. KW test for each env. variable by location, by region
+    4. Dunn Test post-hoc test to ID differences  
+    5. Use bonferroni correction for P-adjusted in tests
+    6. Ultimate goal: which env. variables are different between locations? 
+      a. basically all of them.
 
 Prep for regression model:  
-    1. Mean, median, variance, % above & below 1 (or 2) st. dev from mean  
+    1. Calculate summary statistics: mean, variance, sd, min, max, median, %>1 sd from mean, %>2 sd from mean    
     2. Plot() all env. variables- are any linearly related, aka not independent? If so, need to include interaction parameter in regression model.  
     3. Plot() protein peptides against each other to confirm linear correlation; equation should be ~1:1.  
     4. If all correlated select 1 peptide to use in regression model; highest abundance is best.  
