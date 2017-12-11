@@ -2,7 +2,7 @@
   * Emma executed the final PECAN run for me with my DIA data, and sent me the resulting .blib file. 
   * I used the following references for this Skyline workflow: [tutorial slidedeck for SRM](https://github.com/RobertsLab/project-pacific.oyster-larvae/blob/master/Skyline-example-files-ETS.sky/slides01.pdf), Emma's [suggested settings](https://www.evernote.com/shard/s242/sh/2d6c487c-7d9b-423d-a7a0-9a6c64199302/82b8812164cd461f), and this [DIA Analysis Tutorial on the Roberts Lab site](https://github.com/sr320/LabDocs/wiki/DIA-data-Analyses).
 
-#### Start a Skyline project: open SkylineDaily (I used version 3.6.1.11571) 
+#### Start a Skyline project: open Skyline (I used version 3.7.0.11317) 
 
 ![New-DIA-Skyline-00](../../images/New-DIA-Skyline-00.png?raw=true)
 
