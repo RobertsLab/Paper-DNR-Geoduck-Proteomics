@@ -28,7 +28,7 @@
 
 ![New-DIA-Skyline-08](../../images/New-DIA-Skyline-09.png?raw=true)
 
-![New-DIA-Skyline-09](../../master/images/New-DIA-Skyline-03.png?raw=true)
+![New-DIA-Skyline-09](../../images/New-DIA-Skyline-03.png?raw=true)
 
 
 #### After adjusting all Peptide Settings, hit "OK."  Then, opened **SETTINGS -> TRANSITION SETTINGS** and adjusted all tabs as follows:
