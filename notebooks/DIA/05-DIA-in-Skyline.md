@@ -70,7 +70,7 @@
 #### And it's complete. I've rearranged the windo via VIEW -> RETENTION TIME -> REPLICATE COMPARISON, and VIEW -> PEAK AREAS -> REPLICATE COMPARISON. 
 ![New-DIA-Skyline-23](../../images/New-DIA-Skyline-23.png?raw=true)
 
-#### According to Skyline 6,805 proteins were detected across all 10 samples, comprising 24,932 peptdies, with 245,294 transitions. I exported the data by going to FILE -> EXPORT -> REPORT, modified the metrics I'd like in my report to include area data for each transition in each sample.  I also selected the "pivot by replicate" box, since I'll want my data in that form to run an NMDS plot. The report is saved on [Owl, "DIA-Report.csv"](http://owl.fish.washington.edu/generosa/Generosa_DNR/DIA-Report.csv)
+#### According to Skyline 8,061 proteins were detected across all 10 samples, comprising 30,547 peptdies, with 2497,239 transitions. I exported the data by going to FILE -> EXPORT -> REPORT, modified the metrics I'd like in my report to include area data for each transition in each sample.  I also selected the "pivot by replicate" box, since I'll want my data in that form to run an NMDS plot. The report is saved on [Owl, "DIA-Report.csv"](http://owl.fish.washington.edu/generosa/Generosa_DNR/DIA-Report.csv)
 
 ![New-DIA-Skyline-24](../../images/New-DIA-Skyline-24.png?raw=true)
 
