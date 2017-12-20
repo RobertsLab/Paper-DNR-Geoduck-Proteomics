@@ -7,7 +7,7 @@ Identifying biological functions that we were able to detect in DIA data across 
   * Normalized abundance data by Total Ion Current (TIC) within replicates  
   * Generated .csv with annotated abundance data and uploaded to owl: [Generosa_DNR/DIA-annotated.csv](http://owl.fish.washington.edu/generosa/Generosa_DNR/DIA-annotated.csv)  
   * Generated .csv with Uniprot IDs for 1) [Whole Transcriptome](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/Geoannotations-UniprotID.csv), and 2) [Proteins detected in DIA](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-annotated-UniprotID.csv)   
-  * Used DAVID & ReviGO to assess major GO terms/biological functions detected via DIA method  
+  * Used DAVID & ReviGO to assess major GO terms/biological functions detected via DIA method. ReviGO table saved as [All-DIA-Proteins_REVIGO-table.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/All-DIA-Proteins_REVIGO-table.csv)  
   ![All Detected Proteins Treemap](../../images/DAVID-01-AllDIAProteins-Treemap.PNG?raw=true)
 
 # Analyzing DIA results in light of SRM results: 
@@ -35,11 +35,11 @@ In light of the SRM data I returned to the DIA data to see if there are any larg
 ### Pasted GO & Pvalues into ReviGO
   ![ReviGO Analysis](../../images/DAVID2-07.PNG?raw=true)
 
-## 428 proteins 2x more abundant in Northern Sites, in the following GO categories; GO file [DIA_GO-Terms_FoldChange2-North.txt](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA_GO-Terms_FoldChange2-North.txt)
+## 428 proteins 2x more abundant in Northern Sites, in the following GO categories; GO file [DIA_GO-Terms_FoldChange2-North.txt](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA_GO-Terms_FoldChange2-North.txt); ReviGO file [DIA-FC2-North_REVIGO-table.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-FC2-North_REVIGO-table.csv)
   ![2x More in North](../../images/DAVID2-12-FC2-NorthUp2.PNG?raw=true)
   ![2x More in North](../../images/DAVID2-13-FC2-NorthUp3.PNG?raw=true)
   
-## 126 proteins 2x more abundant in Southern Sites, in the following GO categories; GO file [DIA_GO-Terms_FoldChange2-South.txt](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA_GO-Terms_FoldChange2-South.txt): 
+## 126 proteins 2x more abundant in Southern Sites, in the following GO categories; GO file [DIA_GO-Terms_FoldChange2-South.txt](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA_GO-Terms_FoldChange2-South.txt); ReviGO file [DIA-FC2-South_REVIGO-table.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-FC2-South_REVIGO-table.csv): 
    ![2x More in South](../../images/DAVID2-14-FC2-SouthUp1.PNG?raw=true)
    ![2x More in South](../../images/DAVID2-15-FC2-SouthUp2.PNG?raw=true)
    
