@@ -8,7 +8,7 @@ Identifying biological functions that we were able to detect in DIA data across 
   * Generated .csv with annotated abundance data and uploaded to owl: [Generosa_DNR/DIA-annotated.csv](http://owl.fish.washington.edu/generosa/Generosa_DNR/DIA-annotated.csv)  
   * Generated .csv with Uniprot IDs for 1) [Whole Transcriptome](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/Geoannotations-UniprotID.csv), and 2) [Proteins detected in DIA](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-annotated-UniprotID.csv)   
   * Used DAVID & ReviGO to assess major GO terms/biological functions detected via DIA method  
-  [All Detected Proteins Treemap](../../images/DAVID-01-AllDIAProteins-Treemap.PNG?raw=true)
+  ![All Detected Proteins Treemap](../../images/DAVID-01-AllDIAProteins-Treemap.PNG?raw=true)
 
 # Analyzing DIA results in light of SRM results: 
 In light of the SRM data I returned to the DIA data to see if there are any large patterns in the biological functions that were differentially expressed between regions, North (FB, PGB) vs. South (CI, WB).  
