@@ -1,0 +1,32 @@
+term_ID,description,frequency,plot_X,plot_Y,plot_size,log10 p-value,uniqueness,dispensability,representative,eliminated
+GO:0003006,"developmental process involved in reproduction",0.296%,-5.333,-5.300,4.580,-1.8571,0.694,0.000,3006,0
+GO:0015701,"bicarbonate transport",0.007%, 0.331, 2.383,2.941,-2.5192,0.898,0.000,15701,0
+GO:0071526,"semaphorin-plexin signaling pathway",0.019%, 3.564,-5.420,3.381,-3.0762,0.711,0.000,71526,0
+GO:0009437,"carnitine metabolic process",0.010%, 1.900, 5.095,3.097,-1.5765,0.887,0.018,9437,0
+GO:0032981,"mitochondrial respiratory chain complex I assembly",0.013%,-5.422,-0.120,3.207,-1.3750,0.805,0.019,32981,0
+GO:0051865,"protein autoubiquitination",0.016%, 5.388, 2.674,3.319,-1.2190,0.824,0.033,51865,0
+GO:0006635,"fatty acid beta-oxidation",0.080%,-2.898, 4.098,4.011,-2.9157,0.774,0.052,6635,0
+GO:0061512,"protein localization to cilium",0.010%,-6.519, 2.497,3.095,-1.3354,0.889,0.146,61512,0
+GO:0051453,"regulation of intracellular pH",0.028%, 4.730,-1.602,3.551,-1.8395,0.784,0.150,51453,0
+GO:0032264,"IMP salvage",0.011%,-0.899, 4.907,3.156,-1.8571,0.807,0.197,32264,0
+GO:0048545,"response to steroid hormone",0.118%, 1.902,-7.214,4.179,-2.5192,0.666,0.241,48545,0
+GO:0035094,"response to nicotine",0.006%,null,null,2.912,-1.2190,0.700,0.740,48545,1
+GO:0014070,"response to organic cyclic compound",0.227%,null,null,4.464,-1.5724,0.671,0.728,48545,1
+GO:0019722,"calcium-mediated signaling",0.040%, 4.180,-5.446,3.707,-1.6861,0.729,0.309,19722,0
+GO:0008209,"androgen metabolic process",0.004%, 6.133,-1.938,2.699,-1.5765,0.837,0.356,8209,0
+GO:0006032,"chitin catabolic process",0.018%,-1.801, 5.299,3.368,-1.0929,0.844,0.373,6032,0
+GO:1902287,"semaphorin-plexin signaling pathway involved in axon guidance",0.001%,-1.500,-5.045,2.161,-2.2411,0.443,0.465,1902287,0
+GO:0035721,"intraciliary retrograde transport",0.003%,-4.487, 0.263,2.626,-1.2190,0.655,0.467,35721,0
+GO:0060271,"cilium assembly",0.104%,null,null,4.124,-1.1924,0.653,0.790,35721,1
+GO:0001649,"osteoblast differentiation",0.040%,-4.737,-4.799,3.710,-1.8045,0.639,0.509,1649,0
+GO:0021987,"cerebral cortex development",0.020%,-4.649,-5.793,3.410,-1.4871,0.660,0.514,21987,0
+GO:0042493,"response to drug",0.266%, 2.198,-6.796,4.534,-2.0664,0.698,0.533,42493,0
+GO:0090263,"positive regulation of canonical Wnt signaling pathway",0.019%, 2.647,-4.856,3.386,-1.5724,0.670,0.542,90263,0
+GO:0030855,"epithelial cell differentiation",0.139%,-4.355,-4.547,4.252,-1.1613,0.624,0.615,30855,0
+GO:0071364,"cellular response to epidermal growth factor stimulus",0.005%, 2.227,-7.438,2.842,-1.2438,0.688,0.630,71364,0
+GO:0000209,"protein polyubiquitination",0.066%, 5.651, 2.407,3.929,-1.2030,0.818,0.651,209,0
+GO:0042787,"protein ubiquitination involved in ubiquitin-dependent protein catabolic process",0.060%,null,null,3.888,-1.0877,0.770,0.709,209,1
+GO:0048841,"regulation of axon extension involved in axon guidance",0.004%,-1.270,-4.236,2.730,-2.2411,0.404,0.681,48841,0
+GO:0008584,"male gonad development",0.023%,-5.064,-5.633,3.473,-1.2190,0.667,0.687,8584,0
+GO:0016358,"dendrite development",0.049%,-4.650,-3.424,3.800,-1.1613,0.532,0.690,16358,0
+GO:0021785,"branchiomotor neuron axon guidance",0.002%,-2.309,-5.059,2.318,-2.0209,0.471,0.693,21785,0

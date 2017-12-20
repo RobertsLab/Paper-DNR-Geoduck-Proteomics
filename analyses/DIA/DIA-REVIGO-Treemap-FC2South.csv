@@ -1,0 +1,24 @@
+term_ID,description,frequency,plot_X,plot_Y,plot_size,log10 p-value,uniqueness,dispensability,representative,eliminated
+GO:0007155,"cell adhesion",0.544%, 1.536,-6.796,4.844,-8.5129,0.788,0.000,7155,0
+GO:0033627,"cell adhesion mediated by integrin",0.013%,null,null,3.231,-1.8924,0.800,0.732,7155,1
+GO:0034446,"substrate adhesion-dependent cell spreading",0.018%,null,null,3.372,-1.4184,0.404,0.749,7155,1
+GO:0007411,"axon guidance",0.066%,null,null,3.930,-1.1727,0.273,0.787,7155,1
+GO:0030574,"collagen catabolic process",0.005%, 6.229,-1.052,2.836,-4.5622,0.615,0.000,30574,0
+GO:0035995,"detection of muscle stretch",0.001%,-3.305,-5.017,1.968,-2.8307,0.854,0.000,35995,0
+GO:0030198,"extracellular matrix organization",0.060%,-0.313, 6.217,3.886,-3.4056,0.662,0.047,30198,0
+GO:0030334,"regulation of cell migration",0.144%,-4.685, 2.334,4.267,-2.0871,0.689,0.134,30334,0
+GO:0010951,"negative regulation of endopeptidase activity",0.157%,-6.097, 0.472,4.304,-1.2626,0.847,0.208,10951,0
+GO:0007166,"cell surface receptor signaling pathway",0.920%,-4.742,-1.734,5.072,-1.1756,0.767,0.243,7166,0
+GO:0045214,"sarcomere organization",0.013%, 2.444, 4.699,3.220,-3.0595,0.346,0.298,45214,0
+GO:0048769,"sarcomerogenesis",0.000%,null,null,1.792,-1.3517,0.408,0.811,45214,1
+GO:0030240,"skeletal muscle thin filament assembly",0.001%,null,null,2.250,-1.3517,0.379,0.939,45214,1
+GO:0030241,"skeletal muscle myosin thick filament assembly",0.001%,null,null,2.000,-2.8307,0.384,0.830,45214,1
+GO:0055003,"cardiac myofibril assembly",0.004%,null,null,2.678,-2.5360,0.282,0.898,45214,1
+GO:0003300,"cardiac muscle hypertrophy",0.009%, 5.600,-1.910,3.070,-2.8307,0.571,0.382,3300,0
+GO:0030049,"muscle filament sliding",0.001%,null,null,2.286,-1.0604,0.391,0.700,3300,1
+GO:0006941,"striated muscle contraction",0.031%,null,null,3.603,-1.1805,0.551,0.888,3300,1
+GO:0060048,"cardiac muscle contraction",0.022%,null,null,3.460,-1.8924,0.556,0.807,3300,1
+GO:0006334,"nucleosome assembly",0.089%, 1.425, 6.534,4.057,-1.4790,0.597,0.451,6334,0
+GO:0007076,"mitotic chromosome condensation",0.035%,null,null,3.655,-1.0604,0.566,0.811,6334,1
+GO:0001525,"angiogenesis",0.096%, 5.238, 0.633,4.088,-2.0503,0.373,0.688,1525,0
+GO:0055008,"cardiac muscle tissue morphogenesis",0.013%,null,null,3.230,-1.3517,0.379,0.760,1525,1
