@@ -1,4 +1,5 @@
 The following was executed in RStudio, and then on the online DAVID and ReviGO resources. 
+Here is the [R Script](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/ScriptXX-DIA-Analysis.R)
 
 # Analyzing DIA results:
 Identifying biological functions that we were able to detect in DIA data across ALL samples
