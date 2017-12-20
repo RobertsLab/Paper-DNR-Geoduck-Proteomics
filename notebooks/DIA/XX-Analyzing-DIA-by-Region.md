@@ -37,12 +37,12 @@ In light of the SRM data I returned to the DIA data to see if there are any larg
   ![ReviGO Analysis](../../images/DAVID2-07.PNG?raw=true)
 
 ## 355 proteins 2x more abundant in Northern Sites
-### ReviGO visualization & GO file [DIA_GO-Terms_FoldChange2-North.txt](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA_GO-Terms_FoldChange2-North.txt); ReviGO file [DIA-FC2-North_REVIGO-table.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-FC2-North_REVIGO-table.csv)
+### ReviGO visualization & GO file [DIA_GO-Terms_FoldChange2-North.txt](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA_GO-Terms_FoldChange2-North.txt); ReviGO file [DIA-REVIGO-Treemap-FC2North.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-REVIGO-Treemap-FC2North.csv)
   ![2x More in North](../../images/DAVID2-12-FC2-NorthUp2.PNG?raw=true)
   ![2x More in North](../../images/DAVID2-13-FC2-NorthUp3.PNG?raw=true)
   
 ## 113 proteins 2x more abundant in Southern Sites
-### ReviGO visualization & GO file [DIA_GO-Terms_FoldChange2-South.txt](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA_GO-Terms_FoldChange2-South.txt); ReviGO file [DIA-FC2-South_REVIGO-table.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-FC2-South_REVIGO-table.csv): 
+### ReviGO visualization & GO file [DIA_GO-Terms_FoldChange2-South.txt](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA_GO-Terms_FoldChange2-South.txt); ReviGO file [DIA-REVIGO-Treemap-FC2South.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-REVIGO-Treemap-FC2South.csv): 
    ![2x More in South](../../images/DAVID2-14-FC2-SouthUp1.PNG?raw=true)
    ![2x More in South](../../images/DAVID2-15-FC2-SouthUp2.PNG?raw=true)
    
