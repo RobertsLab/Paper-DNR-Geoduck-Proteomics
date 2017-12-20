@@ -1,0 +1,30 @@
+term_ID,description,frequency,plot_X,plot_Y,plot_size,log10 p-value,uniqueness,dispensability,representative,eliminated
+GO:0015701,"bicarbonate transport",0.007%, 1.072, 5.540,2.941,-2.2833,0.862,0.000,15701,0
+GO:0048545,"response to steroid hormone",0.118%,-5.177, 5.337,4.179,-2.2833,0.706,0.000,48545,0
+GO:0014070,"response to organic cyclic compound",0.227%,null,null,4.464,-1.3111,0.720,0.728,48545,1
+GO:1901653,"cellular response to peptide",0.049%,null,null,3.802,-1.6980,0.700,0.727,48545,1
+GO:0071407,"cellular response to organic cyclic compound",0.172%,null,null,4.343,-1.3988,0.681,0.927,48545,1
+GO:0051260,"protein homooligomerization",0.106%, 3.582,-3.890,4.132,-2.6868,0.834,0.000,51260,0
+GO:0051865,"protein autoubiquitination",0.016%, 5.436, 3.693,3.319,-2.0101,0.888,0.021,51865,0
+GO:0051453,"regulation of intracellular pH",0.028%,-6.229,-2.661,3.551,-2.5799,0.727,0.022,51453,0
+GO:0016032,"viral process",0.131%, 5.944, 1.362,4.226,-2.2273,0.799,0.024,16032,0
+GO:0075733,"intracellular transport of virus",0.006%,null,null,2.903,-1.3420,0.748,0.781,16032,1
+GO:0019083,"viral transcription",0.012%,null,null,3.203,-1.0459,0.768,0.816,16032,1
+GO:0007507,"heart development",0.127%, 6.097,-1.748,4.211,-1.0655,0.862,0.055,7507,0
+GO:0006635,"fatty acid beta-oxidation",0.080%,-2.138,-7.301,4.011,-2.3942,0.750,0.122,6635,0
+GO:0033539,"fatty acid beta-oxidation using acyl-CoA dehydrogenase",0.009%,null,null,3.073,-1.7497,0.765,0.859,6635,1
+GO:1900034,"regulation of cellular response to heat",0.004%,-5.927, 2.597,2.670,-1.4948,0.761,0.218,1900034,0
+GO:0006810,"transport",17.616%, 2.024, 5.378,6.354,-2.1446,0.873,0.251,6810,0
+GO:0019722,"calcium-mediated signaling",0.040%,-5.055, 1.942,3.707,-1.4696,0.721,0.253,19722,0
+GO:0007077,"mitotic nuclear envelope disassembly",0.000%, 3.402,-5.022,1.771,-1.6182,0.821,0.254,7077,0
+GO:0006409,"tRNA export from nucleus",0.005%, 0.710, 6.226,2.768,-1.6182,0.813,0.291,6409,0
+GO:0010827,"regulation of glucose transport",0.013%,-0.725, 3.194,3.235,-1.6182,0.761,0.308,10827,0
+GO:0030308,"negative regulation of cell growth",0.030%,-0.903,-2.538,3.591,-1.0881,0.707,0.326,30308,0
+GO:0008652,"cellular amino acid biosynthetic process",2.932%,-2.063,-6.193,5.575,-1.2308,0.766,0.415,8652,0
+GO:0006658,"phosphatidylserine metabolic process",0.014%,-1.095,-7.637,3.264,-1.6980,0.793,0.440,6658,0
+GO:0032088,"negative regulation of NF-kappaB transcription factor activity",0.014%,-3.145,-1.459,3.256,-1.0459,0.762,0.453,32088,0
+GO:0030241,"skeletal muscle myosin thick filament assembly",0.001%, 4.308,-3.255,2.000,-1.6980,0.781,0.494,30241,0
+GO:0031047,"gene silencing by RNA",0.089%,-3.484,-2.502,4.056,-1.0385,0.723,0.508,31047,0
+GO:0042632,"cholesterol homeostasis",0.019%,-6.996,-1.754,3.381,-1.2308,0.788,0.619,42632,0
+GO:0071364,"cellular response to epidermal growth factor stimulus",0.005%,-5.564, 5.175,2.842,-1.0459,0.723,0.630,71364,0
+GO:0055088,"lipid homeostasis",0.041%,-6.645,-1.574,3.717,-1.7497,0.784,0.648,55088,0
