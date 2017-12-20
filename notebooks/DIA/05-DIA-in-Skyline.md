@@ -6,7 +6,7 @@
 
 ![New-DIA-Skyline-00](../../images/New-DIA-Skyline-00.png?raw=true)
 
-#### Select "Blank Document", and saved. This project is named **Geoduck-DIA-2017.sky** 
+#### Select "Blank Document", and saved. This project is named **2017-06-02_DNR-2016-Outplant.sky** 
 #### Open Settings -> Peptide Settings and selected the following: 
 #### Add background proteome, aka protein database, to project. This is the geoduck gonad transcriptome fasta file with the PRTC protein pasted to the end of the file, which is located [on Owl, "GeoTranscriptomePRTC.fasta"](http://owl.fish.washington.edu/generosa/Generosa_DNR/GeoTranscriptomePRTC.fasta). Then work through the rest of the tabs with the following settings: 
 
@@ -29,7 +29,6 @@
 ![New-DIA-Skyline-08](../../images/New-DIA-Skyline-09.png?raw=true)
 
 ![New-DIA-Skyline-09](../../images/New-DIA-Skyline-03.png?raw=true)
-
 
 #### After adjusting all Peptide Settings, hit "OK."  Then, opened **SETTINGS -> TRANSITION SETTINGS** and adjusted all tabs as follows:
 
@@ -70,7 +69,7 @@
 #### And it's complete. I've rearranged the windo via VIEW -> RETENTION TIME -> REPLICATE COMPARISON, and VIEW -> PEAK AREAS -> REPLICATE COMPARISON. 
 ![New-DIA-Skyline-23](../../images/New-DIA-Skyline-23.png?raw=true)
 
-#### According to Skyline 8,061 proteins were detected across all 10 samples, comprising 30,547 peptdies, with 297,239 transitions. I exported the data by going to FILE -> EXPORT -> REPORT, modified the metrics I'd like in my report to include area data for each transition in each sample.  I also selected the "pivot by replicate" box, since I'll want my data in that form to run an NMDS plot. The report is saved on [Owl, "DIA-Report.csv"](http://owl.fish.washington.edu/generosa/Generosa_DNR/DIA-Report.csv)
+#### According to Skyline 8,061 proteins were detected across all 10 samples, comprising 30,547 peptdies, with 297,239 transitions. I exported the data by going to FILE -> EXPORT -> REPORT, modified the metrics I'd like in my report to include area data for each transition in each sample.  I also selected the "pivot by replicate" box, since I'll want my data in that form to run an NMDS plot. The report is saved on [Owl, "DIA-Report-wide.csv"](http://owl.fish.washington.edu/generosa/Generosa_DNR/DIA-Report-wide.csv)
 
 ![New-DIA-Skyline-24](../../images/New-DIA-Skyline-24.png?raw=true)
 
@@ -87,5 +86,18 @@
 #### Import results (mzML files), just like you did previously. 
 
 ![New-DIA-Skyline-26](../../images/New-DIA-Skyline-26.png?raw=true)
+
+---
+
+### Check Skyline's ability to automatically pick peaks: 
+Randomly selected 1 peptide in 100 separate proteins, and assigned "correct" (1) or "incorrect" (0) peak selection in [this spreadsheet](.../../analyses/DIA/DIA-Error-Checking.xlsx). Error rate for each replicate differed slightly; overall it was 71%.
+
+#### A couple examples of poor-quality, aka 0
+![Example-DIA-0](../../images/Example-DIA-0.PNG?raw=true)
+![Example2-DIA-0](../../images/Example2-DIA-0.PNG?raw=true)
+
+#### A couple examples of ok-quality, aka 1
+![Example-DIA-1](../../images/Example-DIA-1.PNG?raw=true)
+![Example2-DIA-1](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/blob/master/images/Example2-DIA-1.PNG?raw=true)
 
 
