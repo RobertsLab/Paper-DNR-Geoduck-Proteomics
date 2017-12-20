@@ -8,7 +8,7 @@ Identifying biological functions that we were able to detect in DIA data across 
   * Normalized abundance data by Total Ion Current (TIC) within replicates  
   * Generated .csv with annotated abundance data and uploaded to owl: [Generosa_DNR/DIA-annotated.csv](http://owl.fish.washington.edu/generosa/Generosa_DNR/DIA-annotated.csv)  
   * Generated .csv with Uniprot IDs for 1) [Whole Transcriptome](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/Geoannotations-UniprotID.csv), and 2) [Proteins detected in DIA](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-annotated-UniprotID.csv)   
-  * Used DAVID & ReviGO to assess major GO terms/biological functions detected via DIA method. ReviGO table saved as [All-DIA-Proteins_REVIGO-table.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/All-DIA-Proteins_REVIGO-table.csv)  
+  * Used DAVID & ReviGO to assess major GO terms/biological functions detected via DIA method. ReviGO table saved as [DIA-AllProteins-DAVID-ReviGO.csv](https://github.com/RobertsLab/Paper-DNR-Geoduck-Proteomics/raw/master/analyses/DIA/DIA-AllProteins-DAVID-ReviGO.csv)  
   ![All Detected Proteins Treemap](../../images/DAVID-01-AllDIAProteins-Treemap.PNG?raw=true)
 
 # Analyzing DIA results in light of SRM results: 
