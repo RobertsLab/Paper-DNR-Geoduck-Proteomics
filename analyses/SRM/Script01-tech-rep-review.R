@@ -29,6 +29,8 @@ SRMsamples <- as.character(c("G013", "G120", "G047", "G017", "G079", "G127", "G0
 rep.names <- SRMreport[1,] # create vector of replicate names
 rep.names.short <- noquote(gsub(' Area', '', rep.names)) # remove Area from rep name, and don't include quotes 
 # rep.names.short <- noquote(gsub('2017_July_10_bivalves_', '', rep.names.short)) #remove the extra long rep name that is a residual from the .raw file name; this could be unecessary based on the way you've exported the Skyline report 
+repsTOsamples[grepl("C", repsTOsamples$Sample...rep.name),3]
+
 repsTOsamples <- as.data.frame(SRMsequence[,c(2,3,5)])
 library(dplyr)
 repsTOsamples.filtered <- filter(repsTOsamples, repsTOsamples[,1] %in% rep.names.short)

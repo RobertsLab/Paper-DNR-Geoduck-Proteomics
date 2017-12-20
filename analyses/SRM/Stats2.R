@@ -13,10 +13,10 @@
 
 # Sampling Dates:
 # ==> Case Inlet: July 19th; cut off env. data at -1.0 (estimate)- "never fully exposed"
-# ==> Willapa Bay: July 20th-22nd (?); cut off env. data at -0.25 (estimate)- "fully exposed/dry"
-# ==> Port Gamble: July 20th-22nd  (?); cut off env. data at -1.0 (estimate)- "fully exposed/dry"
-# ==> Fidalgo Bay: July 20th-22nd (?); cut off env. data at -1.25 (estimate)- "never fully exposed"
-# ==> Skokomish: July 22nd (?)
+# ==> Willapa Bay: July 20th-22nd (?); cut off env. data at 1.5 (estimate)- "fully exposed/dry"
+# ==> Port Gamble: July 20th-22nd; cut off env. data at 0 (estimate)- "fully exposed/dry"
+# ==> Fidalgo Bay: July 20th-22nd; cut off env. data at -1.25 (estimate)- "never fully exposed"
+# ==> Skokomish: July 22nd
 
 # Create master melted dataframe with all environmental data
 # First, add another column "metric" to each env. data frame
@@ -28,7 +28,7 @@ Tide.Data.melted.noNA$metric <- c("Tide")
 
 # Identify any time points in pH, DO & S that where probes were exposed. NOTE: likely need to update the threshold based on Micah/Alex's input.
 Tide.sites <- as.factor(c("FB", "PG", "CI", "WB"))
-Tide.exposed <- c(-1.25, -1.0, -1.0, -0.25) #tide depth at which probes are exposed (estimated)
+Tide.exposed <- c(-1.25, 0, -1.0, 1.5) #tide depth at which probes are exposed (estimated)
 submerged.times = list()
 for (i in 1:length(Tide.sites)) {
   submerged.times[[i]] <- Tide.Data.melted.noNA[which(Tide.Data.melted.noNA$value>=Tide.exposed[i] & Tide.Data.melted.noNA$variable %in% Tide.sites[[i]]), ]
@@ -36,17 +36,30 @@ for (i in 1:length(Tide.sites)) {
 
 # Filter pH, DO & S at time points where probes were exposed
 Tide.location <- as.factor(c("FBB", "FBE", "PGB", "PGE", "CIB", "CIE", "WBB", "WBE"))
+J <- c(1,1,2,2,3,3,4,4)
 submerged.data = list()
 for (i in 1:length(Tide.location)) {
-  for (j in c(1,1,2,2,3,3,4,4)) {
-    submerged.data[[i]] <- rbind(pH.Data.melted.noNA[which(pH.Data.melted.noNA$DateTime %in% submerged.times[[j]]$DateTime & pH.Data.melted.noNA$variable %in% Tide.location[[i]]), ], DO.Data.melted.noNA[which(DO.Data.melted.noNA$DateTime %in% submerged.times[[j]]$DateTime & DO.Data.melted.noNA$variable %in% Tide.location[[i]]), ], S.Data.melted.noNA[which(S.Data.melted.noNA$DateTime %in% submerged.times[[j]]$DateTime & S.Data.melted.noNA$variable %in% Tide.location[[i]]), ])
-  }
+    submerged.data[[i]] <- rbind(pH.Data.melted.noNA[which(pH.Data.melted.noNA$DateTime %in% submerged.times[[J[i]]]$DateTime & pH.Data.melted.noNA$variable %in% Tide.location[[i]]), ], DO.Data.melted.noNA[which(DO.Data.melted.noNA$DateTime %in% submerged.times[[J[i]]]$DateTime & DO.Data.melted.noNA$variable %in% Tide.location[[i]]), ], S.Data.melted.noNA[which(S.Data.melted.noNA$DateTime %in% submerged.times[[J[i]]]$DateTime & S.Data.melted.noNA$variable %in% Tide.location[[i]]), ])
 }
 
 # Combine results from the previous for loop for pH, DO & Salinity, and the Temp and Tide data (unedited) into one master env. data frame (long form)
 Env.Data.Master <- do.call(rbind, submerged.data)
 Env.Data.Master <- rbind(Env.Data.Master, T.Data.melted.noNA, Tide.Data.melted.noNA) #this is a dataframe with env. data, screened for times when pH, DO & S probes were exposed
 Env.Data.Master$metric <- as.factor(Env.Data.Master$metric)
+
+# Let's plot the low-tide scrubbed salinity data. We should see that extreme low readings (~0) are gone
+library(plotly)
+Salinity.series.noLows <- plot_ly(data = subset(Env.Data.Master, metric=="Salinity"), x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%  #generate plotly plot
+  layout(title="Salinity across sites (low tides removed), 2016 DNR outplant",
+         yaxis = list(title = 'Salinity (ppt)'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(Salinity.series.noLows), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-series-noLowTides.html")
+Salinity.box.noLows <- plot_ly(data = subset(Env.Data.Master, metric=="Salinity"), x = ~variable, y = ~value, type="box", color=~variable) %>% 
+  layout(title="Salinity across sites (outliers removed), 2016 DNR outplant",
+         yaxis = list(title = 'Salinity (ppt)'),
+         legend = list(x=.95, y=.2))
+htmlwidgets::saveWidget(as_widget(Salinity.box.noLows), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-box-noLowTides.html")
+
 
 # Identify and remove outliers from pH, DO & Salinity data
 # Use outliersKD script from https://datascienceplus.com/identify-describe-plot-and-removing-the-outliers-from-the-dataset/ to identify and remove outliers:
@@ -132,7 +145,7 @@ outlierKD(Salinity.WBE.4outliers, value)
 
 # Combine the outlier-scrubbed dataframes back into one master, long-form dataframe
 Env.Data.Master.noOuts <- rbind(pH.FBB.4outliers, pH.FBE.4outliers, pH.PGB.4outliers, pH.CIB.4outliers, pH.CIE.4outliers, pH.WBB.4outliers, pH.WBE.4outliers, DO.FBB.4outliers, DO.FBE.4outliers, DO.PGB.4outliers, DO.PGE.4outliers, DO.CIB.4outliers, DO.CIE.4outliers, DO.WBB.4outliers, DO.WBE.4outliers, Salinity.FBB.4outliers, Salinity.FBE.4outliers, Salinity.PGE.4outliers, Salinity.CIB.4outliers, Salinity.CIE.4outliers, Salinity.WBB.4outliers, Salinity.WBE.4outliers,Env.Data.Master[which(Env.Data.Master$metric %in% "Tide"),],Env.Data.Master[which(Env.Data.Master$metric %in% "Temperature"),])
-
+View(Env.Data.Master.noOuts.wide)
 # Remove the NA entries 
 Env.Data.Master.noOuts <- Env.Data.Master.noOuts[which(!is.na(Env.Data.Master.noOuts$value)),]
 Env.Data.Master.noOuts <- subset(Env.Data.Master.noOuts, variable!="SKE")
@@ -142,7 +155,6 @@ Env.Data.Master.noOuts <- subset(Env.Data.Master.noOuts, variable!="SKB")
 write.csv(file="~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/EnvData-Melted-NoOutliers.csv",Env.Data.Master.noOuts, col.names = T, row.names=F)
 
 # Let's plot the outlier-scrubbed data , to check it out after outliers have been removed.
-library(plotly)
 # ==> pH
 pH.series.noOuts <- plot_ly(data = subset(Env.Data.Master.noOuts, metric=="pH"), x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%  #generate plotly plot
   layout(title="pH across sites (outliers removed), 2016 DNR outplant",
@@ -204,46 +216,25 @@ replications(value ~ metric*variable, data=Env.Data.Master.noOuts)
 install.packages("FSA")
 library(FSA)
 # Run Krusgal Wallis tests
-kruskal.test(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]) 
-dunnTest(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),], method="bonferroni")
+summary(aov(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]))
+TukeyHSD(aov(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]))
 kruskal.test(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),]) 
 dunnTest(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),], method="bonferroni")
-kruskal.test(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),]) 
+kruskal.test(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),])
 dunnTest(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),], method="bonferroni")
 kruskal.test(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),]) 
 dunnTest(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),], method="bonferroni")
 
-# Run tests on North & South regions, since that's how the proteins differed 
-
-#First, add a region column to the dataframe
+# Add North & South regions identifier to dataframe, since that's how the proteins differed 
 Env.Data.Master.noOuts$Region <- Env.Data.Master.noOuts$variable
 Env.Data.Master.noOuts$Region <- gsub("FBB|FBE|PGB|PGE|FB|PG", "North", Env.Data.Master.noOuts$Region)
 Env.Data.Master.noOuts$Region <- gsub("WBB|WBE|CIB|CIE|WB|CI", "South", Env.Data.Master.noOuts$Region)
 Env.Data.Master.noOuts$Region <- as.factor(Env.Data.Master.noOuts$Region)
-           
-# Assess equal variances via Bartlett Test of Homogeneity of Variances for each environmental parameter
-bartlett.test(value~Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),])
-bartlett.test(value~Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),])
-bartlett.test(value~Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),])
-bartlett.test(value~Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),])
 
-# Is the data balanced? Result: FB-Bare has less data points b/c I removed G057 from the data, which is from FB-B. Not sure exactly how to incorporate that into the analysis... 
-replications(value ~ metric*Region, data=Env.Data.Master.noOuts)
-# Not balanced
+aggregate(value ~ variable*metric, Env.Data.Master.noOuts, mean)
 
-install.packages("FSA")
-library(FSA)
-# Run Krusgal Wallis test, and then run Dunn Test of multiple comparison
-kruskal.test(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]) 
-dunnTest(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),], method="bonferroni")
-kruskal.test(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),]) 
-dunnTest(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),], method="bonferroni")
-kruskal.test(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),]) 
-dunnTest(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),], method="bonferroni")
-kruskal.test(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),]) 
-dunnTest(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),], method="bonferroni")
-
-
+View(aggregate(DO ~ variable, Env.Data.Master.noOuts.wide, mean))
+View(aggregate(pH ~ variable, Env.Data.Master.noOuts.wide, mean))
 
 ### BONEYARD
 # Create box plots and ID outliers in environmental data

@@ -18,7 +18,7 @@ pH.box <- plot_ly(data = pH.Data.melted.noNA, x = ~variable, y = ~value, type="b
          yaxis = list(title = 'pH (total scale)'),
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(pH.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-box.html")
-
+library(plotly)
 # Dissolved Oxygen
 DO.Data <- Env.Data[,c(1,grep("do\\.", colnames(Env.Data)))]
 DO.Data.noOuts <- DO.Data[which(DO.Data$FBE < 50),] #Remove FBE values over 50
@@ -26,12 +26,12 @@ names(DO.Data) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE",
 DO.Data.melted <- melt(DO.Data, id="DateTime")
 DO.Data.melted.noNA <- DO.Data.melted[which(!is.na(DO.Data.melted$value) & DO.Data.melted$value > 0),]
 DO.series <- plot_ly(data = DO.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%
-  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant \n(Values <0 and >50 not included)",
+  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant)",
          yaxis = list(title = 'DO (mg/L)'),
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(DO.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-series.html")
 DO.box <- plot_ly(data = DO.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
-  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant \n(Values <0 and >50 not included)",
+  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant)",
          yaxis = list(title = 'DO (mg/L)'),
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(DO.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-box.html")

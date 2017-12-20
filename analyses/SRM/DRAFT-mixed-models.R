@@ -81,6 +81,7 @@ data.melted.plus.pepsum$BOTH <- gsub('PG-Eel', 'PGE', data.melted.plus.pepsum$BO
 data.pepsum.Env.Stats <- data.frame(merge(x=data.melted.plus.pepsum, y=Env.Stats, by.x = "BOTH", by.y = "Site", all.x=TRUE, all.y=TRUE), stringsAsFactors = F)
 View(data.pepsum.Env.Stats) #check out column names to use in mixed model
 
+
 # Running linear mixed model 
 # https://ase.tufts.edu/gsc/gradresources/guidetomixedmodelsinr/mixed%20model%20guide.html
 require(lme4)
@@ -195,3 +196,5 @@ summary(glm.HSP70.all)
 par(mfrow=c(1,4))
 plot(glm.HSP70.all, which=1:4)
 plot(lm.HSP70.all, which=1:4)
+
+
