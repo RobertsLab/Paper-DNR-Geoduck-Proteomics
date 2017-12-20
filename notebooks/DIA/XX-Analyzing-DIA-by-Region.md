@@ -34,10 +34,10 @@ In light of the SRM data I returned to the DIA data to see if there are any larg
   ![ReviGO Analysis](../../images/DAVID2-07.PNG?raw=true)
 
 ### 428 proteins 2x more abundant in Northern Sites, in the following GO categories:
-  ![2x More in North](../../DAVID2-11-FC2-NorthUp.PNG?raw=true)
-  ![2x More in North](../../DAVID2-12-FC2-NorthUp2.PNG?raw=true)
-  ![2x More in North](../../DAVID2-13-FC2-NorthUp3.PNG?raw=true)
+  ![2x More in North](../../images/DAVID2-11-FC2-NorthUp.PNG?raw=true)
+  ![2x More in North](../../images/DAVID2-12-FC2-NorthUp2.PNG?raw=true)
+  ![2x More in North](../../images/DAVID2-13-FC2-NorthUp3.PNG?raw=true)
   
 ### 126 proteins 2x more abundant in Southern Sites: 
-    ![2x More in South](../../DAVID2-14-FC2-SouthUp1.PNG?raw=true)
-    ![2x More in South](../../DAVID2-15-FC2-SouthUp2.PNG?raw=true)
+   ![2x More in South](../../images/DAVID2-14-FC2-SouthUp1.PNG?raw=true)
+   ![2x More in South](../../images/DAVID2-15-FC2-SouthUp2.PNG?raw=true)
