@@ -5,7 +5,10 @@ RT.actual.mean <- aggregate(Peptide.Retention.Time ~ Peptide.Sequence + Protein.
 RT.table <- merge(x=RT.predicted, y=RT.actual.mean, by.x="PEPTIDE", by.y="Peptide.Sequence")
 RT.reg <- lm(RT.table$Peptide.Retention.Time ~ RT.table$PREDICTED.SRM.RT)
 RT.reg.sum <- summary(RT.reg)
+RT.reg$coefficients
 RT.R2 <- summary(RT.reg)$r.squared
-library(plotly)
-RT.p <- plot_ly(data=RT.table, x=~PREDICTED.SRM.RT, y=~Peptide.Retention.Time) %>%
-  layout(title="Predicted vs. Actual Mean Retention Time \nGeoduck SRM Peptides")
+png(filename = "../../analyses/SRM/SRM-Predicted-vs-Actual-RT-plot.png")
+plot(Peptide.Retention.Time ~ PREDICTED.SRM.RT, data=RT.table, main="Predicted vs. Actual Mean Retention Time \nGeoduck SRM Peptides")
+abline(RT.reg$coefficients[1], RT.reg$coefficients[2])
+legend("bottomright", inset=0.05, bty="n", legend=paste("R2-adjusted: ", format(summary(RT.reg)$adj.r.squared, digits=4), "\nCoefficient", format(RT.reg$coefficients[2], digits=4)))
+dev.off()

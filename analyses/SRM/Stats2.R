@@ -1,15 +1,100 @@
-# Statistical analysis on environmental data, which include the following from 2016-06-01 -> 2016-07-22 at 10-minute intervals: 
+#### Import environmental data, plot all data to inspect for abnormalities 
 # ==> Temperature (T)
 # ==> Dissolved Oxygen (DO)
 # ==> pH (temp-adjusted)
 # ==> Salinity
 # ==> Tide height (estim. from http://tbone.biol.sc.edu/).
-# Data was plotted in "Env-Data-Plots.R" script
-# Original dataframe for pH, DO & T is "Env.Data"
-# Isolated parameters are in the following dataframes: 
-# ==> pH.Data, pH.Data.melted.noNA
-# ==> DO.Data, DO.Data.melted.noNA
-# ==> T.Data, T.Data.melted.noNA
+
+library(reshape)
+library(plotly) #open plotly program package
+setwd("~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics")
+Env.Data <- data.frame(read.csv(file="~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/data/Environmental/EnvData-Master.csv", stringsAsFactors=F, header=T, na.strings = ""))
+
+# pH 
+pH.Data <- Env.Data[,c(1,grep("pH\\.", colnames(Env.Data)))]
+names(pH.Data) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB")
+pH.Data.melted <- melt(pH.Data, id="DateTime")
+pH.Data.melted.noNA <- pH.Data.melted[which(!is.na(pH.Data.melted$value)),]
+pH.series <- plot_ly(data = pH.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%  #generate plotly plot
+  layout(title="pH across sites, 2016 DNR outplant",
+         yaxis = list(title = 'pH (total scale)'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(pH.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-series.html")
+pH.box <- plot_ly(data = pH.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>% 
+  layout(title="pH across sites, 2016 DNR outplant",
+         yaxis = list(title = 'pH (total scale)'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(pH.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-box.html")
+
+
+# Dissolved Oxygen
+DO.Data <- Env.Data[,c(1,grep("do\\.", colnames(Env.Data)))]
+DO.Data.noOuts <- DO.Data[which(DO.Data$FBE < 50),] #Remove FBE values over 50
+names(DO.Data) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB")
+DO.Data.melted <- melt(DO.Data, id="DateTime")
+DO.Data.melted.noNA <- DO.Data.melted[which(!is.na(DO.Data.melted$value) & DO.Data.melted$value > 0),]
+DO.series <- plot_ly(data = DO.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%
+  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant)",
+         yaxis = list(title = 'DO (mg/L)'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(DO.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-series.html")
+DO.box <- plot_ly(data = DO.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
+  layout(title="Dissolved Oxygen across sites, 2016 DNR outplant)",
+         yaxis = list(title = 'DO (mg/L)'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(DO.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-DO-box.html")
+
+# Temperature
+T.Data <- Env.Data[,c(1,grep("doT", colnames(Env.Data)))]
+names(T.Data) <- c("DateTime", "WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB")
+T.Data.melted <- melt(T.Data, id="DateTime")
+T.Data.melted.noNA <- T.Data.melted[which(!is.na(T.Data.melted$value)),]
+T.series <- plot_ly(data = T.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%
+  layout(title="Temperature (from DO sensor) across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Temperature (C)'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(T.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Temp-series.html")
+T.box <- plot_ly(data = T.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
+  layout(title="Temperature (from DO sensor) across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Temperature (C)'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(T.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Temp-box.html")
+
+# Salinity
+S.Data <- Env.Data[,c(1,grep("ctS", colnames(Env.Data)))]
+names(S.Data) <- c("DateTime", "CIB", "CIE", "FBB", "FBE", "PGE", "SKE", "SKB", "WBB", "WBE")
+S.Data.melted <- melt(S.Data, id="DateTime")
+S.Data.melted$value <- as.numeric(levels(S.Data.melted$value))[S.Data.melted$value]
+S.Data.melted.noNA <- S.Data.melted[which(!is.na(S.Data.melted$value)),]
+S.series <- plot_ly(data = S.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%
+  layout(title="Salinity across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Salinity'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(S.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-series.html")
+S.box <- plot_ly(data = S.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
+  layout(title="Salinity across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Salinity'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(S.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-box.html")
+
+# Tidal height
+Tide.Data <- Env.Data[,c(1,grep("Tide", colnames(Env.Data)))]
+names(Tide.Data) <- c("DateTime", "FB", "PG", "CI", "WB")
+Tide.Data.melted <- melt(Tide.Data, id="DateTime")
+# Tide.Data.melted$value <- as.numeric(levels(Tide.Data.melted$value))[Tide.Data.melted$value]
+Tide.Data.melted.noNA <- Tide.Data.melted[which(!is.na(Tide.Data.melted$value)),]
+Tide.series <- plot_ly(data = Tide.Data.melted.noNA, x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%
+  layout(title="Tidal height across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Tidal Height'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(Tide.series), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Tide-series.html")
+Tide.box <- plot_ly(data = Tide.Data.melted.noNA, x = ~variable, y = ~value, type="box", color=~variable) %>%
+  layout(title="Tidal height across sites, 2016 DNR outplant",
+         yaxis = list(title = 'Tidal Height'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(Tide.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Tide-box.html")
+
+#### Remove erroneous data points 
 
 # Sampling Dates:
 # ==> Case Inlet: July 19th; cut off env. data at -1.0 (estimate)- "never fully exposed"
@@ -47,8 +132,13 @@ Env.Data.Master <- do.call(rbind, submerged.data)
 Env.Data.Master <- rbind(Env.Data.Master, T.Data.melted.noNA, Tide.Data.melted.noNA) #this is a dataframe with env. data, screened for times when pH, DO & S probes were exposed
 Env.Data.Master$metric <- as.factor(Env.Data.Master$metric)
 
+# Remove DO data from FBE after 6/24 @ 08:40:00, as the probe clearly malfunctioned after that time. 
+Env.Data.Master <- subset(Env.Data.Master, !(variable=="FBE" & metric=="DO" & DateTime > "06/24/16 08:40:00"))
+
+# Remove Salinity data where probes clearly malfunctioned (identified via plots)
+Env.Data.Master <- subset(Env.Data.Master, !((variable=="CIE" & metric=="Salinity") | (variable=="FBB" & metric=="Salinity" & DateTime > "07/03/16 09:50:00") | (variable=="WBB" & metric=="Salinity" & DateTime > "06/25/16 05:30:00")))
+
 # Let's plot the low-tide scrubbed salinity data. We should see that extreme low readings (~0) are gone
-library(plotly)
 Salinity.series.noLows <- plot_ly(data = subset(Env.Data.Master, metric=="Salinity"), x = ~DateTime, y = ~value, type="scatter", mode="lines", color=~variable, hovertext=~value) %>%  #generate plotly plot
   layout(title="Salinity across sites (low tides removed), 2016 DNR outplant",
          yaxis = list(title = 'Salinity (ppt)'),
@@ -61,93 +151,40 @@ Salinity.box.noLows <- plot_ly(data = subset(Env.Data.Master, metric=="Salinity"
 htmlwidgets::saveWidget(as_widget(Salinity.box.noLows), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-box-noLowTides.html")
 
 
-# Identify and remove outliers from pH, DO & Salinity data
-# Use outliersKD script from https://datascienceplus.com/identify-describe-plot-and-removing-the-outliers-from-the-dataset/ to identify and remove outliers:
-#Check & removal outliers for each variable for all locations. 
-#--- I tried running this via loop, but it didn't work for me. I think b/c I need to remove or NOT remove outliers after each time I run the script. 
-#--- I also tried running the function on the same dataframe, but subsetting. While I was able to plot boxplots/histograms and calculate statistics, as it didn't actually remove the outliers from the dataframe. 
-#--- I did not scrub outliers from the temperature data, as it is less sensitive than the other parameters to exposure, and it a good representation of what the animals actually experienced. 
-# Before running this script, I must split my data into separate dataframes for each environmental parameter / probe location.  I did try to run this by subsetting the dataframe within the function, but the script is not equipped to handle this. 
+# Identify and remove outliers from pH, DO & Salinity data. Apply Tukey's method of removing outlying values, where values outside the inner fence removed: 
+Env.Data.Master.noOuts <- Env.Data.Master
 
-pH.FBB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% "FBB"),]
-pH.FBE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% "FBE"),]
-pH.PGB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% "PGB"),]
-# pH.PGE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% "PGE"),] ==> NO DATA 
-pH.CIB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% "CIB"),]
-pH.CIE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% "CIE"),]
-pH.WBB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% "WBB"),]
-pH.WBE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% "WBE"),]
-DO.FBB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% "FBB"),]
-DO.FBE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% "FBE"),]
-DO.PGB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% "PGB"),]
-DO.PGE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% "PGE"),]
-DO.CIB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% "CIB"),]
-DO.CIE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% "CIE"),]
-DO.WBB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% "WBB"),]
-DO.WBE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% "WBE"),]
-Salinity.FBB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% "FBB"),]
-Salinity.FBE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% "FBE"),]
-# Salinity.PGB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% "PGB"),] ==> No Data
-Salinity.PGE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% "PGE"),]
-Salinity.CIB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% "CIB"),]
-Salinity.CIE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% "CIE"),]
-Salinity.WBB.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% "WBB"),]
-Salinity.WBE.4outliers <- Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% "WBE"),]
+# pH Data
+for(i in 1:length(Tide.location)) { #For individual site data
+  IQR <- quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[4] - quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[2]
+  upperBound <- as.numeric(quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[4] + 1.5*IQR) #calculate upper bound
+  lowerBound <- as.numeric(quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "pH" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[2] - 1.5*IQR) #calculate lower bound
+  Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% Tide.location[i] & Env.Data.Master.noOuts$value > upperBound), "value"] <- NA #replace values higher than upper bound with NA
+  Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% Tide.location[i] & Env.Data.Master.noOuts$value < lowerBound), "value"] <- NA #replace values lower than lower bound with NA
+}
 
-# Run the outlier identification and removal script. If you want to save each plot with custom name you edit the "outliersKD.R" script 
-# source("https://goo.gl/4mthoF") 
-source("~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/references/outliersKD.R")
-outlierKD(pH.FBB.4outliers, value)
-yes
-outlierKD(pH.FBE.4outliers, value)
-yes
-outlierKD(pH.PGB.4outliers, value)
-yes
-# pH.PGE.4outliers ==> No Data 
-outlierKD(pH.CIB.4outliers, value)
-yes
-outlierKD(pH.CIE.4outliers, value)
-yes
-outlierKD(pH.WBB.4outliers, value)
-yes
-outlierKD(pH.WBE.4outliers, value)
-yes
-outlierKD(DO.FBB.4outliers, value)
-yes
-outlierKD(DO.FBE.4outliers, value) 
-yes
-outlierKD(DO.PGB.4outliers, value)
-yes
-outlierKD(DO.PGE.4outliers, value) 
-yes
-outlierKD(DO.CIB.4outliers, value) 
-yes
-outlierKD(DO.CIE.4outliers, value) 
-yes
-outlierKD(DO.WBB.4outliers, value) 
-yes
-outlierKD(DO.WBE.4outliers, value) 
-yes
-outlierKD(Salinity.FBB.4outliers, value) 
-yes
-outlierKD(Salinity.FBE.4outliers, value) 
-yes
-# Salinity.PGB.4outliers ==> No Data
-outlierKD(Salinity.PGE.4outliers, value) 
-yes
-outlierKD(Salinity.CIB.4outliers, value) 
-yes
-outlierKD(Salinity.CIE.4outliers, value) 
-yes
-outlierKD(Salinity.WBB.4outliers, value) 
-yes
-outlierKD(Salinity.WBE.4outliers, value) 
+# DO Data
+for(i in 1:length(Tide.location)) { #For individual site data
+  IQR <- quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[4] - quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[2]
+  upperBound <- as.numeric(quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "DO" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[4] + 1.5*IQR) #replace values higher than upper bound with NA
+  lowerBound <- 0 #DO cannot be less than 0
+  Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$variable %in% Tide.location[i] & Env.Data.Master.noOuts$value > upperBound), "value"] <- NA
+  Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$variable %in% Tide.location[i] & Env.Data.Master.noOuts$value < lowerBound), "value"] <- NA
+}
 
-# Combine the outlier-scrubbed dataframes back into one master, long-form dataframe
-Env.Data.Master.noOuts <- rbind(pH.FBB.4outliers, pH.FBE.4outliers, pH.PGB.4outliers, pH.CIB.4outliers, pH.CIE.4outliers, pH.WBB.4outliers, pH.WBE.4outliers, DO.FBB.4outliers, DO.FBE.4outliers, DO.PGB.4outliers, DO.PGE.4outliers, DO.CIB.4outliers, DO.CIE.4outliers, DO.WBB.4outliers, DO.WBE.4outliers, Salinity.FBB.4outliers, Salinity.FBE.4outliers, Salinity.PGE.4outliers, Salinity.CIB.4outliers, Salinity.CIE.4outliers, Salinity.WBB.4outliers, Salinity.WBE.4outliers,Env.Data.Master[which(Env.Data.Master$metric %in% "Tide"),],Env.Data.Master[which(Env.Data.Master$metric %in% "Temperature"),])
-View(Env.Data.Master.noOuts.wide)
+# Salinity Data
+for(i in 1:length(Tide.location)) { #For individual site data
+  IQR <- quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[4] - quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[2]
+  upperBound <- as.numeric(quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[4] + 1.5*IQR) #calculate upper bound
+  lowerBound <- as.numeric(quantile(Env.Data.Master[which(Env.Data.Master$metric %in% "Salinity" & Env.Data.Master$variable %in% Tide.location[i]),"value"], na.rm=TRUE)[2] - 1.5*IQR) #calculate lower bound
+  Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity" & Env.Data.Master.noOuts$variable %in% Tide.location[i] & Env.Data.Master.noOuts$value > upperBound), "value"] <- NA #replace values higher than upper bound with NA
+  Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity" & Env.Data.Master.noOuts$variable %in% Tide.location[i] & Env.Data.Master.noOuts$value < lowerBound), "value"] <- NA #replace values lower than lower bound with NA
+}
+
 # Remove the NA entries 
 Env.Data.Master.noOuts <- Env.Data.Master.noOuts[which(!is.na(Env.Data.Master.noOuts$value)),]
+
+# Remove SK entries
 Env.Data.Master.noOuts <- subset(Env.Data.Master.noOuts, variable!="SKE")
 Env.Data.Master.noOuts <- subset(Env.Data.Master.noOuts, variable!="SKB")
 
@@ -193,7 +230,7 @@ Salinity.box.noOuts <- plot_ly(data = subset(Env.Data.Master.noOuts, metric=="Sa
          legend = list(x=.95, y=.2))
 htmlwidgets::saveWidget(as_widget(Salinity.box.noOuts), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-box-noOutliers.html")
 
-# Run QQplots to assess normality, since I'm going to run ANOVAs and must have normal distribution
+# Run QQplots to assess normality on raw data
 par(mfrow = c(2, 3))
 for (i in 1:length(Env.parameters)) {
   qqnorm(Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% Env.parameters[i]),"value"], main = Env.parameters[[i]],
@@ -230,17 +267,3 @@ Env.Data.Master.noOuts$Region <- Env.Data.Master.noOuts$variable
 Env.Data.Master.noOuts$Region <- gsub("FBB|FBE|PGB|PGE|FB|PG", "North", Env.Data.Master.noOuts$Region)
 Env.Data.Master.noOuts$Region <- gsub("WBB|WBE|CIB|CIE|WB|CI", "South", Env.Data.Master.noOuts$Region)
 Env.Data.Master.noOuts$Region <- as.factor(Env.Data.Master.noOuts$Region)
-
-aggregate(value ~ variable*metric, Env.Data.Master.noOuts, mean)
-
-View(aggregate(DO ~ variable, Env.Data.Master.noOuts.wide, mean))
-View(aggregate(pH ~ variable, Env.Data.Master.noOuts.wide, mean))
-
-### BONEYARD
-# Create box plots and ID outliers in environmental data
-OutVals.e <- vector("list", length(Env.parameters))
-names(OutVals) <- Env.parameters
-par(mfrow = c(2, 3))
-for (i in 1:length(Env.parameters)) {
-  OutVals.e[[i]] = boxplot(Env.Data.Master[which(Env.Data.Master$metric %in% Env.parameters[i]),"value"] ~ Env.Data.Master[which(Env.Data.Master$metric %in% Env.parameters[i]),"variable"], main = Env.parameters[[i]], xlab = "Location", ylab = "Env. Parameter Unit", type="p")$out
-}

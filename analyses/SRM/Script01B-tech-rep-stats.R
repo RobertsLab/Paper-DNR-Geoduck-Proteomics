@@ -58,7 +58,7 @@ p.techrep.s <-  plot_ly(data = SRM.reps4stats.s.plots, x = ~Sample, y = ~varianc
 htmlwidgets::saveWidget(as_widget(p.techrep.s), "SRM-screened-tech-rep-CV.html") #Save plotly plot as html widget 
 api_create(p.techrep.s, filename = "Geoduck-SRM-screened-tech-rep-CV") #Pushes plot to Plotly online; may need to log in via next 2 lines: 
 
-##### Pull dataset that removes any transitions/samples with cv >20
+##### Pull dataset that removes any transitions/samples with cv >20 
 SRM.reps4stats.20 <- SRM.reps4stats.plots[which(SRM.reps4stats.plots$variance <= 20),]
 p.techrep.20 <- plot_ly(data = SRM.reps4stats.20, x = ~Sample, y = ~variance, type="scatter", mode="markers", color=~Protein, hovertext=~paste(Protein, Transition)) %>%  #generate plotly plot
   layout(title="Technical reps with CV =< 20, by sample",

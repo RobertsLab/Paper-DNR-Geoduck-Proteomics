@@ -4,13 +4,13 @@
 # fligner.test(y~G, data=mydata)  # Figner-Killeen Test of Homogeneity of Variances
 
 # ANOSIM via loop for all proteins
-Proteins4Anosim <- list("Arachidonate"=Arachidonate.4anosim, "Catalase"=Catalase.4anosim, "Cytochrome"=Cytochrome.4anosim, "Glycogen"=Glycogen.4anosim, "HSP70"=HSP70.4anosim, "HSP90"=HSP90.4anosim, "Peroxiredoxin"=Peroxiredoxin.4anosim, "PDI"=PDI.4anosim, "Puromycin"=Puromycin.4anosim, "Rab.11B"=Rab.11B.4anosim, "NAK"=NAK.4anosim, "Superoxide"=Superoxide.4anosim, "Trifunctional"=Trifunctional.4anosim)
+Proteins4Anosim <- list("Arachidonate"=Arachidonate.4anosim, "Catalase"=Catalase.4anosim, "Cytochrome"=Cytochrome.4anosim, "Glycogen"=Glycogen.4anosim, "HSP90"=HSP90.4anosim, "PDI"=PDI.4anosim, "Puromycin"=Puromycin.4anosim, "NAK"=NAK.4anosim, "Superoxide"=Superoxide.4anosim, "Trifunctional"=Trifunctional.4anosim)
 nProteins4anosim <- length(Proteins4Anosim)
 stats.ANOSIM <- data.frame(matrix(vector(), length(Proteins4Anosim)*3, 4, dimnames=list(c(), c("Protein", "Group", "ANOSIM-R", "ANOSIM-P"))), stringsAsFactors = F)
 
 for (i in 1:nProteins4anosim) {
   ANOSIM.vegdist <- vegdist(Proteins4Anosim[[i]][,!grepl(c("SITE|TREATMENT|BOTH|REGION"), colnames(Proteins4Anosim[[i]]))], 'bray', na.rm=TRUE)
-  ANOSIM.site <- anosim(ANOSIM.vegdist, Proteins4Anosim[[1]]$SITE, permutations = 2000) 
+  ANOSIM.site <- anosim(ANOSIM.vegdist, Proteins4Anosim[[i]]$SITE, permutations = 2000) 
   stats.ANOSIM[i,1] <- names(Proteins4Anosim[i])
   stats.ANOSIM[i,2] <- "Site"
   stats.ANOSIM[i,3] <- ANOSIM.site$statistic
@@ -32,7 +32,7 @@ write.csv(file="../../analyses/SRM/ANOSIM-Stats.csv", stats.ANOSIM)
 # Kruskal-Wallis rank sum test, investigate whether the population distributions are identical without assuming normal distribution.
 # options(scipen = 999) #disable scientific notation
 
-Proteins <- list("Arachidonate"=Arachidonate, "Catalase"=Catalase, "Cytochrome"=Cytochrome, "Glycogen"=Glycogen, "HSP70"=HSP70, "HSP90"=HSP90, "Peroxiredoxin"=Peroxiredoxin, "PDI"=PDI, "Puromycin"=Puromycin, "Rab.11B"=Rab.11B, "NAK"=NAK, "Superoxide"=Superoxide, "Trifunctional"=Trifunctional)
+Proteins <- list("Arachidonate"=Arachidonate, "Catalase"=Catalase, "Cytochrome"=Cytochrome, "Glycogen"=Glycogen, "HSP90"=HSP90, "PDI"=PDI, "Puromycin"=Puromycin, "NAK"=NAK, "Superoxide"=Superoxide, "Trifunctional"=Trifunctional)
 nProteins <- length(Proteins)
 
 # All data:
@@ -86,7 +86,6 @@ dunn.test(x=PDI$Area, g=PDI$SITE, kw=TRUE, label=TRUE, list=TRUE, alpha=0.05)
 
 ### Use Tukey's Honest Significant Differest test, since sample sizes are all equal
 TukeyHSD(HSP70, Area)
-?TukeyHSD
 
 ### PERMANOVA - figure out how to do this! 
 length(unique(data.melted.plus.prosum$SAMPLE))

@@ -103,11 +103,11 @@
 "102","Trifunctional","Site","PG-WB",0.831149537941711
 "103","Trifunctional","Site","FB-WB",0.277943863518644
 "104","Trifunctional","Site","FB-PG",0.755309209509804
-"105","All Proteins","Site","FB-PG",0.272118936989561
-"106","All Proteins","Site","FB-WB",0.0270909835222597
-"107","All Proteins","Site","PG-WB",0.739784428785016
-"108","All Proteins","Site","FB-CI",1.44338812846367e-06
-"109","All Proteins","Site","PG-CI",0.00284667875111566
-"110","All Proteins","Site","WB-CI",0.0642107806385487
-"111","All Proteins","Region","North-South",1.49505980936437e-05
-"112","All Proteins","Region","Bare-Eelgrass",0.518987136645349
+"105","All Proteins","Site","FB-PG",0.257761937572605
+"106","All Proteins","Site","FB-WB",0.0291417362624851
+"107","All Proteins","Site","PG-WB",0.772710356820208
+"108","All Proteins","Site","FB-CI",1.44926898448805e-06
+"109","All Proteins","Site","PG-CI",0.00319334115037162
+"110","All Proteins","Site","WB-CI",0.0602166812484779
+"111","All Proteins","Region",NA,NA
+"112","All Proteins","Region","Bare-Eelgrass",0.621189459244824

@@ -1,3 +1,9 @@
+
+
+# This script is no longer in use. Important codes transferred to the "Stats2.R" script. This is saved in case something was not moved over. 
+
+
+
 library(reshape)
 library(plotly) #open plotly program package
 setwd("~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics")
@@ -18,7 +24,8 @@ pH.box <- plot_ly(data = pH.Data.melted.noNA, x = ~variable, y = ~value, type="b
          yaxis = list(title = 'pH (total scale)'),
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(pH.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-box.html")
-library(plotly)
+
+
 # Dissolved Oxygen
 DO.Data <- Env.Data[,c(1,grep("do\\.", colnames(Env.Data)))]
 DO.Data.noOuts <- DO.Data[which(DO.Data$FBE < 50),] #Remove FBE values over 50
@@ -85,6 +92,8 @@ Tide.box <- plot_ly(data = Tide.Data.melted.noNA, x = ~variable, y = ~value, typ
          yaxis = list(title = 'Tidal Height'),
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(Tide.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Tide-box.html")
+
+
 
 stats.EnvData <- data.frame(matrix(vector(), 12, 10, dimnames=list(c(), c("WBE", "WBB", "SKE", "SKB", "PGE", "PGB", "CIE", "CIB", "FBE", "FBB"))), stringsAsFactors = F, row.names = c("pH-Mean", "pH-SD", "pH-Var", "pH-CV", "DO-Mean", "DO-SD", "DO-Var", "DO-CV", "T-Mean", "T-SD", "T-Var", "T-CV"))
 stats.EnvData[1,1:10] <- apply(pH.Data[,-1], 2, mean, na.rm=TRUE)

@@ -8,23 +8,23 @@ summary(data.melted.plus.pepsum$Area[data.melted.plus.pepsum$Area>0])
 library(dplyr)
 library(reshape)
 # What's the overall peptide variance by protein, NOT grouped by site? 
-peptide.variances.NOTsite <- data.melted.plus.pepsum%>%group_by(Peptide.Sequence,Pep,Protein.Name)%>%dplyr::summarise(SD=sd(Area), Mean=mean(Area))
+peptide.variances.NOTsite <- data.melted.plus.pepsum%>%group_by(Peptide.Sequence,Protein.Name)%>%dplyr::summarise(SD=sd(Area), Mean=mean(Area))
 peptide.variances.NOTsite$cv <- peptide.variances.NOTsite$SD/peptide.variances.NOTsite$Mean
 mean(peptide.variances.NOTsite$cv)
 View(peptide.variances.NOTsite)
 
-peptide.variances <- data.melted.plus.pepsum%>%group_by(Peptide.Sequence,Pep,Protein.Name,SITE)%>%dplyr::summarise(SD=sd(Area), Mean=mean(Area))
+peptide.variances <- data.melted.plus.pepsum%>%group_by(Peptide.Sequence,Protein.Name,SITE,BOTH)%>%dplyr::summarise(SD=sd(Area), Mean=mean(Area))
 peptide.variances$cv <- peptide.variances$SD/peptide.variances$Mean
 mean(peptide.variances$cv)
 View(peptide.variances)
 
-peptide.variances.mean <- aggregate(data=peptide.variances, cv ~ Peptide.Sequence+Protein.Name+SITE+Pep+BOTH, mean)
+peptide.variances.mean <- aggregate(data=peptide.variances, cv ~ Peptide.Sequence+Protein.Name+SITE+BOTH, mean)
 peptide.variances.mean.site <- aggregate(data=peptide.variances.mean, cv ~SITE, mean)
 peptide.variances.mean.prot <- aggregate(data=peptide.variances.mean, cv ~Protein.Name+BOTH, mean)
-peptide.variances.mean.prot <- cast(peptide.variances.mean.prot, Protein.Name ~ SITE, value="cv")
+peptide.variances.mean.prot <- cast(peptide.variances.mean.prot, Protein.Name ~ BOTH, value="cv")
 write.csv(file="../../analyses/SRM/prot-CV.csv", peptide.variances.mean.prot)
 
-View(peptide.variances[with(peptide.variances, order(Protein.Name, BOTH, -Mean, Pep)),])
+View(peptide.variances[with(peptide.variances, order(Protein.Name, BOTH, -Mean)),])
 write.csv(file="../../analyses/SRM/peptide-CV.csv", peptide.variances.mean[with(peptide.variances.mean, order(Protein.Name, SITE)),])
 
 # Test for normality
@@ -50,29 +50,13 @@ for (i in 1:length(Protein.names)) {
 #Create new column in dataframe with lambda-transformed area data
 data.melted.plus.pepsum$lambda.t <- c(rep("x", times=nrow(data.melted.plus.pepsum)))
 data.melted.plus.pepsum$Protein.Name <- as.factor(data.melted.plus.pepsum$Protein.Name)
-plot(lambda.t ~ Protein.Name, data=data.melted.plus.pepsum, cex=1)
-
-library(plotly)
-plot_ly(data=data.melted.plus.pepsum, y=~lambda.t, x=~Protein.Name, type="box", color=~SITE) %>% 
-  layout(title="Overall Protein Abundances, 2016 DNR outplant",
-         yaxis = list(title = 'Protein Abundance'),
-         legend = list(x=.85, y=.95))
-
-plot_ly(data=data.pepsum.Env.Stats, x=~Protein.Name) %>% 
-  add_trace(y=~Pep1, hovertext=~Protein.Name, showlegend = FALSE, type="box") %>%
-  add_trace(y=~Pep2, hovertext=~Protein.Name, showlegend = FALSE, type="box") %>%
-  add_trace(y=~Pep3, hovertext=~Protein.Name, showlegend = FALSE, type="box") %>%
-  layout(title="Overall Protein Abundances, \nbroken into peptides, 2016 DNR outplant",
-         yaxis = list(title = 'Protein Abundance'),
-         legend = list(x=.85, y=.95))
-
 
 # Transform abundance data via its designated lambda value 
 #Arachidonate
 data.melted.plus.pepsum[grepl(c("Arachidonate"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Arachidonate"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.3
 
 #Catalase
-data.melted.plus.pepsum[grepl(c("Catalase"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Catalase"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.15
+data.melted.plus.pepsum[grepl(c("Catalase"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Catalase"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.3
 
 #Cytochrome
 data.melted.plus.pepsum[grepl(c("Cytochrome"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Cytochrome"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.325
@@ -81,7 +65,7 @@ data.melted.plus.pepsum[grepl(c("Cytochrome"), data.melted.plus.pepsum$Protein.N
 data.melted.plus.pepsum[grepl(c("Glycogen"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Glycogen"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.65
 
 #HSP70
-data.melted.plus.pepsum[grepl(c("HSP70"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("HSP70"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.375
+data.melted.plus.pepsum[grepl(c("HSP70"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("HSP70"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.625
 
 #HSP90-alpha
 data.melted.plus.pepsum[grepl(c("HSP90-alpha"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("HSP90-alpha"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.425
@@ -102,13 +86,28 @@ data.melted.plus.pepsum[grepl(c("Ras-related"), data.melted.plus.pepsum$Protein.
 data.melted.plus.pepsum[grepl(c("Sodium/potassium-transporting"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Sodium/potassium-transporting"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.675
 
 #Superoxide
-data.melted.plus.pepsum[grepl(c("Superoxide"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Superoxide"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.4
+data.melted.plus.pepsum[grepl(c("Superoxide"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Superoxide"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.475
 
 #Trifunctional
 data.melted.plus.pepsum[grepl(c("Trifunctional"), data.melted.plus.pepsum$Protein.Name),][["lambda.t"]] <- (data.melted.plus.pepsum[grepl(c("Trifunctional"), data.melted.plus.pepsum$Protein.Name),][["Area"]]+1)^0.525
 
 #convert lambda.t values to numeric
 data.melted.plus.pepsum$lambda.t <- as.numeric(data.melted.plus.pepsum$lambda.t) 
+
+library(plotly)
+plot_ly(data=data.melted.plus.pepsum, y=~lambda.t, x=~Protein.Name, type="box", color=~SITE) %>% 
+  layout(title="Overall Protein Abundances, 2016 DNR outplant",
+         yaxis = list(title = 'Protein Abundance'),
+         legend = list(x=.85, y=.95))
+
+plot_ly(data=data.pepsum.Env.Stats, x=~Protein.Name) %>% 
+  add_trace(y=~Pep1, hovertext=~Protein.Name, showlegend = FALSE, type="box") %>%
+  add_trace(y=~Pep2, hovertext=~Protein.Name, showlegend = FALSE, type="box") %>%
+  add_trace(y=~Pep3, hovertext=~Protein.Name, showlegend = FALSE, type="box") %>%
+  layout(title="Overall Protein Abundances, \nbroken into peptides, 2016 DNR outplant",
+         yaxis = list(title = 'Protein Abundance'),
+         legend = list(x=.85, y=.95))
+plot(lambda.t ~ Protein.Name, data=data.melted.plus.pepsum, cex=1)
 
 # Regenerate all QQplots using the transformed area data, lambda.t
 par(mfrow = c(3, 3))
@@ -138,7 +137,6 @@ Prot.outliers  = do.call(rbind, outliers) #this is a dataframe with outliers, as
 
 # 2-way ANOVA on overall abundances; each point represents the sum of transitions within a peptide, lambda-transformed. 
 All.ANOVA <- summary(aov(lambda.t ~ REGION*SITE*TREATMENT, data=data.melted.plus.pepsum))
-write.csv(file="../../analyses/SRM/allprot.anova.csv", All.ANOVA)
 
 # 2-way ANOVA on protein abundance for each protein individually: data is analyzed by protein, but each point represents the sum of transitions within a peptide, lambda-transformed. 
 p.ANOVA <- vector("list", length(Protein.names))
@@ -154,6 +152,7 @@ for (i in 1:length(Protein.names)) {
   p.tukey[[i]] <- TukeyHSD(temp1, conf.level=.95)
 }
 Prot.ANOVA <- do.call(rbind, p.ANOVA) #this is a dataframe with ANOVA results for each protein with each comparison. 
+View(Prot.ANOVA)
 
 # Use a few multiple comparison corrections to adjust the significance (alpha) standard.  The most conservative P-adjusted is using the Bonferroni method, which multiplies the P-value by the # comparisons (in this case, 13 due to the 13 proteins).
 Comparisons <- unique(Prot.ANOVA$Comparison)
@@ -168,9 +167,10 @@ for (i in 1:length(unique(Prot.ANOVA$Comparison))) {
 write.csv(file="../../analyses/SRM/Prot.anova.csv", Prot.ANOVA)
 
 
-# To check out results of the Tukey HSD test for specific proteins, use: p.tukey["HSP70"], p.tukey["HSP90-alpha"], etc.
-p.tukey["HSP70"]
-
+# To check out results of the Tukey HSD test for specific proteins, use: p.tukey["HSP90-alpha"], etc.
+p.tukey["HSP90-alpha"]
+p.tukey["Trifunctional"]
+p.tukey["Puromycin-sensitive"]
 
 # Re-create box plots using the REGION grouping factor to ID outliers; if any of the ANOVA results indicate differences in proteins included in the outliers list, then consider whether the outliers should be removed from the dataset.
 OutVals.reg <- vector("list", length(Protein.names))
@@ -185,7 +185,7 @@ for (i in 1:length(Protein.names)) {
 }
 Prot.outliers.reg  = do.call(rbind, outliers.reg) #this is a dataframe with outliers, as determined by boxplots
 View(Prot.outliers.reg)
-# No HSP70, HSP90-alpha, or Trifunctional data points, included on the regional outlier list. Should move forward with those two proteins, grouped by REGION.
+# No HSP90-alpha, or Trifunctional data points included on the regional outlier list. Some 0 values for Puromycin. Should move forward with those two proteins, grouped by REGION.
 
 # Findings: the following proteins are significantly different between regions (North = Fidalgo Bay, Port Gamble; South = Case Inlet, Willapa Bay): 
 # ====> Puromycin-sensitive aminopeptidase

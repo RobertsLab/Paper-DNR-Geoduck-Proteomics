@@ -2,19 +2,10 @@
 # From Stats3, use the following metrics for each envir. parameter: Variance, Minimum AND/OR Maximum, Mean AND/OR Median, % > 1 SD from Mean.
 # Use the transformed abundance data in one peptide ("Pep1) to generate model. Then, test on Pep2. 
 library(MASS)
-# Convert environmental stats to numeric
-data.pepsum.Env.Stats[10:85] <- as.numeric(as.character(unlist(data.pepsum.Env.Stats[10:85])), na.action=na.omit)
-
-# Isolate data related to diff. expressed proteins: 
-# ====> Puromycin-sensitive aminopeptidase
-# ====> HSP70
-# ====> HSP90-alpha
-# ====> Trifunctional enzyme subunit
-
-data.pepsum.Env.Stats.Puromycin <- data.pepsum.Env.Stats[grepl(c("Puromycin"), data.pepsum.Env.Stats$Protein.Name),]
-data.pepsum.Env.Stats.HSP70 <- data.pepsum.Env.Stats[grepl(c("HSP70"), data.pepsum.Env.Stats$Protein.Name),]
-data.pepsum.Env.Stats.HSP90 <- data.pepsum.Env.Stats[grepl(c("HSP90"), data.pepsum.Env.Stats$Protein.Name),]
-data.pepsum.Env.Stats.Trifunctional <- data.pepsum.Env.Stats[grepl(c("Trifunctional"), data.pepsum.Env.Stats$Protein.Name),]
+library(plotly)
+library("ggpubr")
+library(olsrr)
+require(gridExtra)
 
 # View plot matrix of HSP90 against all env. variables
 pairs(data.pepsum.Env.Stats.HSP90[,c(7,10:17)], main="Plot Matrix, Pep1 vs DO Stats")
@@ -22,8 +13,88 @@ pairs(data.pepsum.Env.Stats.HSP90[,c(7,18:25)], main="Plot Matrix, Pep1 vs pH St
 pairs(data.pepsum.Env.Stats.HSP90[,c(7,26:33)], main="Plot Matrix, Pep1 vs Salinity Stats")
 pairs(data.pepsum.Env.Stats.HSP90[,c(7,34:41)], main="Plot Matrix, Pep1 vs Temp Stats")
 
-install.packages("olsrr")
-library(olsrr)
+#Plot all pep1, pep2, and pep3 values for all proteins against PERCENT GROWTH
+plot(data.pepsum.Env.Stats$Pep1 ~ data.pepsum.Env.Stats$Perc.Growth.y, main="All Proteins Pep1 ~ Percent Growth", xlab = "Percent Growth", ylab = "Peptide Abundance (lambda-t)")
+plot(data.pepsum.Env.Stats$Pep2 ~ data.pepsum.Env.Stats$Perc.Growth.y, main="All Proteins Pep2 ~ Percent Growth", xlab = "Percent Growth", ylab = "Peptide Abundance (lambda-t)")
+plot(data.pepsum.Env.Stats$Pep3 ~ data.pepsum.Env.Stats$Perc.Growth.y, main="All Proteins Pep3 ~ Percent Growth", xlab = "Percent Growth", ylab = "Peptide Abundance (lambda-t)")
+
+Growth.Peps.plot <- plot_ly(data=data.pepsum.Env.Stats, x=~Perc.Growth, marker = list(size = 7)) %>%
+  add_trace(y=~Pep1, color=~SITE, hovertext=~Protein.Name, showlegend = FALSE) %>%
+  add_trace(y=~Pep1, color=~SITE, hovertext=~Protein.Name, showlegend = FALSE) %>%
+  add_trace(y=~Pep3, color=~SITE, hovertext=~Protein.Name) %>%
+  layout(title="All Peptides against Percent Groth",
+         yaxis = list(title = 'Peptide Abundance'),
+         legend = list(x=.95, y=.95))
+htmlwidgets::saveWidget(as_widget(Growth.Peps.plot), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/SRM/June2016-Growth-PepAbundance.html")
+
+#QQNorm plots of summary stats & %growth
+par(mfrow = c(2, 3))
+for (i in 11:45) {
+  qqnorm(data.pepsum.Env.Stats[,i], main = colnames(data.pepsum.Env.Stats[i]),
+         xlab = "Theoretical Quantiles", ylab = "Parameter Value", plot.it = TRUE)
+  qqline(data.pepsum.Env.Stats[,i], main = colnames(data.pepsum.Env.Stats[i]))
+}
+
+# Generate correlation plots for the 3 diff. abundant proteins, using Pep1 abundance
+HSP90.corr.plots <- list()
+Puromycin.corr.plots <- list()
+Trifunctional.corr.plots <- list()
+
+# Run loop to generate scatter plots with each env. summary variable
+#HSP 90
+for (i in 11:45) 
+  local({
+    i <- i
+    p1 <- ggscatter(data=data.pepsum.Env.Stats.HSP90, x=colnames(data.pepsum.Env.Stats.HSP90[i]), y="Pep1", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.HSP90[i]), ylab="HSP90 Pep1 Abundance (lambda-transformed)", main=paste("HSP90 Pep1 abundance ~ ", colnames(data.pepsum.Env.Stats.HSP90[i]), sep=""))
+    print(i)
+    print(p1)
+    HSP90.corr.plots[[i]] <<- p1
+})
+
+#Puromycin-sensitive aminopeptidase
+for (i in 11:45) 
+  local({
+    i <- i
+    p1 <- ggscatter(data=data.pepsum.Env.Stats.Puromycin, x=colnames(data.pepsum.Env.Stats.Puromycin[i]), y="Pep1", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.Puromycin[i]), ylab="Puromycin Pep1 Abundance (lambda-transformed)", main=paste("Puromycin Pep1 abundance ~ ", colnames(data.pepsum.Env.Stats.Puromycin[i]), sep=""))
+    print(i)
+    print(p1)
+    Puromycin.corr.plots[[i]] <<- p1
+})
+
+#Trifunctional Enzyme
+for (i in 11:45) 
+  local({
+    i <- i
+    p1 <- ggscatter(data=data.pepsum.Env.Stats.Trifunctional, x=colnames(data.pepsum.Env.Stats.Trifunctional[i]), y="Pep1", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.Trifunctional[i]), ylab="Trifunctional Pep1 Abundance (lambda-transformed)", main=paste("Trifunctional Pep1 abundance ~ ", colnames(data.pepsum.Env.Stats.Trifunctional[i]), sep=""))
+    print(i)
+    print(p1)
+    Trifunctional.corr.plots[[i]] <<- p1
+  })
+
+# Save all plots in 1 PDF for each protein
+pdf("../../analyses/SRM/HSP90-corr-plots.pdf")
+grid.arrange( for (i in 11:45) {
+  print(HSP90.corr.plots[[i]])
+})
+dev.off()
+
+pdf("../../analyses/SRM/Puromycin-corr-plots.pdf")
+grid.arrange( for (i in 11:45) {
+  print(Puromycin.corr.plots[[i]])
+})
+dev.off()
+
+pdf("../../analyses/SRM/Trifunctional-corr-plots.pdf")
+grid.arrange( for (i in 11:45) {
+  print(Trifunctional.corr.plots[[i]])
+})
+dev.off()
+
+
+
+#P value for correlation plots, bonferroni corrected (most strict)
+0.05/ncol(data.pepsum.Env.Stats.HSP90[,11:45])
+# = 0.001428571
 
 testAll.HSP90 <- lm(Pep1 ~ -1 + DO.median.loc + DO.min.loc + DO.max.loc + DO.var.loc + DO.sd.1.loc + pH.median.loc + pH.min.loc + pH.max.loc + pH.var.loc + pH.sd.1.loc + Temperature.median.loc + Temperature.min.loc + Temperature.max.loc + Temperature.var.loc + Temperature.sd.1.loc + Salinity.median.loc + Salinity.min.loc + Salinity.max.loc + Salinity.var.loc + Salinity.sd.1.loc, data=data.pepsum.Env.Stats.HSP90)
 summary(testAll.HSP90)
@@ -89,3 +160,5 @@ anova(testBest2.HSP90)
 testBest3.HSP90 <- lm(Pep3 ~ -1 + DO.var.loc + pH.sd.1.loc + Temperature.median.loc + Salinity.max.loc, data=data.pepsum.Env.Stats.HSP90)
 summary(testBest3.HSP90)
 anova(testBest3.HSP90)
+
+

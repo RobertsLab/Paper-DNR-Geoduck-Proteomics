@@ -110,20 +110,18 @@ row.names(SRM.data.numeric) <- Transition.ID # assign newly created transition I
 write.csv(SRM.data.numeric, file="../../analyses/SRM/SRM-data-annotated.csv") #write this file out for safe keeping
 
 ########### REMOVE POOR QUALITY PEPTIDES IDENTIFIED VIA SKYLINE & DILUTION CURVE RESULTS #############################
-# Poor quality, determined via Skyline due to lack of consistent signal as compared to other peptides in the protein: 
-  # Superoxide Dismutase: THGAPTDEER
-  # Catalase: LYSYSDTHR
+# Poor quality peptides, determined via Dilution curve
+  # HSP70: TTPSYVAFNDTER, IINEPTAAALAYGLDK
+  # Superoxide Dismutase: ISLTGPHSIIGR
+  # Peroxiredoxin: QITMNDLPVGR, LVQAFQFTDK
+  # Trifunctional enzyme subunit beta: FNLWGGSLSLGHPFGATGVR
+  # Ras-related Rab:  VVLVGDSGVGK, AQLWDTAGQER
+  # Na/K:  MVTGDNVNTAR
   # PDI: NNKPSDYQGGR
-  # Na/K: MVTGDNVNTAR
-# Poor quality, determined via Dilution curve
-  # HSP70: TTPSYVAFNDTER
-  # Peroxiredoxin: LVQAFQFTDK
-  # Ras-related Rab: QITMNDLPVGR & VVLVGDSGVGK
-  # Na/K: AQLWDTAGQER & MVTGDNVNTAR
 # Poor quality, as determined via technical replicate linear regression
   # Superoxide Dismutase: ISLTGPHSIIGR
 
-SRM.data.screened <- SRM.data.numeric[!grepl(c("THGAPTDEER|LYSYSDTHR|NNKPSDYQGGR|MVTGDNVNTAR|TTPSYVAFNDTER|LVQAFQFTDK|QITMNDLPVGR|VVLVGDSGVGK|AQLWDTAGQER|ISLTGPHSIIGR"), SRM.data.numeric$`Peptide Sequence`),]
+SRM.data.screened <- SRM.data.numeric[!grepl(c("TTPSYVAFNDTER|IINEPTAAALAYGLDK|ISLTGPHSIIGR|QITMNDLPVGR|LVQAFQFTDK|FNLWGGSLSLGHPFGATGVR|VVLVGDSGVGK|AQLWDTAGQER|MVTGDNVNTAR|NNKPSDYQGGR"), SRM.data.numeric$`Peptide Sequence`),]
 SRM.data.screened.noPRTC <- SRM.data.screened[!grepl("PRTC peptides", SRM.data.screened$`Protein Name`),]
 write.csv(SRM.data.screened.noPRTC, file="../../analyses/SRM/SRM-data-screened.csv")
 
@@ -150,7 +148,7 @@ SRM.nmds <- metaMDS(SRM.data.t.noNA, distance = 'bray', k = 2, trymax = 3000, au
 # Create Shepard plot, which shows scatter around the regression between the interpoint distances in the final configuration (i.e., the distances between each pair of communities) against their original dissimilarities.
 
 #stress plot shows variance of NMDS results around regression 
-png("../..analyses/SRM/NMDS-tech-rep-stressplot.png")
+png("../../analyses/SRM/NMDS-tech-rep-stressplot.png")
 stressplot(SRM.nmds, main="NMDS Stress Plot, SRM Technical Replicate Data")
 dev.off()
 
@@ -303,7 +301,7 @@ srm.nmds.tech.distances[,1:2] <- apply(srm.nmds.tech.distances[,1:2], 2, functio
 
 library(ggplot2)
 library(plotly)
-p1 <- plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text", text=~row) %>% 
+p1<- plot_ly(data=srm.nmds.tech.distances, y=~value, type="scatter", mode="text", text=~row) %>% 
   layout(title="Euclidean Distances Between Tech Reps on NMDS",
          xaxis = list(title = 'Geoduck Sample Number'),
          yaxis = list(title = 'distance on NMDS plot'))

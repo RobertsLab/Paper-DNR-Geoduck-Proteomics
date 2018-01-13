@@ -41,7 +41,7 @@ dev.off()
 
 # Variable selection using automatic methods, leaps package 
 library(leaps)
-test.leaps <- regsubsets(Pep1 ~ DO.median.loc + DO.max.loc + DO.min.loc + DO.var.loc + DO.sd.1.loc + pH.var.loc + pH.median.loc + pH.min.loc + pH.sd.1.loc + pH.sd.2.loc + pH.Percent.high.loc + pH.Percent.low.loc + Temperature.median.loc + Temperature.min.loc + Temperature.max.loc + Temperature.var.loc + Temperature.sd.1.loc, data=data.pepsum.Env.Stats.HSP90, nbest=20, nvmax=NULL, force.in=NULL, force.out=NULL, method="exhaustive")
+test.leaps <- regsubsets(Pep1 ~ DO.median.loc + DO.max.loc + DO.min.loc + DO.var.loc + DO.sd.1.loc + pH.var.loc + pH.median.loc + pH.min.loc + pH.sd.1.loc + pH.sd.2.loc + pH.Percent.high.loc + pH.Percent.low.loc +   Temperature.median.loc + Temperature.min.loc + Temperature.max.loc + Temperature.var.loc + Temperature.sd.1.loc, data=data.pepsum.Env.Stats.HSP90, nbest=20, nvmax=NULL, force.in=NULL, force.out=NULL, method="exhaustive")
 plot(test.leaps, scale="adjr2")
 
 test.leaps.3 <- regsubsets(Pep1 ~ DO.median.loc + DO.max.loc + DO.min.loc + DO.var.loc + DO.sd.1.loc + pH.var.loc + pH.median.loc + pH.min.loc + pH.sd.1.loc + + pH.sd.2.loc + pH.Percent.high.loc + pH.Percent.low.loc + Temperature.median.loc + Temperature.min.loc + Temperature.max.loc + Temperature.var.loc + Temperature.sd.1.loc, data=data.pepsum.Env.Stats.HSP90, nbest=20, method="forward")
