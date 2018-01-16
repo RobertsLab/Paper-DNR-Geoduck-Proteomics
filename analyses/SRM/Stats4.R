@@ -1,6 +1,3 @@
-# Run models 
-# From Stats3, use the following metrics for each envir. parameter: Variance, Minimum AND/OR Maximum, Mean AND/OR Median, % > 1 SD from Mean.
-# Use the transformed abundance data in one peptide ("Pep1) to generate model. Then, test on Pep2. 
 library(MASS)
 library(plotly)
 library("ggpubr")
@@ -35,130 +32,145 @@ for (i in 11:45) {
   qqline(data.pepsum.Env.Stats[,i], main = colnames(data.pepsum.Env.Stats[i]))
 }
 
-# Generate correlation plots for the 3 diff. abundant proteins, using Pep1 abundance
+### Generate correlation plots and stats
+
+# First standardize peptide data so I can regress all peptides from one protein against environmental parameters 
+data.pepsum.Env.Stats.HSP90$Pep1.Z <- scale(data.pepsum.Env.Stats.HSP90$Pep1, center=T, scale=T)
+data.pepsum.Env.Stats.HSP90$Pep2.Z <- scale(data.pepsum.Env.Stats.HSP90$Pep2, center=T, scale=T)
+data.pepsum.Env.Stats.HSP90$Pep3.Z <- scale(data.pepsum.Env.Stats.HSP90$Pep3, center=T, scale=T)
+data.pepsum.Env.Stats.HSP90.Z <- melt(data.pepsum.Env.Stats.HSP90, id.vars = colnames(data.pepsum.Env.Stats.HSP90[,1:44]))
+
+data.pepsum.Env.Stats.Puromycin$Pep1.Z <- scale(data.pepsum.Env.Stats.Puromycin$Pep1, center=T, scale=T)
+data.pepsum.Env.Stats.Puromycin$Pep2.Z <- scale(data.pepsum.Env.Stats.Puromycin$Pep2, center=T, scale=T)
+data.pepsum.Env.Stats.Puromycin$Pep3.Z <- scale(data.pepsum.Env.Stats.Puromycin$Pep3, center=T, scale=T)
+data.pepsum.Env.Stats.Puromycin.Z <- melt(data.pepsum.Env.Stats.Puromycin, id.vars = colnames(data.pepsum.Env.Stats.Puromycin[,1:44]))
+
+data.pepsum.Env.Stats.Trifunctional$Pep1.Z <- scale(data.pepsum.Env.Stats.Trifunctional$Pep1, center=T, scale=T)
+data.pepsum.Env.Stats.Trifunctional$Pep2.Z <- scale(data.pepsum.Env.Stats.Trifunctional$Pep2, center=T, scale=T)
+data.pepsum.Env.Stats.Trifunctional$Pep3.Z <- scale(data.pepsum.Env.Stats.Trifunctional$Pep3, center=T, scale=T)
+data.pepsum.Env.Stats.Trifunctional.Z <- melt(data.pepsum.Env.Stats.Trifunctional, id.vars = colnames(data.pepsum.Env.Stats.Trifunctional[,1:44]))
+             
+# Create empty list to house correlation plots
 HSP90.corr.plots <- list()
 Puromycin.corr.plots <- list()
 Trifunctional.corr.plots <- list()
 
 # Run loop to generate scatter plots with each env. summary variable
 #HSP 90
-for (i in 11:45) 
+
+for (i in 10:44)  # environmental parameters are in columns 10:44
   local({
     i <- i
-    p1 <- ggscatter(data=data.pepsum.Env.Stats.HSP90, x=colnames(data.pepsum.Env.Stats.HSP90[i]), y="Pep1", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.HSP90[i]), ylab="HSP90 Pep1 Abundance (lambda-transformed)", main=paste("HSP90 Pep1 abundance ~ ", colnames(data.pepsum.Env.Stats.HSP90[i]), sep=""))
+    p1 <- ggscatter(data=data.pepsum.Env.Stats.HSP90.Z, x=colnames(data.pepsum.Env.Stats.HSP90.Z[i]), y="value", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.HSP90.Z[i]), ylab="HSP90 Abundance (Z-Score)", main=paste("HSP90 Peptide Z-Score ~ ", colnames(data.pepsum.Env.Stats.HSP90.Z[i]), sep=""))
     print(i)
     print(p1)
     HSP90.corr.plots[[i]] <<- p1
-})
+  })
 
-#Puromycin-sensitive aminopeptidase
-for (i in 11:45) 
+#Puromycin
+for (i in 10:44) 
   local({
     i <- i
-    p1 <- ggscatter(data=data.pepsum.Env.Stats.Puromycin, x=colnames(data.pepsum.Env.Stats.Puromycin[i]), y="Pep1", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.Puromycin[i]), ylab="Puromycin Pep1 Abundance (lambda-transformed)", main=paste("Puromycin Pep1 abundance ~ ", colnames(data.pepsum.Env.Stats.Puromycin[i]), sep=""))
+    p1 <- ggscatter(data=data.pepsum.Env.Stats.Puromycin.Z, x=colnames(data.pepsum.Env.Stats.Puromycin.Z[i]), y="value", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.Puromycin.Z[i]), ylab="Puromycin Abundance (Z-Score)", main=paste("Puromycin Peptide Z-Score ~ ", colnames(data.pepsum.Env.Stats.Puromycin.Z[i]), sep=""))
     print(i)
     print(p1)
     Puromycin.corr.plots[[i]] <<- p1
-})
+  })
 
-#Trifunctional Enzyme
-for (i in 11:45) 
+#Trifunctional
+for (i in 10:44) 
   local({
     i <- i
-    p1 <- ggscatter(data=data.pepsum.Env.Stats.Trifunctional, x=colnames(data.pepsum.Env.Stats.Trifunctional[i]), y="Pep1", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.Trifunctional[i]), ylab="Trifunctional Pep1 Abundance (lambda-transformed)", main=paste("Trifunctional Pep1 abundance ~ ", colnames(data.pepsum.Env.Stats.Trifunctional[i]), sep=""))
+    p1 <- ggscatter(data=data.pepsum.Env.Stats.Trifunctional.Z, x=colnames(data.pepsum.Env.Stats.Trifunctional.Z[i]), y="value", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.Trifunctional.Z[i]), ylab="Trifunctional Abundance (Z-Score)", main=paste("Trifunctional Peptide Z-Score ~ ", colnames(data.pepsum.Env.Stats.Trifunctional.Z[i]), sep=""))
     print(i)
     print(p1)
     Trifunctional.corr.plots[[i]] <<- p1
   })
 
 # Save all plots in 1 PDF for each protein
+#HSP90
 pdf("../../analyses/SRM/HSP90-corr-plots.pdf")
-grid.arrange( for (i in 11:45) {
+grid.arrange( for (i in 10:44) {
   print(HSP90.corr.plots[[i]])
 })
 dev.off()
 
+#Puromycin
 pdf("../../analyses/SRM/Puromycin-corr-plots.pdf")
-grid.arrange( for (i in 11:45) {
+grid.arrange( for (i in 10:44) {
   print(Puromycin.corr.plots[[i]])
 })
 dev.off()
 
+#Trifunctional
 pdf("../../analyses/SRM/Trifunctional-corr-plots.pdf")
-grid.arrange( for (i in 11:45) {
+grid.arrange( for (i in 10:44) {
   print(Trifunctional.corr.plots[[i]])
 })
 dev.off()
 
+### Run correlations between growth & environmental parameters 
 
+# Generate correlation plots for the 3 diff. abundant proteins, using Pep1 abundance
+Growth.corr.plots <- list()
+for (i in 10:43) 
+  local({
+    i <- i
+    p1 <- ggscatter(data=data.pepsum.Env.Stats, x=colnames(data.pepsum.Env.Stats[i]), y="Perc.Growth", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats[i]), ylab="Percent Growth", main=paste("Percent Growth ~ ", colnames(data.pepsum.Env.Stats[i]), sep=""))
+    print(i)
+    print(p1)
+    Growth.corr.plots[[i]] <<- p1
+  })
 
-#P value for correlation plots, bonferroni corrected (most strict)
-0.05/ncol(data.pepsum.Env.Stats.HSP90[,11:45])
-# = 0.001428571
+pdf("../../analyses/SRM/Growth-corr-plots.pdf")
+grid.arrange( for (i in 10:43) {
+  print(Growth.corr.plots[[i]])
+})
+dev.off()
 
-testAll.HSP90 <- lm(Pep1 ~ -1 + DO.median.loc + DO.min.loc + DO.max.loc + DO.var.loc + DO.sd.1.loc + pH.median.loc + pH.min.loc + pH.max.loc + pH.var.loc + pH.sd.1.loc + Temperature.median.loc + Temperature.min.loc + Temperature.max.loc + Temperature.var.loc + Temperature.sd.1.loc + Salinity.median.loc + Salinity.min.loc + Salinity.max.loc + Salinity.var.loc + Salinity.sd.1.loc, data=data.pepsum.Env.Stats.HSP90)
-summary(testAll.HSP90)
-par(mfrow=c(1,1))
-plot(rstandard(testAll.HSP90), main="Standardized Residuals \nShould be between [-2,2]")
-par(mfrow=c(1,4))
-plot(testAll.HSP90, which=1:4)
-anova(testAll.HSP90)
-# Only includes the first 6 ... 
+# Calculate correlation coefficient & p-value for all peptides combined, against growth & environmental stats
+data.pepsum.Env.Stats$Pep1.Z <- scale(data.pepsum.Env.Stats$Pep1, center=T, scale=T)
+data.pepsum.Env.Stats$Pep2.Z <- scale(data.pepsum.Env.Stats$Pep2, center=T, scale=T)
+data.pepsum.Env.Stats$Pep3.Z <- scale(data.pepsum.Env.Stats$Pep3, center=T, scale=T)
+data.pepsum.Env.Stats.Z <- melt(data.pepsum.Env.Stats, id.vars = colnames(data.pepsum.Env.Stats[,1:44]))
 
-# Test env. variable separately 
-testDO.HSP90 <- lm(Pep1 ~ -1 + DO.median.loc + DO.min.loc + DO.max.loc + DO.var.loc + DO.sd.1.loc, data=data.pepsum.Env.Stats.HSP90)
-summary(testDO.HSP90)
-par(mfrow=c(1,1))
-plot(rstandard(testDO.HSP90), main="Standardized Residuals \nShould be between [-2,2]")
-par(mfrow=c(1,4))
-plot(testDO.HSP90, which=1:4)
-anova(testDO.HSP90)
-ols_stepwise(testDO.HSP90)
+All.corr.plots <- list()
+for (i in 10:44) 
+  local({
+    i <- i
+    p1 <- ggscatter(data=data.pepsum.Env.Stats.Z, x=colnames(data.pepsum.Env.Stats.Z[i]), y="value", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab=colnames(data.pepsum.Env.Stats.Z[i]), ylab="All Peptides (z-score)", main=paste("All Peptides (z-score) ~ ", colnames(data.pepsum.Env.Stats.Z[i]), sep=""))
+    print(i)
+    print(p1)
+    All.corr.plots[[i]] <<- p1
+  })
 
-testpH.HSP90 <- lm(Pep1 ~ -1 + pH.median.loc + pH.min.loc + pH.max.loc + pH.var.loc + pH.sd.1.loc, data=data.pepsum.Env.Stats.HSP90)
-summary(testpH.HSP90)
-par(mfrow=c(1,1))
-plot(rstandard(testpH.HSP90), main="Standardized Residuals \nShould be between [-2,2]")
-par(mfrow=c(1,4))
-plot(testpH.HSP90, which=1:4)
-anova(testpH.HSP90)
-ols_stepwise(testpH.HSP90)
+pdf("../../analyses/SRM/AllPeptides-corr-plots.pdf")
+grid.arrange( for (i in 10:44) {
+  print(All.corr.plots[[i]])
+})
+dev.off()
 
-testTemp.HSP90 <- lm(Pep1 ~ -1 + Temperature.median.loc + Temperature.min.loc + Temperature.max.loc + Temperature.var.loc + Temperature.sd.1.loc, data=data.pepsum.Env.Stats.HSP90)
-summary(testTemp.HSP90)
-par(mfrow=c(1,1))
-plot(rstandard(testTemp.HSP90), main="Standardized Residuals \nShould be between [-2,2]")
-par(mfrow=c(1,4))
-plot(testTemp.HSP90, which=1:4)
-anova(testTemp.HSP90)
-ols_stepwise(testTemp.HSP90)
+png("../../analyses/SRM/Env-parameters-corr.png", width =800 , height =800)
+# check out the correlative environmental parameters to see if any correlate with each other (and thus can be left out)
+pairs(data.pepsum.Env.Stats.HSP90.Z[,c("DO.mean.loc", "DO.sd.loc", "DO.var.loc", "pH.sd.loc", "pH.var.loc", "Salinity.mean.loc", "Temperature.mean.loc", "Perc.Growth")], main="Plot Matrix, Env Stats for Models")
+# DO.sd & DO.var highly correlated. Select DO.sd  since it's correlation p=value is slightly smaller  
+# pH.sd & pH.var highly correlated. Select pH.var since it's correlation p=value is smaller and r value higher
+dev.off()
 
-testSalinity.HSP90 <- lm(Pep1 ~ -1 + Salinity.median.loc + Salinity.min.loc + Salinity.max.loc + Salinity.var.loc + Salinity.sd.1.loc, data=data.pepsum.Env.Stats.HSP90)
-summary(testSalinity.HSP90)
-par(mfrow=c(1,1))
-plot(rstandard(testSalinity.HSP90), main="Standardized Residuals \nShould be between [-2,2]")
-par(mfrow=c(1,4))
-plot(testSalinity.HSP90, which=1:4)
-anova(testSalinity.HSP90)
-ols_stepwise(testSalinity.HSP90)
+# Standardize correlative environmental parameters so I can compare their importance in a linear model
+data.pepsum.Env.Stats.HSP90.Z$DO.mean.loc.Z <- scale(data.pepsum.Env.Stats.HSP90.Z$DO.mean.loc, center=T, scale=T)
+data.pepsum.Env.Stats.HSP90.Z$DO.sd.loc.Z <- scale(data.pepsum.Env.Stats.HSP90.Z$DO.sd.loc, center=T, scale=T)
+data.pepsum.Env.Stats.HSP90.Z$pH.var.loc.Z <- scale(data.pepsum.Env.Stats.HSP90.Z$pH.var.loc, center=T, scale=T)
+data.pepsum.Env.Stats.HSP90.Z$Salinity.mean.loc.Z <- scale(data.pepsum.Env.Stats.HSP90.Z$Salinity.mean.loc, center=T, scale=T)
+data.pepsum.Env.Stats.HSP90.Z$Temperature.mean.loc.Z <- scale(data.pepsum.Env.Stats.HSP90.Z$Temperature.mean.loc, center=T, scale=T)
 
-# Run parameters identified in the above: 
-# --> DO.var.loc
-# --> pH.sd.1.loc
-# --> Temperature.median.loc
-# --> Salinity.max.loc 
-
-testBest1.HSP90 <- lm(Pep1 ~ -1 + DO.var.loc + pH.sd.1.loc + Temperature.median.loc + Salinity.max.loc, data=data.pepsum.Env.Stats.HSP90)
-summary(testBest.HSP90)
-anova(testBest.HSP90)
-pairs(data.pepsum.Env.Stats.HSP90[,c(7,17,23,26,36)], main="Plot Matrix, Pep1 vs Best Stats")
-
-testBest2.HSP90 <- lm(Pep2 ~ -1 + DO.var.loc + pH.sd.1.loc + Temperature.median.loc + Salinity.max.loc, data=data.pepsum.Env.Stats.HSP90)
-summary(testBest2.HSP90)
-anova(testBest2.HSP90)
-
-testBest3.HSP90 <- lm(Pep3 ~ -1 + DO.var.loc + pH.sd.1.loc + Temperature.median.loc + Salinity.max.loc, data=data.pepsum.Env.Stats.HSP90)
-summary(testBest3.HSP90)
-anova(testBest3.HSP90)
-
-
+# Construct linear model with selected parameters & inspect 
+lm.HSP90 <- lm(value ~ DO.mean.loc.Z + DO.sd.loc.Z + pH.var.loc.Z + Salinity.mean.loc.Z + Temperature.mean.loc.Z, data=data.pepsum.Env.Stats.HSP90.Z, singular.ok = TRUE)
+summary(lm.HSP90)
+plot(rstandard(lm.HSP90), main="Standardized Residuals \nShould be between [-2,2]")
+anova(lm.HSP90)
+ols_stepwise(lm.HSP90, details = TRUE)
+library(leaps)
+test.leaps <- regsubsets(value ~ DO.mean.loc + DO.sd.loc + pH.var.loc + Salinity.mean.loc + Temperature.mean.loc + Perc.Growth, data=data.pepsum.Env.Stats.HSP90.Z, nbest=10)
+summary(test.leaps)
+plot(test.leaps, scale="r2", statistic="rsq")

@@ -26,7 +26,6 @@ pH.box <- plot_ly(data = pH.Data.melted.noNA, x = ~variable, y = ~value, type="b
          legend = list(x=.95, y=.95))
 htmlwidgets::saveWidget(as_widget(pH.box), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-box.html")
 
-
 # Dissolved Oxygen
 DO.Data <- Env.Data[,c(1,grep("do\\.", colnames(Env.Data)))]
 DO.Data.noOuts <- DO.Data[which(DO.Data$FBE < 50),] #Remove FBE values over 50

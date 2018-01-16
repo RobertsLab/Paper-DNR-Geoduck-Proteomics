@@ -1,8 +1,8 @@
 #Stats3 script: prep environmental and protein data for regression models
 
 Env.Data.Master.noOuts.noTide <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric != "Tide"),]
-# Pull summary statistics on environmental data by Probe Location
 
+# Pull summary statistics on environmental data by Probe Location
 env.mean.loc <- aggregate(value ~ variable*metric, Env.Data.Master.noOuts.noTide, mean)
 env.mean.loc$stat <- "mean"
 env.var.loc <- aggregate(value ~ variable*metric, Env.Data.Master.noOuts.noTide, var)
@@ -181,6 +181,9 @@ data.melted.plus.pepsum.wide$BOTH <- gsub('FB-Eel', 'FBE', data.melted.plus.peps
 data.melted.plus.pepsum.wide$BOTH <- gsub('PG-Bare', 'PGB', data.melted.plus.pepsum.wide$BOTH)
 data.melted.plus.pepsum.wide$BOTH <- gsub('PG-Eel', 'PGE', data.melted.plus.pepsum.wide$BOTH)
 
+View(data.melted.plus.pepsum.wide)
+View(env.stats.location.wide)
+View(data.pepsum.Env.Stats)
 
 # Merge protein data with environmental summary stats 
 data.pepsum.Env.Stats <- data.frame(merge(x=data.melted.plus.pepsum.wide, y=env.stats.location.wide, by.x = "BOTH", by.y = "variable", all.x=TRUE, all.y=TRUE), stringsAsFactors = FALSE)
@@ -190,6 +193,12 @@ write.csv(file="~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/SR
 Growth <- read.csv("../../data/GeoduckGrowth.csv", header=TRUE, stringsAsFactors = FALSE)
 data.pepsum.Env.Stats <- data.frame(merge(x=data.pepsum.Env.Stats, y=Growth[,c("Perc.Growth", "PRVial")], by.x="SAMPLE", by.y="PRVial", all.x=T), stringsAsFactors = FALSE)
 data.melted.plus.pepsum.wide <- data.frame(merge(x=data.melted.plus.pepsum.wide, y=Growth[,c("Perc.Growth", "PRVial")], by.x="SAMPLE", by.y="PRVial", all.x=T))
+
+# Replace NaN strings with official "NA" designation & convert environmental stats to numeric
+data.pepsum.Env.Stats[data.pepsum.Env.Stats == "NaN"] <- NA 
+for (i in 7:44){
+  data.pepsum.Env.Stats[i] <- as.numeric(as.character(unlist(data.pepsum.Env.Stats[i])), na.action=na.omit)
+}
 
 # Check out how growth varied between sites
 par(mfrow=c(1,1))
@@ -201,7 +210,7 @@ library(car)
 leveneTest(Perc.Growth*100 ~ REGION*SITE*TREATMENT, data=data.pepsum.Env.Stats) #unequal variance, BUT ANOVA p-values are so low that I am confident in the results
 summary(growth.aov)
 TukeyHSD(growth.aov)
-plot(data.pepsum.Env.Stats$Perc.Growth*100 ~ data.pepsum.Env.Stats$SITE)
+plot(data.pepsum.Env.Stats$Perc.Growth*100 ~ data.pepsum.Env.Stats$SITE, main="Percent Growth, by site")
 
 # Plot ALL peptides against growth. Summary() shows equation with R^2
 Pep1Growth <- lm(`Pep1`+`Pep2`+`Pep3` ~ `Perc.Growth`, data=data.melted.plus.pepsum.wide)
@@ -229,17 +238,24 @@ png("~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental
 plot(Sal.plots[,1:8], main="Salinity Stats Correlation Plots") #Sal stats correlation plots
 dev.off()
 
-# Replace NaN strings with official "NA" designation & convert environmental stats to numeric
-data.pepsum.Env.Stats[data.pepsum.Env.Stats == "NaN"] <- NA 
-for (i in 7:45){
-  data.pepsum.Env.Stats[i] <- as.numeric(as.character(unlist(data.pepsum.Env.Stats[i])), na.action=na.omit)
-}
-
 # Isolate data related to diff. expressed proteins: 
 # ====> Puromycin-sensitive aminopeptidase
 # ====> HSP90-alpha
 # ====> Trifunctional enzyme subunit
 
-data.pepsum.Env.Stats.Puromycin <- data.pepsum.Env.Stats[grepl(c("Puromycin"), data.pepsum.Env.Stats$Protein.Name),]
 data.pepsum.Env.Stats.HSP90 <- data.pepsum.Env.Stats[grepl(c("HSP90"), data.pepsum.Env.Stats$Protein.Name),]
+data.pepsum.Env.Stats.Puromycin <- data.pepsum.Env.Stats[grepl(c("Puromycin"), data.pepsum.Env.Stats$Protein.Name),]
 data.pepsum.Env.Stats.Trifunctional <- data.pepsum.Env.Stats[grepl(c("Trifunctional"), data.pepsum.Env.Stats$Protein.Name),]
+
+### Check out growth ANOVA between habitats - any difference?
+# samples used in protein analysis
+hist(data.pepsum.Env.Stats$Perc.Growth) #normal distribution 
+Growth.habitat.aov <- aov(Perc.Growth ~ TREATMENT, data=data.pepsum.Env.Stats)
+summary(Growth.habitat.aov)
+
+# all geoduck samples
+hist(Growth$Perc.Growth)
+AllGrowth.habitat.aov <- aov(Perc.Growth ~ Habitat, data=Growth)
+summary(AllGrowth.habitat.aov) #no sigificant growth difference by habitat
+summary(aov(Perc.Growth ~ Site, data=Growth)) #significant difference by site 
+summary(aov(Perc.Growth ~ Site+Habitat, data=Growth)) #still significant difference by site 

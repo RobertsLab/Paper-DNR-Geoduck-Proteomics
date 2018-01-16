@@ -7,24 +7,21 @@ summary(data.melted.plus.pepsum$Area[data.melted.plus.pepsum$Area>0])
 # Calculate protein abundance Coefficients of Variation for each peptide, grouped by location
 library(dplyr)
 library(reshape)
+
 # What's the overall peptide variance by protein, NOT grouped by site? 
 peptide.variances.NOTsite <- data.melted.plus.pepsum%>%group_by(Peptide.Sequence,Protein.Name)%>%dplyr::summarise(SD=sd(Area), Mean=mean(Area))
 peptide.variances.NOTsite$cv <- peptide.variances.NOTsite$SD/peptide.variances.NOTsite$Mean
 mean(peptide.variances.NOTsite$cv)
-View(peptide.variances.NOTsite)
 
 peptide.variances <- data.melted.plus.pepsum%>%group_by(Peptide.Sequence,Protein.Name,SITE,BOTH)%>%dplyr::summarise(SD=sd(Area), Mean=mean(Area))
 peptide.variances$cv <- peptide.variances$SD/peptide.variances$Mean
 mean(peptide.variances$cv)
-View(peptide.variances)
 
 peptide.variances.mean <- aggregate(data=peptide.variances, cv ~ Peptide.Sequence+Protein.Name+SITE+BOTH, mean)
 peptide.variances.mean.site <- aggregate(data=peptide.variances.mean, cv ~SITE, mean)
-peptide.variances.mean.prot <- aggregate(data=peptide.variances.mean, cv ~Protein.Name+BOTH, mean)
-peptide.variances.mean.prot <- cast(peptide.variances.mean.prot, Protein.Name ~ BOTH, value="cv")
+peptide.variances.mean.prot <- aggregate(data=peptide.variances.mean, cv ~Protein.Name+SITE, mean)
+peptide.variances.mean.prot <- cast(peptide.variances.mean.prot, Protein.Name ~ SITE, value="cv")
 write.csv(file="../../analyses/SRM/prot-CV.csv", peptide.variances.mean.prot)
-
-View(peptide.variances[with(peptide.variances, order(Protein.Name, BOTH, -Mean)),])
 write.csv(file="../../analyses/SRM/peptide-CV.csv", peptide.variances.mean[with(peptide.variances.mean, order(Protein.Name, SITE)),])
 
 # Test for normality
@@ -152,7 +149,6 @@ for (i in 1:length(Protein.names)) {
   p.tukey[[i]] <- TukeyHSD(temp1, conf.level=.95)
 }
 Prot.ANOVA <- do.call(rbind, p.ANOVA) #this is a dataframe with ANOVA results for each protein with each comparison. 
-View(Prot.ANOVA)
 
 # Use a few multiple comparison corrections to adjust the significance (alpha) standard.  The most conservative P-adjusted is using the Bonferroni method, which multiplies the P-value by the # comparisons (in this case, 13 due to the 13 proteins).
 Comparisons <- unique(Prot.ANOVA$Comparison)
@@ -184,12 +180,10 @@ for (i in 1:length(Protein.names)) {
   outliers.reg[[i]] <- data.melted.plus.pepsum[data.melted.plus.pepsum$lambda.t %in% OutVals.reg[[i]],]
 }
 Prot.outliers.reg  = do.call(rbind, outliers.reg) #this is a dataframe with outliers, as determined by boxplots
-View(Prot.outliers.reg)
 # No HSP90-alpha, or Trifunctional data points included on the regional outlier list. Some 0 values for Puromycin. Should move forward with those two proteins, grouped by REGION.
 
 # Findings: the following proteins are significantly different between regions (North = Fidalgo Bay, Port Gamble; South = Case Inlet, Willapa Bay): 
 # ====> Puromycin-sensitive aminopeptidase
-# ====> HSP70
 # ====> HSP90-alpha
 # ====> Trifunctional enzyme subunit
 # While ANOVA indicates Arachidonate is significantly different between sites, there are 5 outlying data points; should consider removing those, re-running ANOVA to see if the outliers are having a large effect. 
@@ -198,9 +192,8 @@ View(Prot.outliers.reg)
 # First, create new column in peptide dataframe to house the peptide # (1, 2 or 3)
 Protein2Peptide <- data.melted.plus.pepsum[!duplicated(data.melted.plus.pepsum$Peptide.Sequence),c("Peptide.Sequence", "Protein.Name", "lambda.t")] #Isolate unique peptides, and include Protein name and abundance
 Protein2Peptide <- Protein2Peptide[with(Protein2Peptide , order(Protein.Name, -lambda.t)), ] #Order by protein, then abundance
-Protein2Peptide$Pep <- c(1,2,3,1,2,1,2,3,1,2,3,1,2,1,2,3,1,2,1,1,2,3,1,1,2,1,1,2,3) # Create new column with the Peptide # 
+Protein2Peptide$Pep <- c(1,2,3,1,2,3,1,2,3,1,2,3,1,1,2,3,1,2,1,1,2,3,1,1,2,1,2,1,2) # Create new column with the Peptide # 
 data.melted.plus.pepsum <- merge(x=data.melted.plus.pepsum, y=Protein2Peptide[,c("Peptide.Sequence", "Pep")], by.x="Peptide.Sequence", by.y="Peptide.Sequence", all.x=T, all.y=F)
-library(reshape)
 data.melted.plus.pepsum.wide <- cast(data.melted.plus.pepsum, Protein.Name+SAMPLE+SITE+TREATMENT+BOTH+REGION~Pep, value="lambda.t")
 names(data.melted.plus.pepsum.wide) <- c("Protein.Name","SAMPLE","SITE","TREATMENT","BOTH","REGION","Pep1","Pep2","Pep3")
 
@@ -224,25 +217,48 @@ abline(pep13)
 # Select 1 of the peptides to develop the linear model. 
 # I will select peptide #1. 
 
-# Draw Boxplots of differentially expressed proteins
+# Draw Boxplots of differentially expressed proteins, by bay
+
 data.melted.plus.pepsum.Puromycin <- data.melted.plus.pepsum[grepl(c("Puromycin"), data.melted.plus.pepsum$Protein.Name),]
-data.melted.plus.pepsum.HSP70 <- data.melted.plus.pepsum[grepl(c("HSP70"), data.melted.plus.pepsum$Protein.Name),]
 data.melted.plus.pepsum.HSP90 <- data.melted.plus.pepsum[grepl(c("HSP90"), data.melted.plus.pepsum$Protein.Name),]
 data.melted.plus.pepsum.Trifunctional <- data.melted.plus.pepsum[grepl(c("Trifunctional"), data.melted.plus.pepsum$Protein.Name),]
 
-png(file="../../analyses/SRM/Diff-Exp-Proteins.png", width =1200 , height =660)
-par(mfrow=c(2,2),
-    oma = c(5,5,3,0) + 0.1,
-    mar = c(0,0,1,2) + 0.1,
+png(file="../../analyses/SRM/Diff-Exp-Proteins-bay.png", width =800 , height =1000)
+par(mfrow=c(3,1),
+    oma = c(5,3,3,0) + 1,
+    mar = c(0,0,3,2) + 0.1,
     cex = 1)
-plot(data.melted.plus.pepsum.Puromycin$lambda.t ~ data.melted.plus.pepsum.Puromycin$SITE, main="Puromycin-sensitive aminopeptidase", xlab=NULL, ylab="Peptide Abundance", xaxt="n")
-plot(data.melted.plus.pepsum.HSP70$lambda.t ~ data.melted.plus.pepsum.HSP70$SITE, main="Heat Shock Protein 70", xlab=NULL, xaxt="n", ylab=NULL, yaxt="n")
+plot(data.melted.plus.pepsum.HSP90$lambda.t ~ data.melted.plus.pepsum.HSP90$SITE, main="Heat Shock Protein 90", xlab=NULL, ylab="Peptide Abundance", xaxt="n", yaxt="n")
 axis(4)
-plot(data.melted.plus.pepsum.HSP90$lambda.t ~ data.melted.plus.pepsum.HSP90$SITE, main="Heat Shock Protein 90", xlab="SITE", ylab="Peptide Abundance")
+plot(data.melted.plus.pepsum.Puromycin$lambda.t ~ data.melted.plus.pepsum.Puromycin$SITE, main="Puromycin-sensitive aminopeptidase", xlab=NULL, ylab="Peptide Abundance", xaxt="n", yaxt="n")
+axis(4)
 plot(data.melted.plus.pepsum.Trifunctional$lambda.t ~ data.melted.plus.pepsum.Trifunctional$SITE, main="Trifunctional enzyme subunit beta", xlab="SITE", ylab=NULL, yaxt="n")
 axis(4)
 title(main = "Differentially Expressed Proteins, SRM Analysis on Geoduck Ctenidia",
+      xlab = "Bay",
+      ylab = "Peptide Abundances, lambda-transformed",
+      outer = TRUE, line = 2.25, cex.lab=1.5)
+dev.off()
+
+# Boxplots by site/treatment
+
+data.melted.plus.pepsum.HSP90$BOTH<-factor(data.melted.plus.pepsum.HSP90$BOTH, levels=c("WB-Bare", "WB-Eel",  "CI-Bare", "CI-Eel", "PG-Bare", "PG-Eel",  "FB-Bare", "FB-Eel"))
+data.melted.plus.pepsum.Puromycin$BOTH<-factor(data.melted.plus.pepsum.Puromycin$BOTH, levels=c("WB-Bare", "WB-Eel",  "CI-Bare", "CI-Eel", "PG-Bare", "PG-Eel", "FB-Bare", "FB-Eel"))
+data.melted.plus.pepsum.Trifunctional$BOTH<-factor(data.melted.plus.pepsum.Trifunctional$BOTH, levels=c("WB-Bare", "WB-Eel",  "CI-Bare", "CI-Eel", "PG-Bare", "PG-Eel",  "FB-Bare", "FB-Eel"))
+
+png(file="../../analyses/SRM/Diff-Exp-Proteins-site.png", width =800 , height =1000)
+par(mfrow=c(3,1),
+    oma = c(5,3,3,0) + 1,
+    mar = c(0,0,3,2) + 0.1,
+    cex = 1)
+plot(data.melted.plus.pepsum.HSP90$lambda.t ~ data.melted.plus.pepsum.HSP90$BOTH, main="Heat Shock Protein 90", xlab=NULL, ylab="Peptide Abundance", xaxt="n", yaxt="n")
+axis(4)
+plot(data.melted.plus.pepsum.Puromycin$lambda.t ~ data.melted.plus.pepsum.Puromycin$BOTH, main="Puromycin-sensitive aminopeptidase", xlab=NULL, ylab="Peptide Abundance", xaxt="n", yaxt="n")
+axis(4)
+plot(data.melted.plus.pepsum.Trifunctional$lambda.t ~ data.melted.plus.pepsum.Trifunctional$BOTH, main="Trifunctional enzyme subunit beta", xlab="SITE", ylab=NULL, yaxt="n")
+axis(4)
+title(main = "Differentially Expressed Proteins, SRM Analysis on Geoduck Ctenidia",
       xlab = "Site Locations",
-      ylab = "Peptide Abundances",
+      ylab = "Peptide Abundances, lambda-transformed",
       outer = TRUE, line = 2.25, cex.lab=1.5)
 dev.off()
