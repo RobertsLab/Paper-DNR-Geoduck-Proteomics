@@ -6,6 +6,7 @@ DC.transitions <- unique(DilutionCurve.G.noPRTC$Transition)
 DC.transitions <- as.factor(DC.transitions)
 DilutionCurve.G.noPRTC$Transition <- as.factor(DilutionCurve.G.noPRTC$Transition)
 DC.D1G <- subset(DilutionCurve.G.noPRTC, Replicate=="D1-G")
+
 # Add a column with the value measured in D1-G for each transition
 for (i in 1:length(DC.transitions)) {
   DilutionCurve.G.noPRTC[which(DilutionCurve.G.noPRTC$Transition %in% DC.transitions[i]),"D1.value"] <- DC.D1G[which(DC.D1G$Transition %in% DC.transitions[i]), "Area"]
@@ -36,7 +37,7 @@ for (i in 1:length(DC.transitions)) {
   DC.transition.results[i,"Adj.R.Squared"] <- summary(DC.transition.lm)$adj.r.squared
   legend("bottomright", inset=0.05, bty="n", legend=paste("R2-adjusted: ", format(summary(DC.transition.lm)$adj.r.squared, digits=4), "\nCoefficient", format(DC.transition.lm$coefficients[2], digits=4)))
 }
-View(DC.transition.results)
+
 DC.transition.bad <- DilutionCurve.G.noPRTC[which(DilutionCurve.G.noPRTC$Transition %in% DC.transition.results[which(DC.transition.results$Coefficient < 0.2 | DC.transition.results$Coefficient > 1.5 | DC.transition.results$Adj.R.Squared < 0.7),"Transition"]),]
 unique(DC.transition.bad[,c("Protein.Name", "Peptide.Sequence", "Fragment.Ion")])
 

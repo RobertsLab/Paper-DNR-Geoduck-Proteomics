@@ -1,0 +1,54 @@
+### pH stats
+
+#### Bay/habitat comparisons
+
+Fit: aov(formula = value ~ variable, data = Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"), ])
+
+$variable
+               diff         lwr          upr     p adj
+WBB-WBE -0.20665082 -0.21593105 -0.197370592 0.0000000
+PGB-WBE -0.39659247 -0.40605334 -0.387131604 0.0000000
+CIE-WBE  0.10017266  0.09071827  0.109627050 0.0000000
+CIB-WBE -0.16761545 -0.17731902 -0.157911882 0.0000000
+FBE-WBE  0.08644167  0.07700334  0.095879999 0.0000000
+FBB-WBE -0.35387330 -0.36328215 -0.344464458 0.0000000
+PGB-WBB -0.18994165 -0.19928298 -0.180600311 0.0000000
+CIE-WBB  0.30682348  0.29748871  0.316158260 0.0000000
+CIB-WBB  0.03903537  0.02944831  0.048622437 0.0000000
+FBE-WBB  0.29309249  0.28377399  0.302411002 0.0000000
+FBB-WBB -0.14722248 -0.15651112 -0.137933835 0.0000000
+CIE-PGB  0.49676513  0.48725075  0.506279508 0.0000000
+CIB-PGB  0.22897702  0.21921500  0.238739046 0.0000000
+FBE-PGB  0.48303414  0.47353573  0.492532559 0.0000000
+FBB-PGB  0.04271917  0.03325005  0.052188289 0.0000000
+CIB-CIE -0.26778811 -0.27754386 -0.258032364 0.0000000
+FBE-CIE -0.01373099 -0.02322295 -0.004239025 0.0004002
+FBB-CIE -0.45404596 -0.46350861 -0.444583315 0.0000000
+FBE-CIB  0.25405712  0.24431694  0.263797302 0.0000000
+FBB-CIB -0.18625785 -0.19596947 -0.176546239 0.0000000
+FBB-FBE -0.44031497 -0.44976158 -0.430868373 0.0000000
+
+#### Bay comparisons
+> TukeyHSD(aov(value ~ Site, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]))
+  Tukey multiple comparisons of means
+    95% family-wise confidence level
+
+Fit: aov(formula = value ~ Site, data = Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"), ])
+
+$Site
+             diff         lwr         upr p adj
+FB-CI -0.10808113 -0.11564274 -0.10051952     0
+PG-CI -0.36958690 -0.37884747 -0.36032632     0
+WB-CI -0.07901618 -0.08651242 -0.07151995     0
+PG-FB -0.26150577 -0.27067030 -0.25234125     0
+WB-FB  0.02906494  0.02168769  0.03644219     0
+WB-PG  0.29057071  0.28146006  0.29968137     0
+
+> 
+#### Region comparisons
+
+Fit: aov(formula = value ~ Region, data = Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"), ])
+
+$Region
+                 diff       lwr       upr p adj
+South-North 0.1528959 0.1482659 0.1575259     0

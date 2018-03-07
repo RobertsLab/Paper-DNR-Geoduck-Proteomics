@@ -125,7 +125,6 @@ nrow(SRM.data.numeric)
 nrow(SRM.data.numeric[grepl("PRTC peptides", SRM.data.numeric$`Protein Name`),])
 nrow(SRM.data.numeric[!grepl("PRTC peptides", SRM.data.numeric$`Protein Name`),])
 
-
 SRM.data.screened <- SRM.data.numeric[!grepl(c("TTPSYVAFNDTER|IINEPTAAALAYGLDK|ISLTGPHSIIGR|QITMNDLPVGR|LVQAFQFTDK|FNLWGGSLSLGHPFGATGVR|VVLVGDSGVGK|AQLWDTAGQER|MVTGDNVNTAR|NNKPSDYQGGR"), SRM.data.numeric$`Peptide Sequence`),]
 SRM.data.screened.noPRTC <- SRM.data.screened[!grepl("PRTC peptides", SRM.data.screened$`Protein Name`),]
 write.csv(SRM.data.screened.noPRTC, file="../../analyses/SRM/SRM-data-screened.csv")

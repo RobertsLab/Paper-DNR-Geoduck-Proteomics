@@ -237,21 +237,83 @@ for (i in 1:length(Env.parameters)) {
   qqline(Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% Env.parameters[i]),"value"])
 }
 
-# Run tests on each probe location -------
+# Add Habitat identifier to dataframe, since some environmental parameters did not differ between habitat within sites
+Env.Data.Master.noOuts$Habitat <- Env.Data.Master.noOuts$variable
+Env.Data.Master.noOuts$Habitat <- gsub("FBB|PGB|WBB|CIB", "Bare", Env.Data.Master.noOuts$Habitat)
+Env.Data.Master.noOuts$Habitat <- gsub("FBE|PGE|WBE|CIE", "Eelgrass", Env.Data.Master.noOuts$Habitat)
+Env.Data.Master.noOuts$Habitat <- gsub("FB|PG|WB|CI", "Nope", Env.Data.Master.noOuts$Habitat)
+Env.Data.Master.noOuts[Env.Data.Master.noOuts == "Nope"] <- NA
+Env.Data.Master.noOuts$Habitat <- as.factor(Env.Data.Master.noOuts$Habitat)
 
-# Assess equal variances via Bartlett Test of Homogeneity of Variances for each environmental parameter
-bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),])
-bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),])
-bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),])
-bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),])
+# Add Site identifier to dataframe, since some environmental parameters did not differ between habitat within sites
+Env.Data.Master.noOuts$Site <- Env.Data.Master.noOuts$variable
+Env.Data.Master.noOuts$Site <- gsub("FBB|FBE|FB", "FB", Env.Data.Master.noOuts$Site)
+Env.Data.Master.noOuts$Site <- gsub("PGB|PGE|PG", "PG", Env.Data.Master.noOuts$Site)
+Env.Data.Master.noOuts$Site <- gsub("WBB|WBE|WB", "WB", Env.Data.Master.noOuts$Site)
+Env.Data.Master.noOuts$Site <- gsub("CIB|CIE|CI", "CI", Env.Data.Master.noOuts$Site)
+Env.Data.Master.noOuts$Site <- as.factor(Env.Data.Master.noOuts$Site)
 
-# Is the data balanced? Result: FB-Bare has less data points b/c I removed G057 from the data, which is from FB-B. Not sure exactly how to incorporate that into the analysis... 
-replications(value ~ metric*variable, data=Env.Data.Master.noOuts)
-# Not balanced
+# Add North & South regions identifier to dataframe, since that's how the proteins differed 
+Env.Data.Master.noOuts$Region <- Env.Data.Master.noOuts$variable
+Env.Data.Master.noOuts$Region <- gsub("FBB|FBE|PGB|PGE|FB|PG", "North", Env.Data.Master.noOuts$Region)
+Env.Data.Master.noOuts$Region <- gsub("WBB|WBE|CIB|CIE|WB|CI", "South", Env.Data.Master.noOuts$Region)
+Env.Data.Master.noOuts$Region <- as.factor(Env.Data.Master.noOuts$Region)
+
+# ENVIRONMENTAL DATA STATISTICS
+# 0. Assume unbalanced data sets across teh board due to outlier scrubbing
+# 1. Assess equal variances via Bartlett Test of Homogeneity of Variances for each environmental parameter
+
+# PH
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "FB"),]) #unequal variance
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "CI"),]) #unequal variance (but not as sig.)
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "WB"),]) #unequal variance 
+
+# DISSOLVED OXYGEN
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "FB"),]) #unequal variance
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "PG"),]) #unequal variance 
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "CI"),]) #unequal variance
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "WB"),]) #unequal variance 
+
+# TEMPERATURE
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "FB"),]) #EQUAL variance
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "PG"),]) #unequal variance
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "CI"),]) #EQUAL variance
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "WB"),]) #unequal variance 
+
+# SALINITY
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity" & Env.Data.Master.noOuts$Site %in% "FB"),]) #EQUAL variance (marginal...)
+bartlett.test(value~variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity" & Env.Data.Master.noOuts$Site %in% "WB"),]) #unequal variance 
 
 install.packages("FSA")
 library(FSA)
-# Run Krusgal Wallis tests
+
+# 2. RUN STATS TO COMPARE DATA BETWEEN HABITATS, WITHIN BAYS
+# STAT SELECTED BASED ON UNEQUAL VARIANCES, PARAMETRIC OR NOT  
+
+# PH = normal distribution, unequal variance 
+t.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "FB"),]$value, g=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "FB"),]$Habitat,var.equal=FALSE)
+t.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "CI"),]$value, g=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "FB"),]$Habitat,var.equal=FALSE)
+t.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "WB"),]$value, g=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$Site %in% "FB"),]$Habitat,var.equal=FALSE)
+
+# DISSOLVED OXYGEN: nonparametric, unequal variance = Kolmogorov-Smirnov Test
+ks.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "FB" & Env.Data.Master.noOuts$Habitat %in% "Bare"),]$value, y=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "FB" & Env.Data.Master.noOuts$Habitat %in% "Eelgrass"),]$value) 
+ks.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "PG" & Env.Data.Master.noOuts$Habitat %in% "Bare"),]$value, y=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "PG" & Env.Data.Master.noOuts$Habitat %in% "Eelgrass"),]$value) 
+ks.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "CI" & Env.Data.Master.noOuts$Habitat %in% "Bare"),]$value, y=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "CI" & Env.Data.Master.noOuts$Habitat %in% "Eelgrass"),]$value) 
+ks.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "WB" & Env.Data.Master.noOuts$Habitat %in% "Bare"),]$value, y=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO" & Env.Data.Master.noOuts$Site %in% "WB" & Env.Data.Master.noOuts$Habitat %in% "Eelgrass"),]$value) 
+
+# TEMPERATURE: nonparametric, equal variance = krusgal-wallis; unequal=kolmogorov-smirnov
+kruskal.test(value ~ Habitat, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "FB"),]) 
+ks.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "PG" & Env.Data.Master.noOuts$Habitat %in% "Bare"),]$value, y=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "PG" & Env.Data.Master.noOuts$Habitat %in% "Eelgrass"),]$value) 
+kruskal.test(value ~ Habitat, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "CI"),]) 
+ks.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "WB" & Env.Data.Master.noOuts$Habitat %in% "Bare"),]$value, y=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature" & Env.Data.Master.noOuts$Site %in% "WB" & Env.Data.Master.noOuts$Habitat %in% "Eelgrass"),]$value) 
+
+# SALINITY
+kruskal.test(value ~ Habitat, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity" & Env.Data.Master.noOuts$Site %in% "FB"),]) 
+ks.test(x=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity" & Env.Data.Master.noOuts$Site %in% "WB" & Env.Data.Master.noOuts$Habitat %in% "Bare"),]$value, y=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity" & Env.Data.Master.noOuts$Site %in% "WB" & Env.Data.Master.noOuts$Habitat %in% "Eelgrass"),]$value) 
+
+#### If it's OK to assume equal variance ... 
+
+# Run Stats on Environmental Data - if we can assume equal variance ... 
 summary(aov(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]))
 TukeyHSD(aov(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]))
 kruskal.test(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),]) 
@@ -261,8 +323,96 @@ dunnTest(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noO
 kruskal.test(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),]) 
 dunnTest(value ~ variable, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),], method="bonferroni")
 
-# Add North & South regions identifier to dataframe, since that's how the proteins differed 
-Env.Data.Master.noOuts$Region <- Env.Data.Master.noOuts$variable
-Env.Data.Master.noOuts$Region <- gsub("FBB|FBE|PGB|PGE|FB|PG", "North", Env.Data.Master.noOuts$Region)
-Env.Data.Master.noOuts$Region <- gsub("WBB|WBE|CIB|CIE|WB|CI", "South", Env.Data.Master.noOuts$Region)
-Env.Data.Master.noOuts$Region <- as.factor(Env.Data.Master.noOuts$Region)
+# Run stats to compare environmental data between bays, 
+TukeyHSD(aov(value ~ Site, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]))
+dunnTest(value ~ Site, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),], method="bonferroni")
+dunnTest(value ~ Site, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),], method="bonferroni")
+dunnTest(value ~ Site, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),], method="bonferroni")
+
+# Run stats to compare environmental data between north vs. south, 
+TukeyHSD(aov(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]))
+dunnTest(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),], method="bonferroni")
+dunnTest(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),], method="bonferroni")
+dunnTest(value ~ Region, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),], method="bonferroni")
+
+# PLAY AROUND with time series data 
+# PH
+
+test <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% "FBB"),]$value
+test1 <- ts(test, frequency=24*60/10)
+test2 <- decompose(test1)
+plot(test2)
+
+test3 <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% "FBE"),]$value
+test4 <- ts(test3, frequency=24*60/10)
+test5 <- decompose(test4)
+plot(test5)
+
+test6 <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% "PGB"),]$value
+test7 <- ts(test6, frequency=24*60/10)
+test8 <- decompose(test7)
+plot(test8)
+
+test9 <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% "CIB"),]$value
+test10 <- ts(test9, frequency=24*60/10)
+test11 <- decompose(test10)
+plot(test11)
+
+test12 <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% "CIE"),]$value
+test13<- ts(test12, frequency=24*60/10)
+test14 <- decompose(test13)
+plot(test14)
+
+test15 <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% "WBB"),]$value
+test16 <- ts(test15, frequency=24*60/10)
+test17 <- decompose(test16)
+plot(test17)
+
+test18 <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH" & Env.Data.Master.noOuts$variable %in% "WBE"),]$value
+test19<- ts(test18, frequency=24*60/10)
+test20 <- decompose(test19)
+plot(test20)
+
+
+# CORRELATION PLOTS ! 
+
+# Isolate dataframes per environmental variable
+pH <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),]
+DO <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),]
+Temperature <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),]
+Salinity <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),]
+
+# Make dataframe wide format
+pH.wide <- dcast(pH, DateTime ~ variable)
+DO.wide <- dcast(DO, DateTime ~ variable)
+Temperature.wide <- dcast(Temperature, DateTime ~ variable)
+Salinity.wide <- dcast(Salinity, DateTime ~ variable)
+
+# Correlation plots, between habitats within bays 
+
+# pH Correlation Plots
+ggscatter(data=pH.wide, x="FBE", y="FBB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="FBE pH", ylab="FBB pH", main="Fidalgo Bay pH Correlation Plot")
+ggscatter(data=pH.wide, x="WBE", y="WBB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="WBE pH", ylab="WBB pH", main="Willapa Bay pH Correlation Plot")
+ggscatter(data=pH.wide, x="CIE", y="CIB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="CIE pH", ylab="CIB pH", main="Case Inlet pH Correlation Plot")
+
+# DO Correlation Plots 
+ggscatter(data=DO.wide, x="FBE", y="FBB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="FBE DO", ylab="FBB DO", main="Fidalgo Bay DO Correlation Plot")
+ggscatter(data=DO.wide, x="PGE", y="PGB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="PGE DO", ylab="PGB DO", main="Port Gamble Bay DO Correlation Plot")
+ggscatter(data=DO.wide, x="WBE", y="WBB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="WBE DO", ylab="WBB DO", main="Willapa Bay DO Correlation Plot")
+ggscatter(data=DO.wide, x="CIE", y="CIB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="CIE DO", ylab="CIB DO", main="Case Inlet DO Correlation Plot")
+
+# Temperature Correlation Plots 
+ggscatter(data=Temperature.wide, x="FBE", y="FBB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="FBE Temperature", ylab="FBB Temperature", main="Fidalgo Bay Temperature Correlation Plot")
+ggscatter(data=Temperature.wide, x="PGE", y="PGB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="PGE Temperature", ylab="PGB Temperature", main="Port Gamble Bay Temperature Correlation Plot")
+ggscatter(data=Temperature.wide, x="WBE", y="WBB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="WBE Temperature", ylab="WBB Temperature", main="Willapa Bay Temperature Correlation Plot")
+ggscatter(data=Temperature.wide, x="CIE", y="CIB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="CIE Temperature", ylab="CIB Temperature", main="Case Inlet Temperature Correlation Plot")
+
+# Salinity Correlation Plots 
+ggscatter(data=Salinity.wide, x="FBE", y="FBB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="FBE Salinity", ylab="FBB Salinity", main="Fidalgo Bay Salinity Correlation Plot")
+ggscatter(data=Salinity.wide, x="WBE", y="WBB", add="reg.line", conf.int = TRUE, cor.coef=TRUE, cor.method="pearson", xlab="WBE Salinity", ylab="WBB Salinity", main="Willapa Bay Salinity Correlation Plot")
+
+# Random stats
+# Survival statistics
+do.variance <- data.frame(rbind(c(22.5, 11.7, 7.2, 2.0), c(31.4, 13.3, 4.7, 2.3)), row.names = c("EELGRASS", "BARE"), stringsAsFactors = F)
+names(do.variance) <- c("FB","PG","CI","WB")
+chisq.test(t(do.variance), simulate.p.value = TRUE) #not significant ?!

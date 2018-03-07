@@ -181,16 +181,33 @@ data.melted.plus.pepsum.wide$BOTH <- gsub('FB-Eel', 'FBE', data.melted.plus.peps
 data.melted.plus.pepsum.wide$BOTH <- gsub('PG-Bare', 'PGB', data.melted.plus.pepsum.wide$BOTH)
 data.melted.plus.pepsum.wide$BOTH <- gsub('PG-Eel', 'PGE', data.melted.plus.pepsum.wide$BOTH)
 
-View(data.melted.plus.pepsum.wide)
-View(env.stats.location.wide)
-View(data.pepsum.Env.Stats)
-
 # Merge protein data with environmental summary stats 
 data.pepsum.Env.Stats <- data.frame(merge(x=data.melted.plus.pepsum.wide, y=env.stats.location.wide, by.x = "BOTH", by.y = "variable", all.x=TRUE, all.y=TRUE), stringsAsFactors = FALSE)
 write.csv(file="~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/SRM/data-pepsum-Env-Stats.csv", data.pepsum.Env.Stats)
 
-# Merge with growth data for each vial
+# Import growth data 
 Growth <- read.csv("../../data/GeoduckGrowth.csv", header=TRUE, stringsAsFactors = FALSE)
+
+# Get growth summary stats
+Growth$Both <- paste(Growth$Site, Growth$Habitat, sep="-")
+tapply(Growth$Perc.Growth, Growth$Both, mean)
+tapply(Growth$Perc.Growth, Growth$Both, sd)
+
+# Check out if growth significantly differed between habitat, site, and both
+par(mfrow=c(1,1))
+hist(subset(Growth, Site != "SK")$Perc.Growth) #normal dist? 
+growth.aov <-aov(Perc.Growth ~ Site*Habitat*Both, data=subset(Growth, Site != "SK"))
+growth.res <- growth.aov$residuals
+hist(growth.res, main="Histogram of Growth ANOVA Residuals", xlab="Residuals") #normal distribution = check
+library(car)
+leveneTest(Perc.Growth*100 ~ Site*Habitat*Both, data=Growth) #unequal variance, BUT ANOVA p-values are so low that I am confident in the results
+summary(growth.aov)
+TukeyHSD(growth.aov)
+View(Growth)
+summary(growth.aov <-aov(Perc.Growth ~ Habitat, data=subset(Growth, Site != "SK")))
+
+#Copied and saved results in a .txt file 
+
 data.pepsum.Env.Stats <- data.frame(merge(x=data.pepsum.Env.Stats, y=Growth[,c("Perc.Growth", "PRVial")], by.x="SAMPLE", by.y="PRVial", all.x=T), stringsAsFactors = FALSE)
 data.melted.plus.pepsum.wide <- data.frame(merge(x=data.melted.plus.pepsum.wide, y=Growth[,c("Perc.Growth", "PRVial")], by.x="SAMPLE", by.y="PRVial", all.x=T))
 
@@ -200,17 +217,10 @@ for (i in 7:44){
   data.pepsum.Env.Stats[i] <- as.numeric(as.character(unlist(data.pepsum.Env.Stats[i])), na.action=na.omit)
 }
 
-# Check out how growth varied between sites
-par(mfrow=c(1,1))
-hist(data.pepsum.Env.Stats$Perc.Growth)
-growth.aov <-aov(Perc.Growth ~ REGION*SITE*TREATMENT, data=data.pepsum.Env.Stats)
-growth.res <- growth.aov$residuals
-hist(growth.res, main="Histogram of Growth ANOVA Residuals", xlab="Residuals") #normal distribution = check
-library(car)
-leveneTest(Perc.Growth*100 ~ REGION*SITE*TREATMENT, data=data.pepsum.Env.Stats) #unequal variance, BUT ANOVA p-values are so low that I am confident in the results
-summary(growth.aov)
-TukeyHSD(growth.aov)
-plot(data.pepsum.Env.Stats$Perc.Growth*100 ~ data.pepsum.Env.Stats$SITE, main="Percent Growth, by site")
+data.pepsum.Env.Stats$test <- data.pepsum.Env.Stats$SITE
+data.pepsum.Env.Stats$test  <- gsub("FB|PG|WB", "Non-CI", data.pepsum.Env.Stats$test)
+data.pepsum.Env.Stats$test  <- as.factor(data.pepsum.Env.Stats$test)
+
 
 # Plot ALL peptides against growth. Summary() shows equation with R^2
 Pep1Growth <- lm(`Pep1`+`Pep2`+`Pep3` ~ `Perc.Growth`, data=data.melted.plus.pepsum.wide)
@@ -247,15 +257,10 @@ data.pepsum.Env.Stats.HSP90 <- data.pepsum.Env.Stats[grepl(c("HSP90"), data.peps
 data.pepsum.Env.Stats.Puromycin <- data.pepsum.Env.Stats[grepl(c("Puromycin"), data.pepsum.Env.Stats$Protein.Name),]
 data.pepsum.Env.Stats.Trifunctional <- data.pepsum.Env.Stats[grepl(c("Trifunctional"), data.pepsum.Env.Stats$Protein.Name),]
 
-### Check out growth ANOVA between habitats - any difference?
-# samples used in protein analysis
-hist(data.pepsum.Env.Stats$Perc.Growth) #normal distribution 
-Growth.habitat.aov <- aov(Perc.Growth ~ TREATMENT, data=data.pepsum.Env.Stats)
-summary(Growth.habitat.aov)
+# Survival statistics
+Survival <- data.frame(rbind(c(13,12,10,14), c(12,14,9,15)), row.names = c("EELGRASS", "BARE"), stringsAsFactors = F)
+names(Survival) <- c("FB","PG","CI","WB")
+chisq.test(Survival) #not significant 
+Survival.perc <- (Survival/15)*100
+chisq.test(Survival.perc) #as % survival, not significant 
 
-# all geoduck samples
-hist(Growth$Perc.Growth)
-AllGrowth.habitat.aov <- aov(Perc.Growth ~ Habitat, data=Growth)
-summary(AllGrowth.habitat.aov) #no sigificant growth difference by habitat
-summary(aov(Perc.Growth ~ Site, data=Growth)) #significant difference by site 
-summary(aov(Perc.Growth ~ Site+Habitat, data=Growth)) #still significant difference by site 
