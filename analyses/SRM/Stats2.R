@@ -149,7 +149,6 @@ Salinity.box.noLows <- plot_ly(data = subset(Env.Data.Master, metric=="Salinity"
          legend = list(x=.95, y=.2))
 htmlwidgets::saveWidget(as_widget(Salinity.box.noLows), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-Salinity-box-noLowTides.html")
 
-
 # Identify and remove outliers from pH, DO & Salinity data. Apply Tukey's method of removing outlying values, where values outside the inner fence removed: 
 Env.Data.Master.noOuts <- Env.Data.Master
 
@@ -202,6 +201,36 @@ pH.box.noOuts <- plot_ly(data = subset(Env.Data.Master.noOuts, metric=="pH"), x 
          yaxis = list(title = 'pH (total scale)'),
          legend = list(x=.97, y=.98))
 htmlwidgets::saveWidget(as_widget(pH.box.noOuts), "~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/Environmental/June2016-Outplant-pH-box-noOutliers.html")
+
+# Generate time-series of daily means, variance pH
+
+# convert to date/time and retain as a new field
+Env.Data.Master.noOuts$DateTime <- as.POSIXct(strptime(Env.Data.Master.noOuts$DateTime, format="%m/%d/%Y %H:%M:%S", tz=Sys.timezone())) # date in the format: YearMonthDay Hour:Minute
+
+# use dplyr and mutate to add a day column to your data
+Env.Data.Master.noOuts_daily <- Env.Data.Master.noOuts %>%
+  mutate(Day = as.Date(DateTime, format = "%Y-%m-%d"))
+
+#Env.Data.Master.noOuts-daily
+Env.Data.Master.noOuts_daily <- subset(Env.Data.Master.noOuts, !((metric=="Tide")))  %>%
+  mutate(Day = as.Date(DateTime, format = "%Y-%m-%d")) %>%
+  group_by(Day, variable, metric) %>% # group by the day column
+  summarise(daily.mean=mean(value), daily.sd=sd(value), daily.var=var(value)) %>%  # calculate the SUM of all precipitation that occurred on each day
+  na.omit()
+
+group.colors <- c(WB = "sienna1", CI = "goldenrod1", PG ="steelblue2",  FB = "royalblue3")
+
+### JUST NEED TO SWAP EELGRASS & BARE LINES 
+
+# Plot daily pH means
+ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="FBE" | variable=="FBB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="royalblue3") + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA) + theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Fidalgo Bay pH")
+
+ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="PGE" | variable=="PGB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="steelblue2") + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA) + theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Port Gamble Bay pH")
+
+ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="CIE" | variable=="CIB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="goldenrod1") + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA) + theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Case Inlet pH")
+
+ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="WBE" | variable=="WBB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="sienna1") + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA) + theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Willapa Bay pH")
+
 
 # ==> Dissolved Oxygen
 # Let's plot the data again, to check it out after outliers have been removed.
@@ -260,7 +289,7 @@ Env.Data.Master.noOuts$Region <- gsub("WBB|WBE|CIB|CIE|WB|CI", "South", Env.Data
 Env.Data.Master.noOuts$Region <- as.factor(Env.Data.Master.noOuts$Region)
 
 # ENVIRONMENTAL DATA STATISTICS
-# 0. Assume unbalanced data sets across teh board due to outlier scrubbing
+# 0. Assume unbalanced data sets across the board due to outlier scrubbing
 # 1. Assess equal variances via Bartlett Test of Homogeneity of Variances for each environmental parameter
 
 # PH

@@ -97,7 +97,7 @@ points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker[4], pch=15, cex=2)
 points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker[4], pch=15, cex=2)
 legend(-2.7,0.2, pch=c(rep(16,4)), cex=1.1, pt.cex=1.3, legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay"), col=c(marker[4], marker[3], marker[2], marker[1]))
 dev.off()
-warnings()
+
 #### Create plot with forced aspect ratio to zoom in, no eel/bare separation, no outliers ### 
 png("../../analyses/SRM/NMDS-meaned-zoomed-sitecoded-nooutliers.png")
 par(mar=c(5.1,4.8,4.1,2.1))
@@ -129,6 +129,23 @@ htmlwidgets::saveWidget(as_widget(p.NMDS), "NMDS-meaned-Plotly.html") #Save plot
 # Sys.setenv("plotly_username"="<PLOTLY USERNAME HERE>") #Insert Plotly username
 # Sys.setenv("plotly_api_key"="<PLOTLY ACCOUNT API KEY HERE>") #Insert Plotly API key, find key @ https://plot.ly/settings/api
 api_create(p.NMDS, filename = "Geoduck-SRM-NMDS") #Pushes plot to Plotly online
+
+#### Plot for paper
+library(RColorBrewer)
+marker1 = c("sienna1", "goldenrod1", "steelblue2", "royalblue3")
+png("../../analyses/SRM/SRM-NMDS-for-paper.png") 
+par(mar=c(5,5,4,1)+.1)
+plot.default(x=NULL, y=NULL, type="n", xlab="Axis 1", ylab="Axis 2", xlim=c(-2.6,1), ylim=c(-0.4,0.25), asp=NA, main="Geoduck SRM Protein Abundance\nNMDS Similarity Plot", width=600,height=600, cex.axis=1.4, cex.lab=1.6, cex.main=1.4)
+points(SRM.nmds.mean.samples[c(CI.B.samples),], col=marker1[2], pch=8, cex=2, lwd=2)
+points(SRM.nmds.mean.samples[c(CI.E.samples),], col=marker1[2], pch=15, cex=2, lwd=2)
+points(SRM.nmds.mean.samples[c(PG.B.samples),], col=marker1[3], pch=8, cex=2, lwd=2)
+points(SRM.nmds.mean.samples[c(PG.E.samples),], col=marker1[3], pch=15, cex=2, lwd=2)
+points(SRM.nmds.mean.samples[c(WB.B.samples),], col=marker1[1], pch=8, cex=2, lwd=2)
+points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker1[1], pch=15, cex=2, lwd=2)
+points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker1[4], pch=8, cex=2, lwd=2)
+points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker1[4], pch=15, cex=2, lwd=2)
+legend(-2.6,0.25, pch=c(rep(16,4), 8, 15), cex=1.1, legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Unvegetated", "Eelgrass"), col=c(marker1[4], marker1[3], marker1[2], marker1[1], "black", "black"))
+dev.off()
 
 
 #### 2. CREATE NMDS PLOT, MEAN OF TECH REPS - LOG TRANSFORMED ########

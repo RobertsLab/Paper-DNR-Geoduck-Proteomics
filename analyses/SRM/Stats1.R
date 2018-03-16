@@ -217,7 +217,7 @@ abline(pep13)
 # Select 1 of the peptides to develop the linear model. 
 # I will select peptide #1. 
 
-# Draw Boxplots of differentially expressed proteins, by bay
+# Draw Boxplots of differentially expressed proteins, by bay, keeping data as peptide abundance 
 
 data.melted.plus.pepsum.Puromycin <- data.melted.plus.pepsum[grepl(c("Puromycin"), data.melted.plus.pepsum$Protein.Name),]
 data.melted.plus.pepsum.HSP90 <- data.melted.plus.pepsum[grepl(c("HSP90"), data.melted.plus.pepsum$Protein.Name),]
@@ -239,6 +239,43 @@ title(main = "Differentially Expressed Proteins, SRM Analysis on Geoduck Ctenidi
       ylab = "Peptide Abundances, lambda-transformed",
       outer = TRUE, line = 2.25, cex.lab=1.5)
 dev.off()
+
+# Draw boxplots for each protein (peptides summed within protein) for diff. expressed proteins for paper
+
+# First, generate summary data frames for each protein: 
+library(dplyr)
+library(ggplot2)
+
+ProSumm4plot <- data.melted.plus.prosum[grepl(c("HSP90|Puromycin|Trifunctional"), data.melted.plus.prosum$Protein.Name),] %>% # the names of the new data frame and the data frame to be summarised
+  group_by_at(vars(Protein.Name, SITE)) %>%   # the grouping variable
+  summarise(mean = mean(Area),  # calculates the mean of each group
+            sd = sd(Area), # calculates the standard deviation of each group
+            n = n(),  # calculates the sample size per group
+            SE = sd(Area)/sqrt(n())) # calculates the standard error of each group
+
+### IMPORTANT ### 
+# Barplots: mean peptide abundances summed by protein, error bars = standard error. 
+marker1 = c("sienna1", "goldenrod1", "steelblue2", "royalblue3")
+group.colors <- c(WB = "sienna1", CI = "goldenrod1", PG ="steelblue2",  FB = "royalblue3")
+
+
+ggplot(ProSumm4plot[grepl(c("HSP90"), ProSumm4plot$Protein.Name),], aes(x=as.factor(Protein.Name), y=mean, fill=SITE)) +
+  geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("Mean Spectral Abundance") +
+  geom_errorbar(aes(ymin=mean-SE, ymax=mean+SE), width=.2,position=position_dodge(.9)) +
+  scale_fill_manual(values=group.colors, labels=c("Willapa Bay", "Case Inlet", "Port Gamble Bay", "Fidalgo Bay")) +
+  theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=14, angle=45, face="bold"), axis.title=element_text(size=16,face="bold"), legend.position = c(0.3, .8), legend.title=element_blank(), legend.key.size = unit(2.5,"line"), legend.text=element_text(size=15, face="bold"), legend.background=element_blank(), panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Heat Shock\nProtein 90-å") + guides(fill = guide_legend(reverse = TRUE))
+
+ggplot(ProSumm4plot[grepl(c("Puromycin"), ProSumm4plot$Protein.Name),], aes(x=as.factor(Protein.Name), y=mean, fill=SITE)) +
+  geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("") +
+  geom_errorbar(aes(ymin=mean-SE, ymax=mean+SE), width=.2,position=position_dodge(.9)) +
+  scale_fill_manual(values=group.colors) +
+  theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Puromycin-sensitive\nAminopeptidase ")
+
+ggplot(ProSumm4plot[grepl(c("Trifunctional"), ProSumm4plot$Protein.Name),], aes(x=as.factor(Protein.Name), y=mean, fill=SITE)) +
+  geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("") +
+  geom_errorbar(aes(ymin=mean-SE, ymax=mean+SE), width=.2,position=position_dodge(.9)) +
+  scale_fill_manual(values=group.colors) +
+  theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Trifunctional enzyme\nβ-subunit")
 
 # Boxplots by site/treatment
 

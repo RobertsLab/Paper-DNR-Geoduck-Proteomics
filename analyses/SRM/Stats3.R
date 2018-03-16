@@ -190,8 +190,35 @@ Growth <- read.csv("../../data/GeoduckGrowth.csv", header=TRUE, stringsAsFactors
 
 # Get growth summary stats
 Growth$Both <- paste(Growth$Site, Growth$Habitat, sep="-")
-tapply(Growth$Perc.Growth, Growth$Both, mean)
-tapply(Growth$Perc.Growth, Growth$Both, sd)
+
+# Run stats: 
+
+
+# Generate growth boxplot
+
+Growth4plot <- Growth[!grepl(c("SK"), Growth$Site),] %>% # Remove SK data
+  group_by_at(vars(Both, Site)) %>%   # the grouping variable
+  summarise(mean = mean(Perc.Growth),  # calculates the mean of each group
+            sd = sd(Perc.Growth), # calculates the standard deviation of each group
+            n = n(),  # calculates the sample size per group
+            SE = sd(Perc.Growth)/sqrt(n())) # calculates the standard error of each group
+
+### IMPORTANT ### 
+# Barplots: mean growth, error bars = standard error. 
+marker1 = c("sienna1", "goldenrod1", "steelblue2", "royalblue3")
+group.colors <- c(WB = "sienna1", CI = "goldenrod1", PG ="steelblue2",  FB = "royalblue3")
+
+Growth4plot$Both<-factor(Growth4plot$Both, levels=c("WB-B", "WB-E",  "CI-B", "CI-E", "PG-B", "PG-E", "FB-B", "FB-E"))
+Growth4plot$Site<-factor(Growth4plot$Site, levels=c("WB", "CI", "PG", "FB"))
+
+## Need to figure out how to make eelgrass/bare pattern or colors different. 
+
+ggplot(Growth4plot, aes(x=as.factor(Both), y=100*mean, fill=Site)) +
+  geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("Mean Growth (%)") +
+  geom_errorbar(aes(ymin=100*(mean-SE), ymax=100*(mean+SE)), width=.2,position=position_dodge(.9)) +
+  scale_fill_manual(values=group.colors, labels=c("Willapa Bay", "Case Inlet", "Port Gamble Bay", "Fidalgo Bay")) +
+  theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=14, angle=45, face="bold"), axis.title=element_text(size=16,face="bold"), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Growth by Site") + guides(fill = guide_legend(reverse = TRUE))
+
 
 # Check out if growth significantly differed between habitat, site, and both
 par(mfrow=c(1,1))
@@ -203,8 +230,13 @@ library(car)
 leveneTest(Perc.Growth*100 ~ Site*Habitat*Both, data=Growth) #unequal variance, BUT ANOVA p-values are so low that I am confident in the results
 summary(growth.aov)
 TukeyHSD(growth.aov)
-View(Growth)
 summary(growth.aov <-aov(Perc.Growth ~ Habitat, data=subset(Growth, Site != "SK")))
+
+# Run test comparing difference between eelgrass vs. control, testing diff. from zero
+
+
+
+# Run analysis 
 
 #Copied and saved results in a .txt file 
 
@@ -220,7 +252,6 @@ for (i in 7:44){
 data.pepsum.Env.Stats$test <- data.pepsum.Env.Stats$SITE
 data.pepsum.Env.Stats$test  <- gsub("FB|PG|WB", "Non-CI", data.pepsum.Env.Stats$test)
 data.pepsum.Env.Stats$test  <- as.factor(data.pepsum.Env.Stats$test)
-
 
 # Plot ALL peptides against growth. Summary() shows equation with R^2
 Pep1Growth <- lm(`Pep1`+`Pep2`+`Pep3` ~ `Perc.Growth`, data=data.melted.plus.pepsum.wide)
@@ -258,9 +289,42 @@ data.pepsum.Env.Stats.Puromycin <- data.pepsum.Env.Stats[grepl(c("Puromycin"), d
 data.pepsum.Env.Stats.Trifunctional <- data.pepsum.Env.Stats[grepl(c("Trifunctional"), data.pepsum.Env.Stats$Protein.Name),]
 
 # Survival statistics
-Survival <- data.frame(rbind(c(13,12,10,14), c(12,14,9,15)), row.names = c("EELGRASS", "BARE"), stringsAsFactors = F)
-names(Survival) <- c("FB","PG","CI","WB")
-chisq.test(Survival) #not significant 
-Survival.perc <- (Survival/15)*100
-chisq.test(Survival.perc) #as % survival, not significant 
+Survival <- read.csv("../../data/Geoduck-Survival.csv", header=TRUE, stringsAsFactors = TRUE)
+chisq.test(Survival$Survival ~ Survival$Both) #not significant  
 
+### Need to figure out how to run chi-square test on all my data here. 
+Survival4plot <- Survival %>% # Remove SK data
+  group_by_at(vars(Both, Site)) %>%   # the grouping variable
+  summarise(mean = mean(Survival),  # calculates the mean of each group
+            sd = sd(Survival), # calculates the standard deviation of each group
+            n = n(),  # calculates the sample size per group
+            SE = sd(Survival)/sqrt(n())) # calculates the standard error of each group
+
+Survival4plot$Both<-factor(Survival4plot$Both, levels=c("WB-B", "WB-E",  "CI-B", "CI-E", "PG-B", "PG-E", "FB-B", "FB-E"))
+Survival4plot$Site<-factor(Survival4plot$Site, levels=c("WB", "CI", "PG", "FB"))
+
+## Need to figure out how to make eelgrass/bare pattern or colors different. 
+
+ggplot(Survival4plot, aes(x=as.factor(Both), y=100*mean, fill=Site)) +
+  geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("Mean Sruvival (%)") +
+  geom_errorbar(aes(ymin=100*(mean-SE), ymax=100*(mean+SE)), width=.2,position=position_dodge(.9)) +
+  scale_fill_manual(values=group.colors, labels=c("Willapa Bay", "Case Inlet", "Port Gamble Bay", "Fidalgo Bay")) +
+  theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=14, angle=45, face="bold"), axis.title=element_text(size=16,face="bold"), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Survival by Site") + guides(fill = guide_legend(reverse = TRUE))
+
+# Try making NMDS plot with env. summary stats ... use env.stats.location.wide 
+env.stats.location.wide.noNA <- env.stats.location.wide
+env.stats.location.wide.noNA[env.stats.location.wide.noNA == "NaN"] <- NA
+for (i in 2:ncol(env.stats.location.wide.noNA)) {
+  env.stats.location.wide.noNA[i] <- as.numeric(as.character(unlist(env.stats.location.wide.noNA[i])), na.action=na.omit)
+}
+env.stats.location.wide.noNA[is.na(env.stats.location.wide.noNA)] <- 0
+rownames(env.stats.location.wide.noNA) <- env.stats.location.wide.noNA[,1]
+env.stats.location.wide.noNA <- env.stats.location.wide.noNA[,-1]
+
+library(vegan)
+Env.stats.nmds <- metaMDS(env.stats.location.wide.noNA, distance = 'bray', k = 2, trymax = 1000, autotransform = FALSE) #Make MDS dissimilarity matrix
+stressplot(Env.stats.nmds) #Make NMDS stressplot  
+plot(Env.stats.nmds) #Make NMDS plot; black circle = site, red ticks = env. variable
+Env.stats.nmds.samples <- scores(Env.stats.nmds, display = "sites")
+plot(Env.stats.nmds.samples)
+Env.stats.nmds.samples
