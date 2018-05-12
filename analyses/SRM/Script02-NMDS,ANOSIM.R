@@ -144,6 +144,8 @@ points(SRM.nmds.mean.samples[c(WB.B.samples),], col=marker1[1], pch=8, cex=2, lw
 points(SRM.nmds.mean.samples[c(WB.E.samples),], col=marker1[1], pch=15, cex=2, lwd=2)
 points(SRM.nmds.mean.samples[c(FB.B.samples),], col=marker1[4], pch=8, cex=2, lwd=2)
 points(SRM.nmds.mean.samples[c(FB.E.samples),], col=marker1[4], pch=15, cex=2, lwd=2)
+ordihull(scores(SRM.mean.nmds), groups=CI.B.samples, display="sites")
+
 legend(-2.6,0.25, pch=c(rep(16,4), 8, 15), cex=1.1, legend=c("Fidalgo Bay", "Port Gamble", 'Case Inlet', "Willapa Bay", "Unvegetated", "Eelgrass"), col=c(marker1[4], marker1[3], marker1[2], marker1[1], "black", "black"))
 dev.off()
 

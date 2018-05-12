@@ -206,6 +206,7 @@ htmlwidgets::saveWidget(as_widget(pH.box.noOuts), "~/Documents/Roberts Lab/Paper
 
 # convert to date/time and retain as a new field
 Env.Data.Master.noOuts$DateTime <- as.POSIXct(strptime(Env.Data.Master.noOuts$DateTime, format="%m/%d/%Y %H:%M:%S", tz=Sys.timezone())) # date in the format: YearMonthDay Hour:Minute
+library(dplyr)
 
 # use dplyr and mutate to add a day column to your data
 Env.Data.Master.noOuts_daily <- Env.Data.Master.noOuts %>%
@@ -214,23 +215,57 @@ Env.Data.Master.noOuts_daily <- Env.Data.Master.noOuts %>%
 #Env.Data.Master.noOuts-daily
 Env.Data.Master.noOuts_daily <- subset(Env.Data.Master.noOuts, !((metric=="Tide")))  %>%
   mutate(Day = as.Date(DateTime, format = "%Y-%m-%d")) %>%
-  group_by(Day, variable, metric) %>% # group by the day column
-  summarise(daily.mean=mean(value), daily.sd=sd(value), daily.var=var(value)) %>%  # calculate the SUM of all precipitation that occurred on each day
+  group_by(Day, variable, metric, Region, Site, Habitat) %>% # group by the day column
+  summarise(daily.mean=mean(value), daily.sd=sd(value), daily.var=var(value)) %>%  
   na.omit()
-
 group.colors <- c(WB = "sienna1", CI = "goldenrod1", PG ="steelblue2",  FB = "royalblue3")
 
 ### JUST NEED TO SWAP EELGRASS & BARE LINES 
 
 # Plot daily pH means
-ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="FBE" | variable=="FBB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="royalblue3") + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA) + theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Fidalgo Bay pH")
+ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="FBE" | variable=="FBB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="royalblue3") + scale_linetype_manual(values=c("dashed", "solid")) + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA, fill = "grey70") + theme_light() + theme(plot.title = element_text(size=24, face="bold"), axis.text.y=element_text(size=18, angle=45, face="bold"), axis.text.x=element_text(size=18, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Fidalgo Bay pH")  + ylim(6.84, 8.24) + xlim("0016-06-01"," 0016-07-19")
 
-ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="PGE" | variable=="PGB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="steelblue2") + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA) + theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Port Gamble Bay pH")
+ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="PGE" | variable=="PGB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="steelblue2")  + scale_linetype_manual(values=c("solid")) + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA, fill = "grey70") + theme_light() + theme(plot.title = element_text(size=24, face="bold"), axis.text.y=element_text(size=18, angle=45, face="bold"), axis.text.x=element_text(size=18, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank())  + ggtitle("Port Gamble Bay pH") + ylim(6.84, 8.24) + xlim("0016-06-01"," 0016-07-19")
 
-ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="CIE" | variable=="CIB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="goldenrod1") + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA) + theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Case Inlet pH")
+ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="CIE" | variable=="CIB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="goldenrod1")   + scale_linetype_manual(values=c("dashed", "solid")) + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA, fill = "grey70") + theme_light() + theme(plot.title = element_text(size=24, face="bold"), axis.text.y=element_text(size=18, angle=45, face="bold"), axis.text.x=element_text(size=18, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank())  + ggtitle("Case Inlet pH") + ylim(6.84, 8.24) + xlim("0016-06-01"," 0016-07-19")
 
-ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="WBE" | variable=="WBB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="sienna1") + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA) + theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Willapa Bay pH")
+ggplot(data=subset(Env.Data.Master.noOuts_daily, (metric=="pH" & (variable=="WBE" | variable=="WBB"))), aes(x=Day,y=daily.mean,colour=variable,group=variable)) + geom_line(size=2, aes(linetype=variable), color="sienna1")   + scale_linetype_manual(values=c("dashed", "solid")) + geom_ribbon(aes(ymax=daily.mean + daily.sd, ymin=daily.mean-daily.sd, alpha=0.5), colour=NA, fill = "grey70") + theme_light() + theme(plot.title = element_text(size=24, face="bold"), axis.text.y=element_text(size=18, angle=45, face="bold"), axis.text.x=element_text(size=18, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank()) + ggtitle("Willapa Bay pH") + ylim(6.84, 8.24) + xlim("0016-06-01"," 0016-07-19")
 
+# Try nested lm - anova results  
+summary(lm(daily.mean ~ 1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "pH"),])) #grand pH mean 
+anova(lm(daily.mean ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "pH"),]))
+summary(lm(daily.mean ~ Habitat-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "pH"),])) #mean daily mean pH in each habitat 
+summary(lm(daily.mean ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "pH"),])) # mean daily mean pH at each location 
+anova(lm(daily.mean ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "DO"),]))
+summary(lm(daily.mean ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "DO"),]))# mean daily mean DO
+anova(lm(daily.mean ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Temperature"),]))
+summary(lm(daily.mean ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Temperature"),])) # mean daliy mean temperature
+anova(lm(daily.mean ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Salinity"),]))
+summary(lm(daily.mean ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Salinity"),])) # mean daily mean salinity 
+
+# daily means for bays (not separated by habitat)
+summary(lm(value ~ Site-1, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "DO"),]))# mean daily mean DO
+summary(lm(value ~ Site-1, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Temperature"),])) # mean daliy mean temperature
+summary(lm(value ~ Site-1, data=Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "Salinity"),])) # mean daily mean salinity 
+
+
+anova(lm(daily.sd ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "pH"),]))
+summary(lm(daily.var ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "pH"),])) #mean daily sd pH 
+anova(lm(daily.sd ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "DO"),]))
+summary(lm(daily.sd ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "DO"),])) #mean daily sd DO
+anova(lm(daily.sd ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Temperature"),]))
+summary(lm(daily.sd ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Temperature"),])) #mean daily sd Temp
+anova(lm(daily.sd ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Salinity"),]))
+summary(lm(daily.sd ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Salinity"),])) #mean daily sd Salinity 
+
+anova(lm(daily.var ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "pH"),]))
+summary(lm(daily.var ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "pH"),])) #mean daily variance pH 
+anova(lm(daily.var ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "DO"),]))
+summary(lm(daily.var ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "DO"),])) #mean daily variance DO
+anova(lm(daily.var ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Temperature"),]))
+summary(lm(daily.var ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Temperature"),])) #mean daily variance Temp
+anova(lm(daily.var ~ Site + Site/Habitat, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Salinity"),]))
+summary(lm(daily.var ~ variable-1, data=Env.Data.Master.noOuts_daily[which(Env.Data.Master.noOuts_daily$metric %in% "Salinity"),])) #mean daily variance Salinity 
 
 # ==> Dissolved Oxygen
 # Let's plot the data again, to check it out after outliers have been removed.

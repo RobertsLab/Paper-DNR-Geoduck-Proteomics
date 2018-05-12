@@ -46,7 +46,7 @@ SampleInfo <- read.csv(url("https://github.com/RobertsLab/Paper-DNR-Geoduck-Prot
 SampleInfo$PRVial <- sub("G", "", SampleInfo$PRVial)
 SampleInfo$PRVial <- as.numeric(SampleInfo$PRVial)
 
-# Merge GeoFiles and SampleInfo togeter to annotate file #'s
+# Merge GeoFiles and SampleInfo together to annotate file #'s
 GeoFile.ann <- merge(x=GeoFiles, y=SampleInfo, by.x="Sample", by.y="PRVial", all.x=T)
 GeoFile.ann <- GeoFile.ann[,1:10]
 

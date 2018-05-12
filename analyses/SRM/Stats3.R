@@ -1,4 +1,5 @@
 #Stats3 script: prep environmental and protein data for regression models
+library(ggplot2)
 
 Env.Data.Master.noOuts.noTide <- Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric != "Tide"),]
 
@@ -17,6 +18,12 @@ env.median.loc <- aggregate(value ~ variable*metric, Env.Data.Master.noOuts.noTi
 env.median.loc$stat <- "median"
 env.stats.location <- rbind(env.mean.loc, env.var.loc, env.sd.loc, env.max.loc, env.min.loc, env.median.loc)
 env.stats.location$comparison <- "variable"
+summary(Env.Data.Master.noOuts[which(Env.Data.Master.noOuts$metric %in% "pH"),])
+
+aggregate(value ~ Habitat*metric, Env.Data.Master.noOuts, mean)
+aggregate(value ~ Habitat*metric, Env.Data.Master.noOuts, sd)
+aggregate(value ~ Habitat*metric, Env.Data.Master.noOuts, min)
+aggregate(value ~ Habitat*metric, Env.Data.Master.noOuts, max)
 
 # Write functions to calculate the % of data > 1 standard deviation from the mean, by REGION
 Percent.sd.1.loc <- function(parameter, group) {
@@ -186,13 +193,14 @@ data.pepsum.Env.Stats <- data.frame(merge(x=data.melted.plus.pepsum.wide, y=env.
 write.csv(file="~/Documents/Roberts Lab/Paper-DNR-Geoduck-Proteomics/analyses/SRM/data-pepsum-Env-Stats.csv", data.pepsum.Env.Stats)
 
 # Import growth data 
-Growth <- read.csv("../../data/GeoduckGrowth.csv", header=TRUE, stringsAsFactors = FALSE)
+Growth <- read.csv("../../data/GeoduckGrowth.csv", header=TRUE, stringsAsFactors = FALSE, na.strings = "NA")
 
 # Get growth summary stats
 Growth$Both <- paste(Growth$Site, Growth$Habitat, sep="-")
+mean(Growth$AvgIShell)
+sd(Growth$AvgIShell)
 
 # Run stats: 
-
 
 # Generate growth boxplot
 
@@ -208,6 +216,10 @@ Growth4plot <- Growth[!grepl(c("SK"), Growth$Site),] %>% # Remove SK data
 marker1 = c("sienna1", "goldenrod1", "steelblue2", "royalblue3")
 group.colors <- c(WB = "sienna1", CI = "goldenrod1", PG ="steelblue2",  FB = "royalblue3")
 
+mean(Growth[grepl("CI-B", Growth$Both),7:11])
+subset(Growth, Both == "CI-B")[1,7:11]
+subset(Growth, Both == "CI-B")[1,7:11]
+
 Growth4plot$Both<-factor(Growth4plot$Both, levels=c("WB-B", "WB-E",  "CI-B", "CI-E", "PG-B", "PG-E", "FB-B", "FB-E"))
 Growth4plot$Site<-factor(Growth4plot$Site, levels=c("WB", "CI", "PG", "FB"))
 
@@ -219,6 +231,26 @@ ggplot(Growth4plot, aes(x=as.factor(Both), y=100*mean, fill=Site)) +
   scale_fill_manual(values=group.colors, labels=c("Willapa Bay", "Case Inlet", "Port Gamble Bay", "Fidalgo Bay")) +
   theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=14, angle=45, face="bold"), axis.title=element_text(size=16,face="bold"), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Growth by Site") + guides(fill = guide_legend(reverse = TRUE))
 
+# Revised barplot for size, not growth for NSA
+Size <- read.csv("../../data/GeoduckGrowth-for-NSA-2.csv", header=TRUE, stringsAsFactors = FALSE, na.strings = "NA")
+#marker2 = c("gray", "sienna1", "goldenrod1", "steelblue2", "royalblue3")
+group.colors2 <- c(INITIAL = "gray", WB = "sienna1", CI = "goldenrod1", PG ="steelblue2",  FB = "royalblue3")
+Size$BOTH<-factor(Size$BOTH, levels=c("INITIAL", "WB-B", "WB-E",  "CI-B", "CI-E", "PG-B", "PG-E", "FB-B", "FB-E"))
+Size$SITE<-factor(Size$SITE, levels=c("INITIAL", "WB", "CI", "PG", "FB"))
+
+# Size compared to initial
+ggplot(Size, aes(x=as.factor(BOTH), y=Mean.Final, fill=SITE)) +
+  geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("Mean Length (mm)") +
+  geom_errorbar(aes(ymin=Mean.Final-SD.Final, ymax=Mean.Final+SD.Final), width=.2,position=position_dodge(.9)) +
+  scale_fill_manual(values=group.colors2, labels=c("Initial", "Willapa Bay", "Case Inlet", "Port Gamble Bay", "Fidalgo Bay")) +
+  theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=14, angle=45, face="bold"), axis.title=element_text(size=16,face="bold"), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Growth by Site") + guides(fill = guide_legend(reverse = TRUE))
+
+# % Relative Size
+ggplot(data=subset(Size, SITE!="INITIAL"), aes(x=as.factor(BOTH), y=Mean.Final-14.63, fill=SITE)) +
+  geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("Relative Mean Length (mm)") +
+  geom_errorbar(aes(ymin=Mean.Final-14.63-SD.Final, ymax=Mean.Final-14.63+SD.Final), width=.2,position=position_dodge(.9)) +
+  scale_fill_manual(values=group.colors2, labels=c("Initial", "Willapa Bay", "Case Inlet", "Port Gamble Bay", "Fidalgo Bay")) +
+  theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=14, angle=45, face="bold"), axis.title=element_text(size=16,face="bold"), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Growth by Site") + guides(fill = guide_legend(reverse = TRUE))
 
 # Check out if growth significantly differed between habitat, site, and both
 par(mfrow=c(1,1))
@@ -232,9 +264,14 @@ summary(growth.aov)
 TukeyHSD(growth.aov)
 summary(growth.aov <-aov(Perc.Growth ~ Habitat, data=subset(Growth, Site != "SK")))
 
-# Run test comparing difference between eelgrass vs. control, testing diff. from zero
 
+count(Growth[Growth$Site!="SK",], Site) #not balanced, anova results below not valid. 
+anova(lm(Perc.Growth ~ Site + Site/Habitat/Exclosure, data=Growth[Growth$Site!="SK",]))
+0.023764/0.010545 #F-value for Exclosure 
+0.015525/0.023764 #F-value for Habitat 
+0.252493/0.015525 #F-value for Site 
 
+anova(lm(Perc.Growth ~ Site*Habitat*Exclosure, data=Growth[Growth$Site!="SK",]))
 
 # Run analysis 
 
@@ -291,6 +328,10 @@ data.pepsum.Env.Stats.Trifunctional <- data.pepsum.Env.Stats[grepl(c("Trifunctio
 # Survival statistics
 Survival <- read.csv("../../data/Geoduck-Survival.csv", header=TRUE, stringsAsFactors = TRUE)
 chisq.test(Survival$Survival ~ Survival$Both) #not significant  
+anova(lm(Survival ~ Site + Site/Both, data=Survival)) #No difference in survival between site or habitat
+0.011667/0.076667 #no difference in survival between habitats, nested within sites 
+0.117222/0.011667 #yes, sign. difference in survival between sites 
+pf(10.04731, 3, 4)
 
 ### Need to figure out how to run chi-square test on all my data here. 
 Survival4plot <- Survival %>% # Remove SK data

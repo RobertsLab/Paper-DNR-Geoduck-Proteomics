@@ -20,7 +20,7 @@
 # Import datasets using relative paths in this repo
 SRMreport <- read.csv("../../data/SRM/2017-Geoduck-SRM-Skyline-Report.csv", header=FALSE, na.strings = "#N/A", stringsAsFactors = FALSE)
 SRMsequence <- read.csv("../../data/SRM/SRM-Sequence-final-annotated.csv", header=TRUE, stringsAsFactors = FALSE)
-sample.key <- read.csv("../../data/SRM/2017-08-14-Geoduck-samples.csv", header=TRUE, stringsAsFactors = FALSE)
+sample.key <- read.csv("../../data/Geoduck-sample-info.csv", header=TRUE, stringsAsFactors = FALSE)
 
 SRMsamples <- as.character(c("G013", "G120", "G047", "G017", "G079", "G127", "G060", "G009", "G002", "G128", "G016", "G071-A", "G114", "G045", "G132", "G031", "G012", "G116", "G043", "G015", "G040", "G110", "G008", "G109", "G122", "G041", "G066", "G105", "G032", "G129", "G054", "G081", "G003", "G074", "G014", "G049", "G053", "G104", "G055", "G042", "G064", "G073", "G057", "G007", "G070", "G001", "G071-B", "G062"))
 
@@ -48,19 +48,21 @@ SRM.dilution.data <- SRM.data[-1,c(grepl("Protein Name|Transition|Peptide Sequen
 SRM.sample.data <- (SRM.data[,c(!grepl("^D.-G$", colnames(SRM.data)))]) #sample data
 
 ############ ANNOTATE SAMPLE NAMES WITH SITE & TREATMENT ##################################################################################
-
-repsTOsamples.filtered.annotated <- filter(sample.key[,c(8,9)], sample.key$PRVial %in% repsTOsamples.filtered$Comment) #pull site & treatment from sample key
+library(dplyr)
+repsTOsamples.filtered.annotated <- as.data.frame(filter(sample.key[,c(6,8,9)], sample.key$PRVial %in% repsTOsamples.filtered$Comment)) #pull site & treatment from sample key
 length(SRMsamples) == (nrow(repsTOsamples.filtered.annotated)+8) # should equal TRUE if I haven't lost any sample data
 repsTOsamples.filtered.annotated # ISSUE IDENTIFIED: missing 71-A & 71-B, need to fix 
 
 # Add G071-A & G071-B coding to the annotated key
-s71.A <- data.frame(matrix(0, ncol=2, nrow=1))
-s71.A[1,1] <- "G071.A"
-s71.A[1,2] <- "PG-E"
+s71.A <- data.frame(matrix(0, ncol=3, nrow=1))
+s71.A[1,1] <- "PGE-2"
+s71.A[1,2] <- "G071.A"
+s71.A[1,3] <- "PG-E"
 colnames(s71.A) <- colnames(repsTOsamples.filtered.annotated)
-s71.B <- data.frame(matrix(0, ncol=2, nrow=1))
-s71.B[1,1] <- "G071.B"
-s71.B[1,2] <- "PG-E"
+s71.B <- data.frame(matrix(0, ncol=3, nrow=1))
+s71.B[1,1] <- "PGE-2"
+s71.B[1,2] <- "G071.B"
+s71.B[1,3] <- "PG-E"
 colnames(s71.B) <- colnames(repsTOsamples.filtered.annotated)
 sample.key.annotated <- rbind(repsTOsamples.filtered.annotated, s71.A, s71.B) # row bind annotated key w/ 71 info
 

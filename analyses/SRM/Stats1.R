@@ -132,8 +132,15 @@ for (i in 1:length(Protein.names)) {
 }
 Prot.outliers  = do.call(rbind, outliers) #this is a dataframe with outliers, as determined by boxplots
 
-# 2-way ANOVA on overall abundances; each point represents the sum of transitions within a peptide, lambda-transformed. 
+# 2-level nested ANOVA on overall abundances; each point represents the sum of transitions within a peptide, lambda-transformed. 
+data.melted.plus.pepsum <- merge(x=data.melted.plus.pepsum, y=sample.key.annotated[,c("PRVial", "Exclosure")], by.x="SAMPLE", by.y="PRVial", all.x=T, all.y=F) #add exlosure to dataframe
+
 All.ANOVA <- summary(aov(lambda.t ~ REGION*SITE*TREATMENT, data=data.melted.plus.pepsum))
+summary(aov(lambda.t ~ factor(SITE) + factor(TREATMENT), data=data.melted.plus.pepsum)) ## 
+summary(aov(lambda.t ~ factor(REGION) + factor(TREATMENT), data=data.melted.plus.pepsum)) ## 
+
+anova(test <- lm(lambda.t ~ SITE + SITE/TREATMENT/Exclosure, data=data.melted.plus.pepsum))
+
 
 # 2-way ANOVA on protein abundance for each protein individually: data is analyzed by protein, but each point represents the sum of transitions within a peptide, lambda-transformed. 
 p.ANOVA <- vector("list", length(Protein.names))
@@ -141,12 +148,12 @@ p.tukey <- vector("list", length(Protein.names))
 names(p.ANOVA) <- Protein.names
 names(p.tukey) <- Protein.names
 for (i in 1:length(Protein.names)) {
-  temp1 <- aov(lambda.t ~ REGION*SITE*TREATMENT, data=data.melted.plus.pepsum[grepl(c(Protein.names[[i]]), data.melted.plus.pepsum$Protein.Name),]) 
-  temp2 <- summary(temp1)
-  p.ANOVA[[i]] <- as.data.frame(temp2[[1]])
+  temp1 <- lm(lambda.t ~ SITE + SITE/TREATMENT/Exclosure, data=data.melted.plus.pepsum[grepl(c(Protein.names[[i]]), data.melted.plus.pepsum$Protein.Name),])
+  temp2 <- anova(temp1)
+  p.ANOVA[[i]] <- as.data.frame(temp2[,c(1:5)])
   p.ANOVA[[i]]$Protein <- c((Protein.names[i]))
   p.ANOVA[[i]]$Comparison <- rownames(p.ANOVA[[i]])
-  p.tukey[[i]] <- TukeyHSD(temp1, conf.level=.95)
+  #p.tukey[[i]] <- TukeyHSD(temp1, conf.level=.95)
 }
 Prot.ANOVA <- do.call(rbind, p.ANOVA) #this is a dataframe with ANOVA results for each protein with each comparison. 
 
@@ -160,8 +167,8 @@ for (i in 1:length(unique(Prot.ANOVA$Comparison))) {
   Prot.ANOVA[grepl(c(Comparisons[[i]]), Prot.ANOVA$Comparison),"P.adj.BH"] <- p.adjust(Prot.ANOVA[grepl(c(Comparisons[[i]]), Prot.ANOVA$Comparison),][["Pr(>F)"]], method="BH")
   Prot.ANOVA[grepl(c(Comparisons[[i]]), Prot.ANOVA$Comparison),"P.adj.holm"] <- p.adjust(Prot.ANOVA[grepl(c(Comparisons[[i]]), Prot.ANOVA$Comparison),][["Pr(>F)"]], method="holm")
 }
+View(Prot.ANOVA)
 write.csv(file="../../analyses/SRM/Prot.anova.csv", Prot.ANOVA)
-
 
 # To check out results of the Tukey HSD test for specific proteins, use: p.tukey["HSP90-alpha"], etc.
 p.tukey["HSP90-alpha"]
@@ -253,6 +260,14 @@ ProSumm4plot <- data.melted.plus.prosum[grepl(c("HSP90|Puromycin|Trifunctional")
             n = n(),  # calculates the sample size per group
             SE = sd(Area)/sqrt(n())) # calculates the standard error of each group
 
+ProSumm4plot.both <- data.melted.plus.prosum[grepl(c("HSP90|Puromycin|Trifunctional"), data.melted.plus.prosum$Protein.Name),] %>% # the names of the new data frame and the data frame to be summarised
+  group_by_at(vars(Protein.Name, BOTH, SITE)) %>%   # the grouping variable
+  summarise(mean = mean(Area),  # calculates the mean of each group
+            sd = sd(Area), # calculates the standard deviation of each group
+            n = n(),  # calculates the sample size per group
+            SE = sd(Area)/sqrt(n())) # calculates the standard error of each group
+
+
 ### IMPORTANT ### 
 # Barplots: mean peptide abundances summed by protein, error bars = standard error. 
 marker1 = c("sienna1", "goldenrod1", "steelblue2", "royalblue3")
@@ -271,11 +286,24 @@ ggplot(ProSumm4plot[grepl(c("Puromycin"), ProSumm4plot$Protein.Name),], aes(x=as
   scale_fill_manual(values=group.colors) +
   theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Puromycin-sensitive\nAminopeptidase ")
 
-ggplot(ProSumm4plot[grepl(c("Trifunctional"), ProSumm4plot$Protein.Name),], aes(x=as.factor(Protein.Name), y=mean, fill=SITE)) +
+ggplot(ProSumm4plot[grepl(c("Trifunctional"), ProSumm4plot$Protein.Name),], aes(x=as.factor(BOTH), y=mean, fill=SITE)) +
   geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("") +
   geom_errorbar(aes(ymin=mean-SE, ymax=mean+SE), width=.2,position=position_dodge(.9)) +
   scale_fill_manual(values=group.colors) +
   theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Trifunctional enzyme\nβ-subunit")
+
+# Plot for NSA Presentation - break proteins down by both 
+
+ProSumm4plot.both$BOTH<-factor(ProSumm4plot.both$BOTH, levels=c("WB-Bare", "WB-Eel",  "CI-Bare", "CI-Eel", "PG-Bare", "PG-Eel", "FB-Bare", "FB-Eel"))
+ProSumm4plot.both$SITE<-factor(ProSumm4plot.both$SITE, levels=c("WB", "CI", "PG", "FB"))
+
+ggplot(ProSumm4plot.both[grepl(c("Trifunctional"), ProSumm4plot.both$Protein.Name),], aes(x=as.factor(BOTH), y=mean, fill=SITE)) +
+  geom_bar(position=position_dodge(), stat="identity") + xlab("") + ylab("") +
+  geom_errorbar(aes(ymin=mean-SE, ymax=mean+SE), width=.2,position=position_dodge(.9)) +
+  scale_fill_manual(values=group.colors) +
+  theme_light() + theme(plot.title = element_text(size=19, face="bold"), axis.text.y=element_text(size=15, angle=45, face="bold"), axis.title=element_blank(), legend.position = "none", panel.background = element_blank(), axis.text.x=element_blank()) + ggtitle("Trifunctional enzyme\nβ-subunit")
+
+
 
 # Boxplots by site/treatment
 
